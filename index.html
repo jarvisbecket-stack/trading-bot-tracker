@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="60">
-    <title>📊 Command Center | 19-Stock Portfolio</title>
+    <title>💰 Kimi Claw Fund Manager | $1M Portfolio Dashboard</title>
     <style>
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
             --bg-card: #1a1a25;
-            --bg-hover: #252535;
+            --bg-elevated: #252535;
             --text-primary: #e8e8f0;
             --text-secondary: #a0a0b0;
             --accent-primary: #6366f1;
@@ -29,253 +29,526 @@
         }
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
             text-align: center;
         }
-        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .subtitle { opacity: 0.9; font-size: 1.1rem; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
         
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
             margin: 2rem 0 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        /* Portfolio Summary */
-        .portfolio-grid {
+        /* Main Stats Grid */
+        .main-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .stat-card.primary {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, var(--bg-card) 100%);
+        }
+        .stat-card.success {
+            border-color: var(--accent-success);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, var(--bg-card) 100%);
+        }
+        .stat-card.warning {
+            border-color: var(--accent-warning);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, var(--bg-card) 100%);
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .stat-value.primary { color: var(--accent-primary); }
+        .stat-value.success { color: var(--accent-success); }
+        .stat-value.warning { color: var(--accent-warning); }
+        .stat-value.danger { color: var(--accent-danger); }
+        .stat-change {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .stat-change.positive { color: var(--accent-success); }
+        .stat-change.negative { color: var(--accent-danger); }
+
+        /* Performance Grid */
+        .performance-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
-        .portfolio-stat {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-        .portfolio-stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        .portfolio-stat-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Position Cards */
-        .positions-grid {
-            display: grid;
-            gap: 1rem;
-        }
-        .position-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-        }
-        .position-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        .position-symbol {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        .position-type {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        .position-pnl {
-            text-align: right;
-        }
-        .position-pnl-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        .position-pnl-value.positive { color: var(--accent-success); }
-        .position-pnl-value.negative { color: var(--accent-danger); }
-        
-        .position-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-        .position-detail {
-            text-align: center;
-        }
-        .position-detail-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-        .position-detail-value {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 0.25rem;
-        }
-
-        /* Tier Allocation */
-        .tier-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .tier-card {
+        .perf-box {
             background: var(--bg-card);
             border-radius: 12px;
             padding: 1rem;
+            text-align: center;
             border: 1px solid var(--border-color);
         }
-        .tier-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .tier-stocks {
+        .perf-period {
+            font-size: 0.75rem;
             color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
+            text-transform: uppercase;
         }
-        .tier-bar {
-            height: 6px;
+        .perf-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        .perf-bar {
+            height: 4px;
             background: var(--bg-secondary);
-            border-radius: 3px;
+            border-radius: 2px;
             overflow: hidden;
         }
-        .tier-fill {
+        .perf-fill {
             height: 100%;
-            border-radius: 3px;
+            border-radius: 2px;
+            transition: width 0.3s;
         }
 
-        /* Reports Section */
-        .reports-grid {
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Positions Table */
+        .positions-table {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-elevated);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .position-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            align-items: center;
+        }
+        .position-row:hover {
+            background: var(--bg-elevated);
+        }
+        .position-symbol {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .position-type {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .positive { color: var(--accent-success); }
+        .negative { color: var(--accent-danger); }
+        .neutral { color: var(--text-secondary); }
+
+        /* Allocation Section */
+        .allocation-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1rem;
         }
-        .report-card {
+        .allocation-card {
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 1.5rem;
             border: 1px solid var(--border-color);
-            text-decoration: none;
-            color: inherit;
-            display: block;
         }
-        .report-card:hover {
-            border-color: var(--accent-primary);
+        .allocation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
-        .report-title {
-            font-size: 1.25rem;
+        .allocation-title {
             font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .allocation-pct {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .allocation-amount {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .allocation-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .allocation-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        .allocation-stocks {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .activity-icon.buy { background: rgba(16, 185, 129, 0.2); }
+        .activity-icon.sell { background: rgba(99, 102, 241, 0.2); }
+        .activity-icon.alert { background: rgba(245, 158, 11, 0.2); }
+        .activity-content {
+            flex: 1;
+        }
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .activity-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Risk Metrics */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .risk-box {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .risk-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
             margin-bottom: 0.5rem;
         }
-        .report-desc {
+        .risk-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .risk-status {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .risk-status.good {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+        }
+        .risk-status.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warning);
+        }
+        .risk-status.danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-danger);
+        }
+
+        /* Footer */
+        .dashboard-footer {
+            text-align: center;
+            padding: 2rem;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            font-size: 0.875rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>📊 Command Center</h1>
-        <div class="subtitle">19-Stock Premium Capture Portfolio | $1M Capital</div>
+        <h1>💰 Kimi Claw Fund Manager</h1>
+        <div class="subtitle">$1,000,000 Premium Capture Portfolio | Real-Time Dashboard</div>
     </header>
 
     <div class="container">
-        <!-- PORTFOLIO SUMMARY -->
-        <div class="section-title">💰 Portfolio Overview</div>
-        <div class="portfolio-grid">
-            <div class="portfolio-stat">
-                <div class="portfolio-stat-value" style="color: var(--accent-primary);">$1,000,000</div>
-                <div class="portfolio-stat-label">Total Capital</div>
+        <!-- FUND PERFORMANCE -->
+        <div class="section-title">📊 Fund Performance</div>
+        
+        <div class="main-stats">
+            <div class="stat-card primary">
+                <div class="stat-label">Portfolio Value</div>
+                <div class="stat-value primary">$1,000,000</div>
+                <div class="stat-change">Starting Capital</div>
             </div>
-            <div class="portfolio-stat">
-                <div class="portfolio-stat-value" style="color: var(--accent-success);">$0</div>
-                <div class="portfolio-stat-label">Invested (0%)</div>
+            
+            <div class="stat-card success">
+                <div class="stat-label">Today's P&L</div>
+                <div class="stat-value success">$0</div>
+                <div class="stat-change positive">+0.00% ($0)</div>
             </div>
-            <div class="portfolio-stat">
-                <div class="portfolio-stat-value" style="color: var(--accent-warning);">$0</div>
-                <div class="portfolio-stat-label">Today's P&L</div>
+            
+            <div class="stat-card warning">
+                <div class="stat-label">Cash Available</div>
+                <div class="stat-value warning">$1,000,000</div>
+                <div class="stat-change">100% Unallocated</div>
             </div>
-            <div class="portfolio-stat">
-                <div class="portfolio-stat-value" style="color: var(--text-secondary);">0/19</div>
-                <div class="portfolio-stat-label">Active Positions</div>
-            </div>
-        </div>
-
-        <!-- TIER ALLOCATION -->
-        <div class="section-title">📊 Tier Allocation</div>
-        <div class="tier-grid">
-            <div class="tier-card">
-                <div class="tier-title" style="color: var(--accent-primary);">Tier S+ (44%)</div>
-                <div class="tier-stocks">UVXY, MSTR, COIN, UPST</div>
-                <div class="tier-bar"><div class="tier-fill" style="width: 44%; background: var(--accent-primary);"></div></div>
-            </div>
-            <div class="tier-card">
-                <div class="tier-title" style="color: var(--accent-success);">Tier A (30%)</div>
-                <div class="tier-stocks">TSLA, NVDA, AMZN, PLTR, HOOD</div>
-                <div class="tier-bar"><div class="tier-fill" style="width: 30%; background: var(--accent-success);"></div></div>
-            </div>
-            <div class="tier-card">
-                <div class="tier-title" style="color: var(--accent-warning);">Tier B (21%)</div>
-                <div class="tier-stocks">SPY, QQQ, IWM, SOXL, TQQQ, META</div>
-                <div class="tier-bar"><div class="tier-fill" style="width: 21%; background: var(--accent-warning);"></div></div>
-            </div>
-            <div class="tier-card">
-                <div class="tier-title" style="color: #0ea5e9;">Tier C (5%)</div>
-                <div class="tier-stocks">NFLX, RIOT, SQ, SNAP</div>
-                <div class="tier-bar"><div class="tier-fill" style="width: 5%; background: #0ea5e9;"></div></div>
+            
+            <div class="stat-card">
+                <div class="stat-label">Positions Open</div>
+                <div class="stat-value">0</div>
+                <div class="stat-change">0 / 19 Targets</div>
             </div>
         </div>
 
-        <!-- OPEN POSITIONS -->
-        <div class="section-title">📈 Open Positions</div>
-        <div class="positions-grid" id="positions-container">
-            <div style="text-align: center; padding: 3rem; color: var(--text-secondary); background: var(--bg-card); border-radius: 12px;">
-                <div style="font-size: 2rem; margin-bottom: 1rem;">📭</div>
-                <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">No Active Positions</div>
-                <div>Portfolio ready for first trades. Positions will appear here when bots execute.</div>
+        <!-- PERFORMANCE BREAKDOWN -->
+        <div class="performance-grid">
+            <div class="perf-box">
+                <div class="perf-period">Daily Target</div>
+                <div class="perf-value positive">+1.0%</div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 0%; background: var(--accent-success);"></div></div>
+            </div>
+            
+            <div class="perf-box">
+                <div class="perf-period">Weekly Target</div>
+                <div class="perf-value positive">+5.0%</div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 0%; background: var(--accent-success);"></div></div>
+            </div>
+            
+            <div class="perf-box">
+                <div class="perf-period">Monthly Target</div>
+                <div class="perf-value positive">+20%</div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 0%; background: var(--accent-success);"></div></div>
+            </div>
+            
+            <div class="perf-box">
+                <div class="perf-period">Annual Target</div>
+                <div class="perf-value positive">+100%</div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 0%; background: var(--accent-primary);"></div></div>
             </div>
         </div>
 
-        <!-- REPORTS -->
-        <div class="section-title">📑 Reports</div>
-        <div class="reports-grid">
-            <a href="https://jarvisbecket-stack.github.io/btc-daily-report/" class="report-card" target="_blank">
-                <div class="report-title">📊 Bitcoin Daily Report</div>
-                <div class="report-desc">Technical analysis, EMA/RSI/MACD, Fear & Greed Index, on-chain metrics</div>
-            </a>
-            <a href="https://jarvisbecket-stack.github.io/openclaw-best-practices/" class="report-card" target="_blank">
-                <div class="report-title">🔧 OpenClaw Best Practices</div>
-                <div class="report-desc">Latest updates, tips, and optimization strategies</div>
-            </a>
+        <!-- TWO COLUMN: POSITIONS + ALLOCATION -->
+        <div class="two-col">
+            <!-- ACTIVE POSITIONS -->
+            <div>
+                <div class="section-title">📈 Active Positions</div>
+                
+                <div class="positions-table">
+                    <div class="table-header">
+                        <div>Symbol / Type</div>
+                        <div>Entry</div>
+                        <div>Current</div>
+                        <div>P&L</div>
+                        <div>% Profit</div>
+                        <div>Status</div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📭</div>
+                        <div>No active positions</div>
+                        <div style="font-size: 0.85rem; margin-top: 0.5rem;">Fund ready for deployment. Positions will appear here when trading begins.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALLOCATION -->
+            <div>
+                <div class="section-title">🎯 Target Allocation</div>
+                
+                <div class="allocation-card">
+                    <div class="allocation-header">
+                        <div class="allocation-title" style="color: var(--accent-primary);">Tier S+ (0DTE Focus)</div>
+                        <div class="allocation-pct" style="color: var(--accent-primary);">44%</div>
+                    </div>
+                    <div class="allocation-amount">$440,000 target allocation</div>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 0%; background: var(--accent-primary);"></div>
+                    </div>
+                    <div class="allocation-stocks">UVXY ($110K) • MSTR ($110K) • COIN ($110K) • UPST ($110K)</div>
+                </div>
+
+                <div class="allocation-card">
+                    <div class="allocation-header">
+                        <div class="allocation-title" style="color: var(--accent-success);">Tier A (1DTE Focus)</div>
+                        <div class="allocation-pct" style="color: var(--accent-success);">30%</div>
+                    </div>
+                    <div class="allocation-amount">$300,000 target allocation</div>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 0%; background: var(--accent-success);"></div>
+                    </div>
+                    <div class="allocation-stocks">TSLA ($60K) • NVDA ($60K) • AMZN ($60K) • PLTR ($60K) • HOOD ($60K)</div>
+                </div>
+
+                <div class="allocation-card">
+                    <div class="allocation-header">
+                        <div class="allocation-title" style="color: var(--accent-warning);">Tier B (2DTE Focus)</div>
+                        <div class="allocation-pct" style="color: var(--accent-warning);">21%</div>
+                    </div>
+                    <div class="allocation-amount">$210,000 target allocation</div>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 0%; background: var(--accent-warning);"></div>
+                    </div>
+                    <div class="allocation-stocks">SPY • QQQ • IWM • SOXL • TQQQ • META ($35K each)</div>
+                </div>
+
+                <div class="allocation-card">
+                    <div class="allocation-header">
+                        <div class="allocation-title" style="color: #0ea5e9;">Tier C (2DTE Speculative)</div>
+                        <div class="allocation-pct" style="color: #0ea5e9;">5%</div>
+                    </div>
+                    <div class="allocation-amount">$50,000 target allocation</div>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 0%; background: #0ea5e9;"></div>
+                    </div>
+                    <div class="allocation-stocks">NFLX • RIOT • SQ • SNAP ($12.5K each)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RISK METRICS -->
+        <div class="section-title">⚠️ Risk Dashboard</div>
+        
+        <div class="risk-grid">
+            <div class="risk-box">
+                <div class="risk-label">Daily Loss</div>
+                <div class="risk-value">$0</div>
+                <div class="risk-status good">Limit: -$10K</div>
+            </div>
+            
+            <div class="risk-box">
+                <div class="risk-label">Weekly Loss</div>
+                <div class="risk-value">$0</div>
+                <div class="risk-status good">Limit: -$30K</div>
+            </div>
+            
+            <div class="risk-box">
+                <div class="risk-label">Max Position</div>
+                <div class="risk-value">0%</div>
+                <div class="risk-status good">Limit: 11%</div>
+            </div>
+            
+            <div class="risk-box">
+                <div class="risk-label">Drawdown</div>
+                <div class="risk-value">0%</div>
+                <div class="risk-status good">Limit: 8%</div>
+            </div>
+            
+            <div class="risk-box">
+                <div class="risk-label">VIX Level</div>
+                <div class="risk-value">--</div>
+                <div class="risk-status good">Normal</div>
+            </div>
+            
+            <div class="risk-box">
+                <div class="risk-label">Win Rate</div>
+                <div class="risk-value">--</div>
+                <div class="risk-status good">Target: 75%</div>
+            </div>
+        </div>
+
+        <!-- RECENT ACTIVITY -->
+        <div class="section-title">📋 Fund Activity Log</div>
+        
+        <div class="activity-feed">
+            <div class="activity-item">
+                <div class="activity-icon alert">🚀</div>
+                <div class="activity-content">
+                    <div class="activity-title">Fund Initialized</div>
+                    <div class="activity-desc">$1,000,000 capital allocated. 19-stock portfolio configured. Ready for deployment.</div>
+                </div>
+                <div class="activity-time">Now</div>
+            </div>
         </div>
 
         <!-- FOOTER -->
-        <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-secondary);">
-            <div>Last Updated: <span id="last-update">Loading...</span></div>
-            <div style="margin-top: 0.5rem; font-size: 0.875rem;">Auto-refresh every 60 seconds | America/Chicago Timezone</div>
+        <div class="dashboard-footer">
+            <div>💡 Managed by Kimi Claw | Real-time updates every 60 seconds</div>
+            <div style="margin-top: 0.5rem;">Last Updated: <span id="last-update">--</span> | America/Chicago (CST)</div>
         </div>
     </div>
 
     <script>
-        document.getElementById('last-update').textContent = new Date().toLocaleString('en-US', { 
+        document.getElementById('last-update').textContent = new Date().toLocaleString('en-US', {
             timeZone: 'America/Chicago',
-            month: 'short', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         }) + ' CST';
     </script>
 </body>
