@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="60">
-    <title>COST Live Paper Trading - Active</title>
+    <title>COST Paper Trading - Starting Tomorrow 8:30 AM</title>
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -35,22 +35,28 @@
             text-align: center;
         }
         h1 { font-size: 2rem; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .live-badge { 
+        .status-badge { 
             display: inline-block; 
-            background: rgba(16, 185, 129, 0.9); 
+            background: rgba(59, 130, 246, 0.9); 
             color: white;
             padding: 0.5rem 1rem; 
             border-radius: 20px; 
             font-size: 0.875rem;
             margin-top: 1rem;
             font-weight: 600;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
         }
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        .alert-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .alert-title { color: var(--accent-info); font-size: 1.5rem; font-weight: 700; }
+        .alert-text { color: var(--text-secondary); margin-top: 0.5rem; }
         
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
         .card {
@@ -72,70 +78,37 @@
         .metric:last-child { border-bottom: none; }
         .metric-label { color: var(--text-secondary); }
         .metric-value { font-weight: 600; }
-        
         .positive { color: var(--accent-success); }
         .negative { color: var(--accent-danger); }
         
-        .active-trade {
-            background: linear-gradient(135deg, rgba(227, 24, 55, 0.1), rgba(139, 0, 0, 0.1));
-            border: 1px solid rgba(227, 24, 55, 0.3);
+        .empty-state {
+            background: var(--bg-card);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .empty-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .empty-text { color: var(--text-secondary); }
+        
+        .schedule-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 12px;
             padding: 1.5rem;
             margin: 2rem 0;
         }
-        .trade-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .trade-id { font-size: 1.5rem; font-weight: 700; color: var(--accent-costco); }
-        .trade-status {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--accent-success);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
+        .schedule-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--accent-success); }
+        .schedule-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+        .schedule-item:last-child { border-bottom: none; }
+        .schedule-time { font-family: monospace; font-size: 1.25rem; font-weight: 600; color: var(--accent-info); min-width: 100px; }
         
-        .strike-box {
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            margin: 1rem 0;
-        }
-        .strike-label { font-size: 0.875rem; color: var(--text-secondary); }
-        .strike-value { font-size: 2.5rem; font-weight: 700; color: var(--accent-costco); }
-        
-        .premium-highlight {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .premium-label { font-size: 0.875rem; color: var(--text-secondary); }
-        .premium-value { font-size: 2rem; font-weight: 700; color: var(--accent-success); }
-        
-        .table-container { 
-            background: var(--bg-card); 
-            border-radius: 12px; 
-            border: 1px solid var(--border-color); 
-            overflow-x: auto;
-            margin-top: 2rem;
-        }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th { background: var(--bg-secondary); padding: 1rem; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
-        tr:hover { background: var(--bg-hover); }
-        tr.win { border-left: 3px solid var(--accent-success); }
-        tr.assigned { border-left: 3px solid var(--accent-warning); }
-        
-        .pnl-positive { color: var(--accent-success); font-weight: 600; }
-        .pnl-negative { color: var(--accent-danger); font-weight: 600; }
+        .config-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
+        .config-item { background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; }
+        .config-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .config-value { font-size: 1.25rem; font-weight: 600; margin-top: 0.25rem; }
         
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
         .last-updated { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem; }
@@ -144,41 +117,50 @@
 <body>
     <header>
         <h1>🏪 COSTCO (COST) Paper Trading</h1>
-        <div class="live-badge">🟢 LIVE - Trade #1 Active</div>
-        <div class="last-updated">Last Updated: February 26, 2026 23:45 CST | Auto-refresh: 60s</div>
+        <div class="status-badge">⏳ READY - Starting Tomorrow 8:30 AM CST</div>
+        <div class="last-updated">Last Updated: February 26, 2026 | Auto-refresh: 60s</div>
     </header>
 
     <div class="container">
+        <!-- Alert Box -->
+        <div class="alert-box">
+            <div class="alert-title">📝 PAPER TRADING ONLY</div>
+            <div class="alert-text">
+                This is a simulation. No real orders will be sent to Tradier or any broker.
+                <br>Starting capital: $100,000 | Zero positions | Market open: 8:30 AM CST
+            </div>
+        </div>
+
         <!-- Key Metrics -->
         <div class="grid">
             <div class="card">
-                <div class="card-title">💰 Portfolio Value</div>
-                <div class="big-value">$101,775.65</div>                
+                <div class="card-title">💰 Starting Capital</div>
+                <div class="big-value">$100,000.00</div>                
                 <div class="metric" style="margin-top: 1rem;">
-                    <span class="metric-label">Initial Capital</span>
+                    <span class="metric-label">Cash</span>
                     <span class="metric-value">$100,000.00</span>
                 </div>
                 
                 <div class="metric">
-                    <span class="metric-label">Total Return</span>
-                    <span class="metric-value positive">+1.78%</span>
+                    <span class="metric-label">Buying Power</span>
+                    <span class="metric-value">$100,000.00</span>
                 </div>
                 
                 
                 <div class="metric">
-                    <span class="metric-label">Cash</span>
-                    <span class="metric-value">$101,775.65</span>
+                    <span class="metric-label">Shares Held</span>
+                    <span class="metric-value">0</span>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-title">📈 Performance</div>
-                <div class="big-value">1</div>
+                <div class="big-value">0</div>
                 <div style="color: var(--text-secondary);">Total Trades</div>
                 
                 <div class="metric" style="margin-top: 1rem;">
                     <span class="metric-label">Win Rate</span>
-                    <span class="metric-value">0.0%</span>
+                    <span class="metric-value">--</span>
                 </div>
                 
                 <div class="metric">
@@ -195,229 +177,152 @@
 
             <div class="card">
                 <div class="card-title">💵 Premium Income</div>
-                <div class="big-value positive">+$1,776.00</div>
+                <div class="big-value">$0.00</div>
                 <div style="color: var(--text-secondary);">Total Collected</div>
-                
                 
                 <div class="metric" style="margin-top: 1rem;">
                     <span class="metric-label">Premium Paid</span>
                     <span class="metric-value">$0.00</span>
                 </div>
                 
+                
                 <div class="metric">
                     <span class="metric-label">Commissions</span>
-                    <span class="metric-value negative">-$0.35</span>
+                    <span class="metric-value">$0.00</span>
                 </div>
                 
                 
                 <div class="metric">
                     <span class="metric-label">Net Premium</span>
-                    <span class="metric-value positive">$1,775.65</span>
+                    <span class="metric-value">$0.00</span>
                 </div>
             </div>
         </div>
 
-        <!-- Active Trade -->
-        <div class="active-trade">
-            <div class="trade-header">
-                <div class="trade-id">Trade #1 - SELL PUT</div>
-                <div class="trade-status">✅ OPEN</div>
-            </div>
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <div class="empty-title">No Active Positions</div>
+            <div class="empty-text">
+                The bot is ready and waiting for market open.
+                <br>First trade will execute tomorrow at 8:30 AM CST when the market opens.
+            </div>        
+        </div>
+
+        <!-- Schedule -->
+        <div class="schedule-box">
+            <div class="schedule-title">📅 Trading Schedule (CST)</div>
             
-            <div class="grid" style="margin: 1rem 0;">
-                <div class="strike-box">
-                    <div class="strike-label">STRIKE PRICE</div>
-                    <div class="strike-value">$937.40</div>
-                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">5% OTM from $986.74</div>
-                </div>
-                
-                <div>
-                    <div class="metric">
-                        <span class="metric-label">Option Symbol</span>
-                        <span class="metric-value" style="font-family: monospace; font-size: 0.875rem;">COST260328P00937400</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Contracts</span>
-                        <span class="metric-value">1</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Expiration</span>
-                        <span class="metric-value">Mar 28, 2026</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">DTE</span>
-                        <span class="metric-value">30</span>
-                    </div>
-                </div>
-                
-                
-                <div>
-                    <div class="metric">
-                        <span class="metric-label">Entry Price</span>
-                        <span class="metric-value">$17.76</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Stock at Entry</span>
-                        <span class="metric-value">$986.74</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">IV at Entry</span>
-                        <span class="metric-value">22.0%</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Delta</span>
-                        <span class="metric-value">0.18</span>
-                    </div>
-                </div>
+            
+            <div class="schedule-item">
+                <span class="schedule-time">8:30 AM</span>
+                <span>First check - Market opens</span>
             </div>
             
             
-            <div class="premium-highlight">
-                <div class="premium-label">Premium Collected</div>
-                <div class="premium-value">+$1,776.00</div>
-                <div style="color: var(--text-secondary); margin-top: 0.5rem;">Commission: $0.35 | Net: $1,775.65</div>
+            <div class="schedule-item">
+                <span class="schedule-time">9:30 AM</span>
+                <span>Regular check</span>
             </div>
             
             
-            <div style="background: var(--bg-secondary); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
-                <div style="font-weight: 600; margin-bottom: 0.5rem;">🎯 Trade Management</div>
-                <div class="metric">
-                    <span class="metric-label">Target</span>
-                    <span class="metric-value">Close at 50% profit ($8.88)</span>
-                </div>
-                
-                
-                <div class="metric">
-                    <span class="metric-label">Max Hold</span>
-                    <span class="metric-value">14 DTE (roll if needed)</span>
-                </div>
-                
-                
-                <div class="metric">
-                    <span class="metric-label">Breakeven</span>
-                    <span class="metric-value">$919.64 ($937.40 - $17.76)</span>
-                </div>
+            <div class="schedule-item">
+                <span class="schedule-time">10:30 AM</span>
+                <span>Regular check</span>
+            </div>
+            
+            
+            <div class="schedule-item">
+                <span class="schedule-time">11:30 AM</span>
+                <span>Regular check</span>
+            </div>
+            
+            
+            <div class="schedule-item">
+                <span class="schedule-time">12:30 PM</span>
+                <span>Regular check</span>
+            </div>
+            
+            
+            <div class="schedule-item">
+                <span class="schedule-time">1:30 PM</span>
+                <span>Regular check</span>
+            </div>
+            
+            
+            <div class="schedule-item">
+                <span class="schedule-time">2:30 PM</span>
+                <span>Regular check</span>
+            </div>
+            
+            
+            <div class="schedule-item">
+                <span class="schedule-time">3:30 PM</span>
+                <span>Final check before close</span>
             </div>
         </div>
 
-        <!-- Trade History -->
-        <div class="table-container">
-            <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
-                <div class="card-title" style="margin: 0;">📜 Trade History</div>
-            </div>            
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date/Time</th>
-                        <th>Action</th>
-                        <th>Strike</th>
-                        <th>Contracts</th>
-                        <th>Premium</th>
-                        <th>Status</th>
-                        <th>P&L</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="win">
-                        <td>#1</td>
-                        <td>2026-02-26 23:45:27</td>
-                        <td>SELL PUT</td>
-                        <td>$937.40</td>
-                        <td>1</td>
-                        <td>$1,776.00</td>
-                        <td>🟢 OPEN</td>
-                        <td class="pnl-positive">Pending</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Schedule Info -->
-        <div class="card" style="margin-top: 2rem;">
+        <!-- Bot Configuration -->
+        <div class="card">
             <div class="card-title">⚙️ Bot Configuration</div>
             
             
-            <div class="grid" style="margin-top: 1rem;">
-                <div>
-                    <div class="metric">
-                        <span class="metric-label">Strategy</span>
-                        <span class="metric-value">Options Wheel</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Put OTM%</span>
-                        <span class="metric-value">5%</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Target DTE</span>
-                        <span class="metric-value">30</span>
-                    </div>
+            <div class="config-grid">
+                <div class="config-item">
+                    <div class="config-label">Symbol</div>
+                    <div class="config-value">COST</div>
                 </div>                
                 
                 
-                <div>
-                    <div class="metric">
-                        <span class="metric-label">Profit Target</span>
-                        <span class="metric-value">50%</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Position Size</span>
-                        <span class="metric-value">75% max</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Commission</span>
-                        <span class="metric-value">$0.35/contract</span>
-                    </div>
-                </div>
+                <div class="config-item">
+                    <div class="config-label">Strategy</div>
+                    <div class="config-value">Wheel</div>
+                </div>                
                 
                 
-                <div>
-                    <div class="metric">
-                        <span class="metric-label">Schedule</span>
-                        <span class="metric-value">Every hour 9AM-4PM</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Days</span>
-                        <span class="metric-value">Mon-Fri</span>
-                    </div>
-                    
-                    
-                    <div class="metric">
-                        <span class="metric-label">Timezone</span>
-                        <span class="metric-value">America/Chicago</span>
-                    </div>
+                <div class="config-item">
+                    <div class="config-label">Put OTM%</div>
+                    <div class="config-value">5%</div>
+                </div>                
+                
+                
+                <div class="config-item">
+                    <div class="config-label">Target DTE</div>
+                    <div class="config-value">30</div>
+                </div>                
+                
+                
+                <div class="config-item">
+                    <div class="config-label">Profit Target</div>
+                    <div class="config-value">50%</div>
+                </div>                
+                
+                
+                <div class="config-item">
+                    <div class="config-label">Commission</div>
+                    <div class="config-value">$0.35</div>
                 </div>
+            </div>
+            
+            
+            <div style="background: var(--bg-secondary); border-radius: 8px; padding: 1rem; margin-top: 1.5rem;">
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">📝 Important Notes:</div>
+                
+                <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                    <li>This is PAPER TRADING only - no real money at risk</li>
+                    <li>No orders will be sent to Tradier or any broker</li>
+                    <li>All trades are simulated for testing purposes</li>
+                    <li>Cron runs every hour from 8:30 AM - 3:30 PM CST</li>
+                    <li>Telegram notifications sent to 7954184484</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <p>COSTCO Paper Trading Bot | Trade #1 Active | Started Feb 26, 2026</p>
+        <p>COSTCO Paper Trading Bot | Starting Tomorrow 8:30 AM CST | Paper Trading Only</p>
         <p style="margin-top: 0.5rem; font-size: 0.875rem;">
-            Cron: 0 9-16 * * 1-5 | Reports to Telegram @ 7954184484
+            Cron: 30 8-15 * * 1-5 | No real orders | Simulation only
         </p>
     </div>
 </body>
