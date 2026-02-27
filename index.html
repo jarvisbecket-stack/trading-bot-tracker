@@ -300,6 +300,57 @@
             </a>
         </div>
 
+        <!-- BTC ETF & MACRO SECTION -->
+        <div class="section-title">₿ BTC ETFs & Macro Analysis</div>
+        <div class="btc-macro-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            
+            <!-- BTC ETF Card -->
+            <div class="dashboard-card" style="background: linear-gradient(135deg, rgba(247, 147, 26, 0.1), rgba(139, 69, 19, 0.05)); border: 1px solid rgba(247, 147, 26, 0.3);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(247, 147, 26, 0.2);">₿</div>
+                    <div>
+                        <div class="card-title" style="color: #f7931a;">BTC ETF Trading</div>
+                        <div class="card-meta">
+                            <span id="btc-status">🟢 ACTIVE</span>
+                            <span id="btc-price">$65,691</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-desc">
+                    <div style="margin-bottom: 0.5rem;"><strong>Trend:</strong> <span id="btc-trend">NEUTRAL</span></div>
+                    <div style="margin-bottom: 0.5rem;"><strong>24h Change:</strong> <span id="btc-change" style="color: var(--accent-danger);">-1.46%</span></div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Top Pick:</strong> <span id="btc-top-pick">GBTC</span></div>
+                    <div><strong>Strategy:</strong> Dynamic OTM based on BTC trend</div>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(10, 10, 15, 0.5); border-radius: 8px; font-size: 0.875rem; color: var(--text-secondary);">
+                    ETFs: IBIT, FBTC, ARKB, BITB, HODL, GBTC
+                </div>
+            </div>
+
+            <!-- Macro Monitor Card -->
+            <div class="dashboard-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05)); border: 1px solid rgba(99, 102, 241, 0.3);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(99, 102, 241, 0.2);">📊</div>
+                    <div>
+                        <div class="card-title" style="color: #6366f1;">Macro Monitor</div>
+                        <div class="card-meta">
+                            <span id="macro-regime">NEUTRAL</span>
+                            <span id="vix-level">VIX: 20.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-desc">
+                    <div style="margin-bottom: 0.5rem;"><strong>10Y Treasury:</strong> <span id="treasury-yield">4.50%</span></div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Next Event:</strong> <span id="next-event">NFP (7 days)</span></div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Equity Allocation:</strong> <span id="equity-alloc">90%</span></div>
+                    <div><strong>Defensive:</strong> <span id="defensive-alloc">10%</span></div>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(10, 10, 15, 0.5); border-radius: 8px; font-size: 0.875rem; color: var(--text-secondary);">
+                    Risk-on: Aggressive | Risk-off: Defensive positioning
+                </div>
+            </div>
+        </div>
+
         <!-- LIVE LEADERBOARD -->
         <div class="section-title">🏆 Live Race Leaderboard</div>
         <div class="leaderboard-container" style="background: var(--bg-card); border-radius: 16px; padding: 2rem; border: 2px solid var(--border-color); margin: 2rem 0;">
