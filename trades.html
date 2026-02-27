@@ -10,138 +10,36 @@
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
             --bg-card: #1a1a25;
-            --bg-hover: #252535;
             --text-primary: #e8e8f0;
             --text-secondary: #a0a0b0;
             --accent-success: #10b981;
-            --accent-danger: #ef4444;
-            --accent-warning: #f59e0b;
-            --accent-info: #3b82f6;
             --accent-costco: #e31837;
             --accent-bitcoin: #f7931a;
             --accent-ko: #dc2626;
             --border-color: #2a2a3a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 2rem 1rem;
-            text-align: center;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 1rem; text-align: center; }
         h1 { font-size: 2rem; }
         .subtitle { opacity: 0.9; margin-top: 0.5rem; }
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
-        
-        .alert-box {
-            background: rgba(16, 185, 129, 0.1);
-            border: 2px solid rgba(16, 185, 129, 0.5);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            text-align: center;
-        }
+        .alert-box { background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.5); border-radius: 12px; padding: 1.5rem; margin: 2rem 0; text-align: center; }
         .alert-title { color: var(--accent-success); font-size: 1.5rem; font-weight: 700; }
-        
-        .bot-tabs {
-            display: flex;
-            gap: 1rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-        .bot-tab {
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .bot-tab:hover, .bot-tab.active {
-            border-color: var(--accent-info);
-            background: var(--bg-hover);
-        }
-        .bot-tab.cost { border-color: var(--accent-costco); }
-        .bot-tab.mstr { border-color: var(--accent-bitcoin); }
-        .bot-tab.ko { border-color: var(--accent-ko); }
-        
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        .summary-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .summary-card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid var(--border-color); }
         .summary-value { font-size: 2.5rem; font-weight: 700; }
         .summary-label { color: var(--text-secondary); margin-top: 0.5rem; }
-        
-        .trades-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            background: var(--bg-card);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .trades-table th, .trades-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .trades-table th {
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.875rem;
-        }
-        .trades-table tr:hover {
-            background: var(--bg-hover);
-        }
-        .status-open {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--accent-success);
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .bot-section {
-            margin: 2rem 0;
-        }
-        .bot-header {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
-        }
+        .trades-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg-card); border-radius: 12px; overflow: hidden; }
+        .trades-table th, .trades-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .trades-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.875rem; }
+        .status-open { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600; }
+        .bot-section { margin: 2rem 0; }
+        .bot-header { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); }
         .bot-header.cost { color: var(--accent-costco); border-color: var(--accent-costco); }
         .bot-header.mstr { color: var(--accent-bitcoin); border-color: var(--accent-bitcoin); }
         .bot-header.ko { color: var(--accent-ko); border-color: var(--accent-ko); }
-        
-        .update-time {
-            text-align: center;
-            color: var(--text-secondary);
-            margin: 1rem 0;
-            font-size: 0.875rem;
-        }
-        
+        .update-time { text-align: center; color: var(--text-secondary); margin: 1rem 0; font-size: 0.875rem; }
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
     </style>
 </head>
@@ -152,164 +50,117 @@
     </header>
 
     <div class="container">
-        <div class="update-time">🔄 Last Updated: Feb 27, 2026 11:07 AM CST | Auto-refresh: 60s</div>
+        <div class="update-time">🔄 Last Updated: 2026-02-27 11:18:34 CST | Auto-refresh: 60s</div>
 
-        <!-- Alert Box -->
         <div class="alert-box">
-            <div class="alert-title">🟢 RACE IS LIVE - MULTIPLE TRADES EXECUTED</div>
-            <div style="color: var(--text-secondary); margin-top: 0.5rem;">
-                All 3 bots have executed multiple trades today. Latest: 11:07 AM CST.
-            </div>
+            <div class="alert-title">🟢 RACE IS LIVE - TRADING ACTIVE</div>
+            <div style="color: var(--text-secondary); margin-top: 0.5rem;">All 3 bots executing trades in real-time</div>
         </div>
 
-        <!-- Bot Tabs -->
-        <div class="bot-tabs">
-            <a href="cost-paper-live.html" class="bot-tab cost">🏪 COST Bot</a>
-            <a href="mstr-live.html" class="bot-tab mstr">₿ MSTR Bot</a>
-            <a href="ko-paper-live.html" class="bot-tab ko">🏢 KO Bot</a>
-        </div>
-
-        <!-- Race Summary -->
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-value">10</div>
+                <div class="summary-value">11</div>
                 <div class="summary-label">Total Trades Today</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value" style="color: var(--accent-success);">$4,492</div>
-                <div class="summary-label">Premium Collected</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-value" style="color: var(--accent-success);">+$16,670</div>
+                <div class="summary-value" style="color: var(--accent-success);">$+17,278.54999999999</div>
                 <div class="summary-label">Combined P&L</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value">$316.7K</div>
+                <div class="summary-value">$317,279</div>
                 <div class="summary-label">Total Portfolio Value</div>
             </div>
         </div>
 
-        <!-- Current Active Positions -->
         <div class="bot-section">
-            <div class="bot-header cost">🏪 COSTCO (COST) - Current Active Position</div>
+            <div class="bot-header cost">COSTCO (COST) - Current Position</div>
             <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 4 trades today | <strong>Cash:</strong> $107,170.60 | <strong>Return:</strong> +7.17%
+                <strong>Trade Count:</strong> 4 trades | 
+                <strong>Cash:</strong> $107,170.60 | 
+                <strong>Return:</strong> +7.17%
             </div>
+
             <table class="trades-table">
                 <thead>
                     <tr>
-                        <th>Time</th>
-                        <th>Action</th>
-                        <th>Option</th>
-                        <th>Strike</th>
-                        <th>Exp</th>
-                        <th>Contracts</th>
-                        <th>Premium</th>
-                        <th>Status</th>
+                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>2026-02-27 11:07:45</td>
-                        <td>SELL PUT</td>
+                        <td>SELL_PUT</td>
                         <td>COST260329P00952190</td>
                         <td>$952.19</td>
-                        <td>Mar 29 (30 DTE)</td>
+                        <td>2026-03-29</td>
                         <td>1</td>
                         <td style="color: var(--accent-success);">+$1,803.65</td>
                         <td><span class="status-open">OPEN</span></td>
                     </tr>
                 </tbody>
             </table>
-            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
-                Note: Previous 3 trades were rolled into new positions. Current active: Trade #4.
-            </div>
         </div>
-
         <div class="bot-section">
-            <div class="bot-header mstr">₿ MICROSTRATEGY (MSTR) - Current Active Position</div>
+            <div class="bot-header mstr">MSTR (MSTR) - Current Position</div>
             <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 4 trades today | <strong>Cash:</strong> $108,283.20 | <strong>Return:</strong> +8.28%
+                <strong>Trade Count:</strong> 4 trades | 
+                <strong>Cash:</strong> $108,283.20 | 
+                <strong>Return:</strong> +8.28%
             </div>
-            
+
             <table class="trades-table">
                 <thead>
                     <tr>
-                        <th>Time</th>
-                        <th>Action</th>
-                        <th>Option</th>
-                        <th>Strike</th>
-                        <th>Exp</th>
-                        <th>Contracts</th>
-                        <th>Premium</th>
-                        <th>Status</th>
+                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>2026-02-27 11:07:45</td>
-                        <td>SELL PUT</td>
+                        <td>SELL_PUT</td>
                         <td>MSTR260320P00116840</td>
                         <td>$116.84</td>
-                        <td>Mar 20 (21 DTE)</td>
+                        <td>2026-03-20</td>
                         <td>2</td>
                         <td style="color: var(--accent-success);">+$2,077.30</td>
                         <td><span class="status-open">OPEN</span></td>
                     </tr>
                 </tbody>
             </table>
-            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
-                Note: Previous 3 trades were rolled into new positions. Current active: Trade #4.
-            </div>
         </div>
-
         <div class="bot-section">
-            <div class="bot-header ko">🏢 COCA-COLA (KO) - Current Active Position</div>
+            <div class="bot-header ko">KO (KO) - Current Position</div>
             <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 2 trades today | <strong>Cash:</strong> $101,216.50 | <strong>Return:</strong> +1.22%
+                <strong>Trade Count:</strong> 3 trades | 
+                <strong>Cash:</strong> $101,824.75 | 
+                <strong>Return:</strong> +1.82%
             </div>
-            
+
             <table class="trades-table">
                 <thead>
                     <tr>
-                        <th>Time</th>
-                        <th>Action</th>
-                        <th>Option</th>
-                        <th>Strike</th>
-                        <th>Exp</th>
-                        <th>Contracts</th>
-                        <th>Premium</th>
-                        <th>Status</th>
+                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2026-02-27 11:07:46</td>
-                        <td>SELL PUT</td>
-                        <td>KO260329P00079030</td>
-                        <td>$79.03</td>
-                        <td>Mar 29 (30 DTE)</td>
+                        <td>2026-02-27 11:15:32</td>
+                        <td>SELL_PUT</td>
+                        <td>KO260329P00079140</td>
+                        <td>$79.14</td>
+                        <td>2026-03-29</td>
                         <td>5</td>
                         <td style="color: var(--accent-success);">+$608.25</td>
                         <td><span class="status-open">OPEN</span></td>
                     </tr>
                 </tbody>
             </table>
-            
-            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
-                Note: Previous 1 trade was rolled into new position. Current active: Trade #2.
-            </div>
-        </div>
-
-        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 1rem; margin: 2rem 0;">
-            <strong>⚠️ Note on Trade History:</strong> The bots only display the current active position in this log. When a position is closed and a new one opened, the trade counter increments but only the active position is shown here. Check individual bot pages for detailed P&L tracking.
         </div>
     </div>
 
     <div class="footer">
-        <p>Paper Trading Trade Log | 3-Way Bot Race | Last Updated: Feb 27, 2026 11:07 AM CST</p>
-        <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a> | 
-        <a href="index.html" style="color: var(--accent-info);">← Command Center</a></p>
+        <p>Paper Trading Trade Log | 3-Way Bot Race</p>
+        <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a></p>
     </div>
 </body>
 </html>
