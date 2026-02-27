@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSTCO Wheel Strategy - Live Trade Tracker</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-hover: #252535;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --accent-warning: #f59e0b;
+            --accent-info: #3b82f6;
+            --accent-costco: #e31837;
+            --border-color: #2a2a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, var(--accent-costco) 0%, #8b0000 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        h1 { font-size: 2rem; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .subtitle { color: rgba(255,255,255,0.8); margin-top: 0.5rem; }
+        .badge-premium { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.2); 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 20px; 
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        /* Hero Stats */
+        .hero-stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1rem; 
+            margin: 2rem 0; 
+        }
+        .stat-card { 
+            background: var(--bg-card); 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-value { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
+        .stat-subtitle { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .positive { color: var(--accent-success); }
+        .negative { color: var(--accent-danger); }
+        .warning { color: var(--accent-warning); }
+        
+        /* Position Card */
+        .position-card {
+            background: linear-gradient(135deg, rgba(227, 24, 55, 0.1), rgba(139, 0, 0, 0.1));
+            border: 1px solid rgba(227, 24, 55, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .position-title { color: var(--accent-costco); font-weight: 600; margin-bottom: 1rem; }
+        .position-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        
+        /* Trade Table */
+        .table-container { 
+            background: var(--bg-card); 
+            border-radius: 12px; 
+            border: 1px solid var(--border-color); 
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { 
+            background: var(--bg-secondary); 
+            padding: 1rem; 
+            text-align: left; 
+            font-weight: 600; 
+            color: var(--text-secondary); 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
+        tr:hover { background: var(--bg-hover); }
+        tr.win { border-left: 3px solid var(--accent-success); }
+        tr.assigned { border-left: 3px solid var(--accent-warning); }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-win { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); }
+        .badge-assigned { background: rgba(245, 158, 11, 0.2); color: var(--accent-warning); }
+        .badge-put { background: rgba(59, 130, 246, 0.2); color: var(--accent-info); }
+        
+        .pnl-positive { color: var(--accent-success); font-weight: 600; }
+        .pnl-negative { color: var(--accent-danger); font-weight: 600; }
+        .date-small { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        /* Summary Box */
+        .summary-box {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .summary-title { font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .summary-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); }
+        .summary-item:last-child { border-bottom: none; }
+        
+        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏪 COSTCO (COST) Wheel Strategy</h1>
+        <div class="subtitle">The Holy Grail of Options Trading</div>
+        <div class="badge-premium">93% Win Rate | 12.6% Annual ROI</div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Stats -->
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-label">Total Return</div>
+                <div class="stat-value positive">+26.87%</div>
+                <div class="stat-subtitle">24-month backtest</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Annual ROI</div>
+                <div class="stat-value positive">12.64%</div>
+                <div class="stat-subtitle">Beats 4.5% savings!</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Win Rate</div>
+                <div class="stat-value">93.3%</div>
+                <div class="stat-subtitle">14 wins / 1 assigned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Trades</div>
+                <div class="stat-value">15</div>
+                <div class="stat-subtitle">All puts, no calls</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Premium Collected</div>
+                <div class="stat-value">$22,693</div>
+                <div class="stat-subtitle">Avg $1,513/trade</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Max Drawdown</div>
+                <div class="stat-value warning">16.70%</div>
+                <div class="stat-subtitle">Acceptable risk</div>
+            </div>
+        </div>
+
+        <!-- Current Position -->
+        <div class="position-card">
+            <div class="position-title">📦 CURRENT POSITION (HOLDING)</div>
+            <div class="position-grid">
+                <div>
+                    <div class="stat-label">Shares Held</div>
+                    <div class="stat-value">100</div>
+                </div>
+                <div>
+                    <div class="stat-label">Cost Basis</div>
+                    <div class="stat-value">$944.96</div>
+                </div>
+                <div>
+                    <div class="stat-label">Current Price</div>
+                    <div class="stat-value">~$986</div>
+                </div>
+                <div>
+                    <div class="stat-label">Unrealized P&L</div>
+                    <div class="stat-value positive">+$4,178</div>
+                </div>
+                <div>
+                    <div class="stat-label">Next Action</div>
+                    <div class="stat-value" style="font-size: 1.25rem;">Sell Covered Call @ $1,016</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade Table -->
+        <div class="table-container">
+            <table id="tradeTable">
+                <thead>
+                    <tr>
+                        <th># | Date</th>
+                        <th>Type</th>
+                        <th>Stock Price</th>
+                        <th>Strike</th>
+                        <th>Premium</th>
+                        <th>Days</th>
+                        <th>P&L</th>
+                        <th>ROI%</th>
+                        <th>Delta</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="win">
+                        <td>#1<br/><span class="date-small">2024-04-23 → 05-09</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$722.68</td>
+                        <td>$686.55</td>
+                        <td>$963.75</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$963.75</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#2<br/><span class="date-small">2024-05-09 → 05-28</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$779.04</td>
+                        <td>$740.09</td>
+                        <td>$1,292.42</td>
+                        <td>19</td>
+                        <td class="pnl-positive">+$1,292.42</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#3<br/><span class="date-small">2024-05-28 → 06-13</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$813.17</td>
+                        <td>$772.51</td>
+                        <td>$1,449.02</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,449.02</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#4<br/><span class="date-small">2024-06-13 → 07-01</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$846.06</td>
+                        <td>$803.66</td>
+                        <td>$1,116.67</td>
+                        <td>18</td>
+                        <td class="pnl-positive">+$1,116.67</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#5<br/><span class="date-small">2024-07-01 → 07-17</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$845.78</td>
+                        <td>$803.39</td>
+                        <td>$1,116.28</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,116.28</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#6<br/><span class="date-small">2024-07-17 → 08-02</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$846.42</td>
+                        <td>$803.97</td>
+                        <td>$1,725.10</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,725.10</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#7<br/><span class="date-small">2024-08-02 → 08-19</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$822.03</td>
+                        <td>$780.98</td>
+                        <td>$1,677.08</td>
+                        <td>17</td>
+                        <td class="pnl-positive">+$1,677.08</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#8<br/><span class="date-small">2024-08-19 → 09-04</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$872.36</td>
+                        <td>$828.73</td>
+                        <td>$1,999.04</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,999.04</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#9<br/><span class="date-small">2024-09-04 → 09-20</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$890.03</td>
+                        <td>$845.52</td>
+                        <td>$1,881.14</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,881.14</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#10<br/><span class="date-small">2024-09-20 → 10-07</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$907.08</td>
+                        <td>$861.63</td>
+                        <td>$1,673.89</td>
+                        <td>17</td>
+                        <td class="pnl-positive">+$1,673.89</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#11<br/><span class="date-small">2024-10-07 → 10-23</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$873.64</td>
+                        <td>$829.91</td>
+                        <td>$1,286.97</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,286.97</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#12<br/><span class="date-small">2024-10-23 → 11-08</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$899.27</td>
+                        <td>$854.21</td>
+                        <td>$1,393.61</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,393.61</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#13<br/><span class="date-small">2024-11-08 → 11-25</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$944.03</td>
+                        <td>$896.61</td>
+                        <td>$1,443.85</td>
+                        <td>17</td>
+                        <td class="pnl-positive">+$1,443.85</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="win">
+                        <td>#14<br/><span class="date-small">2024-11-25 → 12-11</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$961.04</td>
+                        <td>$912.85</td>
+                        <td>$1,975.00</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,975.00</td>
+                        <td>100.0%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-win">✅ WIN</span></td>
+                    </tr>
+                    <tr class="assigned">
+                        <td>#15<br/><span class="date-small">2024-12-11 → 12-27</span></td>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>$995.80</td>
+                        <td>$944.96</td>
+                        <td>$1,698.79</td>
+                        <td>16</td>
+                        <td class="pnl-positive">+$1,173.25</td>
+                        <td>69.1%</td>
+                        <td>0.39</td>
+                        <td><span class="badge badge-assigned">📥 ASSIGNED</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-box">
+            <div class="summary-title">📊 STRATEGY SUMMARY</div>
+            <div class="summary-grid">
+                <div>
+                    <div class="summary-item"><span>Strategy:</span><span>Options Wheel (5% OTM Puts)</span></div>
+                    <div class="summary-item"><span>Trade Frequency:</span><span>Every 16-17 days</span></div>
+                    <div class="summary-item"><span>Avg Days Held:</span><span>16.5 days</span></div>
+                    <div class="summary-item"><span>Avg Premium:</span><span>$1,513</span></div>
+                </div>
+                <div>
+                    <div class="summary-item"><span>Capital Required:</span><span>$100,000 minimum</span></div>
+                    <div class="summary-item"><span>Position Size:</span><span>75% per trade</span></div>
+                    <div class="summary-item"><span>Early Close:</span><span>50% profit or 14 DTE</span></div>
+                    <div class="summary-item"><span>Risk Level:</span><span>Moderate (16.7% max DD)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>COSTCO (COST) Options Wheel Strategy | 24-Month Backtest | Live Trade Tracker</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+            Not financial advice. Options involve risk. Past performance ≠ future results.
+        </p>
+    </div>
+</body>
+</html>
