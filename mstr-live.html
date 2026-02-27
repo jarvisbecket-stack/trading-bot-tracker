@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSTR Live Wheel Opportunity - February 26, 2026</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-hover: #252535;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --accent-warning: #f59e0b;
+            --accent-info: #3b82f6;
+            --accent-bitcoin: #f7931a;
+            --border-color: #2a2a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, var(--accent-bitcoin) 0%, #8b4513 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        h1 { font-size: 2rem; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .live-badge { 
+            display: inline-block; 
+            background: rgba(239, 68, 68, 0.9); 
+            color: white;
+            padding: 0.5rem 1rem; 
+            border-radius: 20px; 
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .alert-title { color: var(--accent-danger); font-size: 1.5rem; font-weight: 700; }
+        .alert-text { color: var(--text-secondary); margin-top: 0.5rem; }
+        
+        .price-display {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+        .price-label { font-size: 1rem; color: var(--text-secondary); }
+        .price-value { font-size: 4rem; font-weight: 800; color: var(--accent-bitcoin); margin: 0.5rem 0; }
+        .price-change { font-size: 1.25rem; }
+        .iv-display { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+        .iv-value { font-size: 2rem; font-weight: 700; color: var(--accent-danger); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .card-title { font-size: 1.25rem; font-weight: 600; }
+        .card-date { color: var(--text-secondary); font-size: 0.875rem; }
+        
+        .metric { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { color: var(--text-secondary); }
+        .metric-value { font-weight: 600; }
+        
+        .strike-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .strike-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-info); }
+        .premium-value { font-size: 1.25rem; font-weight: 600; color: var(--accent-success); }
+        
+        .return-highlight {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .return-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .return-number { font-size: 2rem; font-weight: 700; color: var(--accent-success); }
+        
+        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>₿ MSTR LIVE WHEEL OPPORTUNITY</h1>
+        <div class="live-badge">🔴 LIVE - February 26, 2026 23:34 CST</div>
+    </header>
+
+    <div class="container">
+        <div class="alert-box">
+            <div class="alert-title">⚠️ EXTREME VOLATILITY WARNING</div>
+            <div class="alert-text">
+                MSTR is showing 150% implied volatility. This is DANGEROUS for wheel strategies.
+                <br>High premium ≠ Safe trade. Assignment risk is EXTREME.
+            </div>
+        </div>
+
+        <div class="price-display">
+            <div class="price-label">MSTR Current Price</div>
+            <div class="price-value">$133.40</div>
+            <div class="price-change">0.00% (Market Closed)</div>
+            <div class="iv-display">
+                <div class="price-label">Implied Volatility (IV)</div>
+                <div class="iv-value">150.0% 🔴</div>
+                <div style="color: var(--text-secondary); margin-top: 0.5rem;">Historical Vol: 138.2%</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- 15 DTE Setup -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🛡️ Put Setup #1</div>
+                    <div class="card-date">Mar 13 (15 DTE)</div>
+                </div>
+                
+                <div class="strike-box">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">10% OTM Strike</div>
+                    <div class="strike-value">$120.06</div>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Premium/Share</span>
+                    <span class="metric-value">$9.74</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total Premium (2 contracts)</span>
+                    <span class="metric-value" style="color: var(--accent-success);">$1,947</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Delta</span>
+                    <span class="metric-value">0.20</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Prob of Profit</span>
+                    <span class="metric-value">80%</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Margin Required</span>
+                    <span class="metric-value">$24,012</span>
+                </div>
+                
+                <div class="return-highlight">
+                    <div class="return-label">Return on Margin</div>
+                    <div class="return-number">8.11%</div>
+                    <div style="color: var(--accent-success); font-size: 0.875rem;">~197% Annualized</div>
+                </div>
+            </div>
+
+            <!-- 22 DTE Setup -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🛡️ Put Setup #2</div>
+                    <div class="card-date">Mar 20 (22 DTE)</div>
+                </div>
+                
+                <div class="strike-box">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">10% OTM Strike</div>
+                    <div class="strike-value">$120.06</div>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Premium/Share</span>
+                    <span class="metric-value">$11.79</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Total Premium (2 contracts)</span>
+                    <span class="metric-value" style="color: var(--accent-success);">$2,358</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Delta</span>
+                    <span class="metric-value">0.20</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Prob of Profit</span>
+                    <span class="metric-value">80%</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Margin Required</span>
+                    <span class="metric-value">$24,012</span>
+                </div>
+                
+                <div class="return-highlight">
+                    <div class="return-label">Return on Margin</div>
+                    <div class="return-number">9.82%</div>
+                    <div style="color: var(--accent-success); font-size: 0.875rem;">~163% Annualized</div>
+                </div>
+            </div>
+
+            <!-- 29 DTE Setup -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🛡️ Put Setup #3</div>
+                    <div class="card-date">Mar 27 (29 DTE)</div>
+                </div>
+                
+                <div class="strike-box">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">10% OTM Strike</div>
+                    <div class="strike-value">$120.06</div>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Premium/Share</span>
+                    <span class="metric-value">$13.54</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Total Premium (2 contracts)</span>
+                    <span class="metric-value" style="color: var(--accent-success);">$2,707</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Delta</span>
+                    <span class="metric-value">0.20</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Prob of Profit</span>
+                    <span class="metric-value">80%</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Margin Required</span>
+                    <span class="metric-value">$24,012</span>
+                </div>
+                
+                <div class="return-highlight">
+                    <div class="return-label">Return on Margin</div>
+                    <div class="return-number">11.27%</div>
+                    <div style="color: var(--accent-success); font-size: 0.875rem;">~142% Annualized</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-title">📞 If Assigned - Covered Call Setup</div>            
+            <div class="grid" style="margin-top: 1rem;">
+                <div class="strike-box" style="margin: 0;">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">5% OTM Call Strike</div>
+                    <div class="strike-value">$140.07</div>
+                </div>
+                
+                <div>
+                    <div class="metric">
+                        <span class="metric-label">Est. Premium</span>
+                        <span class="metric-value">$12.17 - $16.92/share</span>
+                    </div>
+                    
+                    <div class="metric">
+                        <span class="metric-label">Delta</span>
+                        <span class="metric-value">0.35</span>
+                    </div>
+                    
+                    
+                    <div class="metric">
+                        <span class="metric-label">Prob of Profit</span>
+                        <span class="metric-value">35%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert-box" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.5);">
+            <div class="alert-title" style="color: var(--accent-warning);">⚠️ TRADING DECISION</div>
+            <div class="alert-text" style="text-align: left; margin-top: 1rem;">
+                <strong>The Numbers Look Amazing:</strong> 140-197% annualized returns
+                <br><br>
+                <strong>But Reality Check:</strong>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>MSTR dropped from $473 to $133 in our backtest (72% drawdown)</li>
+                    <li>33% assignment rate vs COST's 7%</li>
+                    <li>Current 150% IV means market expects massive moves</li>
+                    <li>One bad Bitcoin news = assignment at bad strike</li>
+                </ul>
+                <br>
+                <strong>Verdict:</strong> Skip this trade. The risk/reward doesn't justify it.
+                Stick with COST (12.64% ROI, 16% DD) instead.
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>MSTR Live Opportunity Scanner | February 26, 2026</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+            Data is simulated for demonstration. Not financial advice.
+        </p>
+    </div>
+</body>
+</html>
