@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
+    <title>🏁 BOT RACE: COST vs MSTR - Live Paper Trading</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --accent-warning: #f59e0b;
+            --accent-info: #3b82f6;
+            --accent-costco: #e31837;
+            --accent-bitcoin: #f7931a;
+            --border-color: #2a2a3a;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-bottom: 3px solid var(--accent-warning);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        h1 { font-size: 2.5rem; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .subtitle { color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem; }
+        .race-badge { 
+            display: inline-block; 
+            background: var(--accent-warning); 
+            color: black;
+            padding: 0.5rem 1.5rem; 
+            border-radius: 20px; 
+            font-size: 1rem;
+            margin-top: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        /* Leaderboard */
+        .leaderboard {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+            border: 2px solid var(--accent-warning);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .leaderboard-title { font-size: 1.5rem; font-weight: 700; color: var(--accent-warning); margin-bottom: 1.5rem; }
+        
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .podium-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            min-width: 200px;
+        }
+        .podium-1st { 
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            border: 2px solid gold;
+            order: 2;
+            transform: scale(1.1);
+        }
+        .podium-2nd { 
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.1));
+            border: 2px solid silver;
+            order: 1;
+        }
+        .podium-rank { font-size: 2rem; font-weight: 800; }
+        .podium-bot { font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0; }
+        .podium-pnl { font-size: 2rem; font-weight: 700; }
+        
+        /* Bot Cards */
+        .bot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin: 2rem 0; }
+        .bot-card {
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid;
+        }
+        .cost-card {
+            background: linear-gradient(135deg, rgba(227, 24, 55, 0.1), rgba(139, 0, 0, 0.05));
+            border-color: var(--accent-costco);
+        }
+        .mstr-card {
+            background: linear-gradient(135deg, rgba(247, 147, 26, 0.1), rgba(139, 69, 19, 0.05));
+            border-color: var(--accent-bitcoin);
+        }
+        .bot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bot-name { font-size: 1.5rem; font-weight: 700; }
+        .bot-strategy { font-size: 0.875rem; color: var(--text-secondary); }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .metric-row:last-child { border-bottom: none; }
+        .metric-label { color: var(--text-secondary); }
+        .metric-value { font-weight: 600; font-size: 1.1rem; }
+        
+        .big-number { font-size: 2.5rem; font-weight: 700; }
+        .positive { color: var(--accent-success); }
+        .negative { color: var(--accent-danger); }
+        
+        /* VS Divider */
+        .vs-divider {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-warning);
+            margin: 2rem 0;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* Rules Box */
+        .rules-box {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .rules-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--accent-info); }
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .rule-item { display: flex; align-items: center; gap: 0.5rem; }
+        .rule-check { color: var(--accent-success); font-weight: 700; }
+        
+        /* Empty State */
+        .race-pending {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .race-pending-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .race-pending-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .race-pending-text { color: var(--text-secondary); }
+        
+        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏁 BOT RACE</h1>
+        <div class="subtitle">COST vs MSTR - Paper Trading Competition</div>
+        <div class="race-badge">Starting Tomorrow 8:30 AM CST</div>
+    </header>
+
+    <div class="container">
+        <!-- Rules -->
+        <div class="rules-box">
+            <div class="rules-title">📋 Race Rules</div>
+            <div class="rules-grid">
+                <div class="rule-item"><span class="rule-check">✓</span> Starting Capital: $100,000 each</div>
+                <div class="rule-item"><span class="rule-check">✓</span> Zero positions at start</div>
+                <div class="rule-item"><span class="rule-check">✓</span> Wheel Strategy (sell puts)</div>
+                <div class="rule-item"><span class="rule-check">✓</span> Paper trades only (no real orders)</div>
+                <div class="rule-item"><span class="rule-check">✓</span> Real market data from Yahoo</div>
+                <div class="rule-item"><span class="rule-check">✓</span> Winner: Highest total return</div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <div class="leaderboard-title">🏆 LEADERBOARD 🏆</div>
+            
+            <div class="podium">
+                <!-- Both start at $0 P&L -->
+                <div class="podium-item podium-2nd">
+                    <div class="podium-rank">🥈</div>
+                    <div class="podium-bot" style="color: var(--accent-bitcoin);">MSTR</div>
+                    <div class="podium-pnl">$0.00</div>
+                    <div style="color: var(--text-secondary);">0.00% return</div>
+                </div>
+                
+                <div class="podium-item podium-1st">
+                    <div class="podium-rank">🥇</div>
+                    <div class="podium-bot" style="color: var(--accent-costco);">COST</div>
+                    <div class="podium-pnl">$0.00</div>
+                    <div style="color: var(--text-secondary);">0.00% return</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; color: var(--text-secondary);">
+                Race starts tomorrow at 8:30 AM CST
+            </div>
+        </div>
+
+        <!-- Bot Comparison -->
+        <div class="vs-divider">VS</div>
+
+        <div class="bot-grid">
+            <!-- COST Bot -->
+            <div class="bot-card cost-card">
+                <div class="bot-header">
+                    <div>
+                        <div class="bot-name" style="color: var(--accent-costco);">🏪 COST Bot</div>
+                        <div class="bot-strategy">Wheel Strategy | Conservative</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                    <div style="color: var(--text-secondary);">Total Value</div>
+                    <div class="big-number">$100,000.00</div>
+                    <div style="color: var(--text-secondary);">+0.00% return</div>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <div class="metric-row">
+                        <span class="metric-label">Cash</span>
+                        <span class="metric-value">$100,000.00</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Shares Held</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Trades</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Win Rate</span>
+                        <span class="metric-value">--</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Premium Collected</span>
+                        <span class="metric-value">$0.00</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Realized P&L</span>
+                        <span class="metric-value">$0.00</span>
+                    </div>
+                </div>
+                
+                
+                <div style="background: var(--bg-secondary); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--accent-costco);">Strategy Parameters</div>
+                    
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                        Put OTM: 5% | DTE: 30 | Profit Target: 50%
+                    </div>
+                </div>
+            </div>
+
+            <!-- MSTR Bot -->
+            <div class="bot-card mstr-card">
+                <div class="bot-header">
+                    <div>
+                        <div class="bot-name" style="color: var(--accent-bitcoin);">₿ MSTR Bot</div>
+                        <div class="bot-strategy">Wheel Strategy | Aggressive</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                    <div style="color: var(--text-secondary);">Total Value</div>
+                    <div class="big-number">$100,000.00</div>
+                    <div style="color: var(--text-secondary);">+0.00% return</div>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <div class="metric-row">
+                        <span class="metric-label">Cash</span>
+                        <span class="metric-value">$100,000.00</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Shares Held</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Trades</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Win Rate</span>
+                        <span class="metric-value">--</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Premium Collected</span>
+                        <span class="metric-value">$0.00</span>
+                    </div>
+                    
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Realized P&L</span>
+                        <span class="metric-value">$0.00</span>
+                    </div>
+                </div>
+                
+                
+                <div style="background: var(--bg-secondary); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--accent-bitcoin);">Strategy Parameters</div>
+                    
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                        Put OTM: 10% | DTE: 21 | Profit Target: 50%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Race Pending -->
+        <div class="race-pending">
+            <div class="race-pending-icon">🏁</div>
+            <div class="race-pending-title">Race Hasn't Started Yet</div>
+            <div class="race-pending-text">
+                Both bots are ready and waiting at the starting line.
+                <br>The race begins tomorrow at 8:30 AM CST when the market opens.
+                <br>Check back to see which bot makes more money!
+            </div>        
+        </div>
+
+        <!-- Schedule -->
+        <div class="rules-box">
+            <div class="rules-title">📅 Race Schedule (CST)</div>
+            
+            
+            <div class="rules-grid">
+                <div class="rule-item"><span class="rule-check">🏃</span> 8:30 AM - Race begins</div>
+                <div class="rule-item"><span class="rule-check">📊</span> Every hour - Both bots trade</div>
+                <div class="rule-item"><span class="rule-check">📱</span> Real-time Telegram updates</div>
+                <div class="rule-item"><span class="rule-check">🏆</span> Winner declared daily</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🏁 BOT RACE: COST vs MSTR | Paper Trading Only | Starts Tomorrow 8:30 AM CST</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+            Both bots use wheel strategy with real market data | No real money at risk
+        </p>
+    </div>
+</body>
+</html>
