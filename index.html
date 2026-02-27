@@ -159,41 +159,78 @@
     </header>
 
     <div class="container">
-        <!-- FUND GROWTH SECTION -->
-        <div class="section-title">💰 $1M Fund Performance</div>
+        <!-- PORTFOLIO SUMMARY SECTION -->
+        <div class="section-title">💰 Portfolio Summary</div>
         <div class="fund-overview" style="background: var(--bg-card); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; border: 2px solid var(--border-color);">
             <div class="fund-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="text-align: center; padding: 1.5rem; background: rgba(99, 102, 241, 0.1); border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.3);">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">💼 Positions Invested</div>
+                    <div id="positions-value" style="font-size: 2rem; font-weight: 700; color: var(--accent-primary);">$1,500,000</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">60% of buying power</div>
+                </div>
                 <div style="text-align: center; padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
-                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Current Value</div>
-                    <div id="fund-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-success);">$1,000,000</div>
-                    <div id="fund-return" style="color: var(--accent-success); font-size: 1rem;">+0.00%</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">💵 Cash Available</div>
+                    <div id="cash-balance" style="font-size: 2rem; font-weight: 700; color: var(--accent-success);">$1,000,000</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">40% cash reserve</div>
                 </div>
                 <div style="text-align: center; padding: 1.5rem; background: rgba(245, 158, 11, 0.1); border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3);">
-                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Today's P&L</div>
-                    <div id="daily-pnl" style="font-size: 2rem; font-weight: 700; color: var(--accent-warning);">$0</div>
-                    <div id="daily-return" style="color: var(--text-secondary); font-size: 0.875rem;">0.00%</div>
-                </div>
-                <div style="text-align: center; padding: 1.5rem; background: rgba(99, 102, 241, 0.1); border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.3);">
-                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Active Bots</div>
-                    <div id="active-bots" style="font-size: 2rem; font-weight: 700; color: var(--accent-primary);">20/20</div>
-                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Trading</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">📊 Total Portfolio</div>
+                    <div id="total-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-warning);">$2,500,000</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Buying power</div>
                 </div>
                 <div style="text-align: center; padding: 1.5rem; background: rgba(14, 165, 233, 0.1); border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3);">
-                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Cash Deployed</div>
-                    <div id="cash-deployed" style="font-size: 2rem; font-weight: 700; color: #0ea5e9;">90%</div>
-                    <div style="color: var(--text-secondary); font-size: 0.875rem;">$900k working</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">📈 Effective Leverage</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #0ea5e9;">1.5x</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Portfolio margin</div>
                 </div>
             </div>
-            <div id="fund-chart-container" style="background: var(--bg-primary); border-radius: 12px; padding: 1rem; text-align: center;">
-                <img id="fund-growth-chart" src="fund_growth_chart.svg" alt="Fund Growth" style="max-width: 100%; height: auto; border-radius: 8px;" onerror="this.style.display='none'; document.getElementById('chart-placeholder').style.display='block';">
-                <div id="chart-placeholder" style="display: none; padding: 3rem; color: var(--text-secondary);">
-                    <div style="font-size: 1.5rem; margin-bottom: 1rem;">📈 Fund Growth Chart</div>
-                    <div>Trading begins... Data will appear after first trading day</div>
-                    <div style="margin-top: 1rem; color: var(--accent-success);">Starting Capital: $1,000,000</div>
+            
+            <!-- Portfolio Breakdown -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: var(--bg-primary); border-radius: 8px; padding: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 0.5rem;">TIER S+ (0DTE) - 66%</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>UVXY, MSTR, COIN, UPST</span>
+                        <span style="color: var(--accent-primary); font-weight: 600;">$660K</span>
+                    </div>
+                    <div style="background: var(--bg-secondary); height: 6px; border-radius: 3px; margin-top: 0.5rem;">
+                        <div style="background: var(--accent-primary); height: 100%; width: 66%; border-radius: 3px;"></div>
+                    </div>
+                </div>
+                <div style="background: var(--bg-primary); border-radius: 8px; padding: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 0.5rem;">TIER A (1DTE) - 45%</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>TSLA, NVDA, AMZN, PLTR, HOOD</span>
+                        <span style="color: var(--accent-success); font-weight: 600;">$450K</span>
+                    </div>
+                    <div style="background: var(--bg-secondary); height: 6px; border-radius: 3px; margin-top: 0.5rem;">
+                        <div style="background: var(--accent-success); height: 100%; width: 45%; border-radius: 3px;"></div>
+                    </div>
+                </div>
+                <div style="background: var(--bg-primary); border-radius: 8px; padding: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 0.5rem;">TIER B (2DTE) - 31.5%</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>SPY, QQQ, IWM, SOXL, TQQQ, META</span>
+                        <span style="color: var(--accent-warning); font-weight: 600;">$315K</span>
+                    </div>
+                    <div style="background: var(--bg-secondary); height: 6px; border-radius: 3px; margin-top: 0.5rem;">
+                        <div style="background: var(--accent-warning); height: 100%; width: 31.5%; border-radius: 3px;"></div>
+                    </div>
+                </div>
+                <div style="background: var(--bg-primary); border-radius: 8px; padding: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 0.5rem;">TIER C (2DTE) - 7.5%</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>NFLX, RIOT, SQ, SNAP</span>
+                        <span style="color: #0ea5e9; font-weight: 600;">$75K</span>
+                    </div>
+                    <div style="background: var(--bg-secondary); height: 6px; border-radius: 3px; margin-top: 0.5rem;">
+                        <div style="background: #0ea5e9; height: 100%; width: 7.5%; border-radius: 3px;"></div>
+                    </div>
                 </div>
             </div>
+            
             <div style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
-                🔄 Updates every 60 seconds | Dynamic rebalancing | Wash sale compliant
+                🔄 Updates every 60 seconds | 19 Active Positions | Portfolio Margin Enabled
             </div>
         </div>
 
