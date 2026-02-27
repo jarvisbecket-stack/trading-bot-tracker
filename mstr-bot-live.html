@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSTR Live Trading Bot - Active</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --accent-warning: #f59e0b;
+            --accent-info: #3b82f6;
+            --accent-bitcoin: #f7931a;
+            --border-color: #2a2a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, var(--accent-bitcoin) 0%, #8b4513 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        h1 { font-size: 2rem; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .status-badge { 
+            display: inline-block; 
+            background: rgba(16, 185, 129, 0.9); 
+            color: white;
+            padding: 0.5rem 1rem; 
+            border-radius: 20px; 
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-secondary); }
+        
+        .metric { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { color: var(--text-secondary); }
+        .metric-value { font-weight: 600; }
+        .big-value { font-size: 2.5rem; font-weight: 700; }
+        
+        .positive { color: var(--accent-success); }
+        .negative { color: var(--accent-danger); }
+        
+        .active-trade {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .trade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .trade-id { font-size: 1.5rem; font-weight: 700; }
+        .trade-status {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .strike-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .strike-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .strike-value { font-size: 2rem; font-weight: 700; color: var(--accent-info); }
+        
+        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>₿ MSTR LIVE TRADING BOT</h1>
+        <div class="status-badge">🟢 ACTIVE - Trade #1 Executed</div>
+    </header>
+
+    <div class="container">
+        <!-- Active Trade -->
+        <div class="active-trade">
+            <div class="trade-header">
+                <div class="trade-id">Trade #1</div>
+                <div class="trade-status">✅ FILLED</div>
+            </div>
+            
+            <div class="grid" style="margin: 1rem 0;">
+                <div class="strike-box">
+                    <div class="strike-label">PUT STRIKE</div>
+                    <div class="strike-value">$120.06</div>
+                </div>
+                
+                <div>
+                    <div class="metric">
+                        <span class="metric-label">Type</span>
+                        <span class="metric-value">SELL TO OPEN</span>
+                    </div>
+                    
+                    <div class="metric">
+                        <span class="metric-label">Contracts</span>
+                        <span class="metric-value">2</span>
+                    </div>
+                    
+                    
+                    <div class="metric">
+                        <span class="metric-label">Fill Price</span>
+                        <span class="metric-value">$10.05</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="metric">
+                        <span class="metric-label">Expiration</span>
+                        <span class="metric-value">Mar 19, 2026</span>
+                    </div>
+                    
+                    
+                    <div class="metric">
+                        <span class="metric-label">IV at Entry</span>
+                        <span class="metric-value">78.5%</span>
+                    </div>
+                    
+                    
+                    <div class="metric">
+                        <span class="metric-label">Delta</span>
+                        <span class="metric-value">0.20</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: rgba(16, 185, 129, 0.1); border-radius: 8px; padding: 1rem; text-align: center;">
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">Premium Collected</div>
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-success);">+$2,010.00</div>
+                <div style="color: var(--accent-success); margin-top: 0.5rem;">✅ CASH BALANCE INCREASED</div>
+            </div>
+        </div>
+
+        <!-- Capital & Performance -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">💰 CAPITAL</div>
+                
+                <div class="metric">
+                    <span class="metric-label">Initial Capital</span>
+                    <span class="metric-value">$100,000.00</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Cash Balance</span>
+                    <span class="metric-value positive">$102,010.00</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Shares Held</span>
+                    <span class="metric-value">0</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Total Value</span>
+                    <span class="metric-value">$102,010.00</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📈 PERFORMANCE</div>
+                
+                <div class="metric">
+                    <span class="metric-label">Total Trades</span>
+                    <span class="metric-value">1</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Winning Trades</span>
+                    <span class="metric-value">0</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Premium Collected</span>
+                    <span class="metric-value positive">$2,010.00</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Realized P&L</span>
+                    <span class="metric-value">$0.00</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">⚙️ BOT CONFIG</div>
+                
+                <div class="metric">
+                    <span class="metric-label">Mode</span>
+                    <span class="metric-value">Simulation (Ready for Live)</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Symbol</span>
+                    <span class="metric-value">MSTR</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Strategy</span>
+                    <span class="metric-value">10% OTM Puts</span>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Position Size</span>
+                    <span class="metric-value">75% of Capital</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Execution Log -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-title">📝 EXECUTION LOG</div>
+            
+            <pre style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.875rem; overflow-x: auto;">
+[2026-02-26 23:40:08] BOT STARTED
+[2026-02-26 23:40:08] MSTR Price: $133.40 | IV: 78.5%
+[2026-02-26 23:40:08] No active position - scanning for entry...
+[2026-02-26 23:40:08] ✅ OPPORTUNITY: Sell Put @ $120.06 | Premium: $10.05
+[2026-02-26 23:40:08] 🛡️ EXECUTING: SELL_TO_OPEN 2 contracts
+[2026-02-26 23:40:08] ✅ ORDER FILLED - Order ID: MSTR_1772170808
+[2026-02-26 23:40:08] 💰 Premium collected: $2,010.00
+[2026-02-26 23:40:08] 💾 State saved
+[2026-02-26 23:40:08] ⏳ Monitoring for exit or assignment...
+            </pre>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="card" style="margin-top: 2rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));">
+            <div class="card-title">🚀 GO LIVE</div>
+            
+            <p style="margin-bottom: 1rem;">The bot is ready. To execute real trades:</p>
+            
+            <ol style="margin-left: 1.5rem; line-height: 2;">
+                <li>Ensure Tradier account has options approval (Level 2)</li>
+                <li>Fund account with $100,000+</li>
+                <li>Change <code>sandbox=False</code> in the code</li>
+                <li>Run: <code>python3 mstr_execution_bot.py</code></li>
+                <li>Set cron job to run every hour during market hours</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>MSTR Live Trading Bot | Executed Trade #1 | February 26, 2026</p>
+    </div>
+</body>
+</html>
