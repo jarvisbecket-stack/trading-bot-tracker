@@ -236,6 +236,52 @@
             </a>
         </div>
 
+        <!-- LIVE LEADERBOARD -->
+        <div class="section-title">🏆 Live Race Leaderboard</div>
+        <div class="leaderboard-container" style="background: var(--bg-card); border-radius: 16px; padding: 2rem; border: 2px solid var(--border-color); margin: 2rem 0;">
+            <div class="leaderboard-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;" id="live-leaderboard">
+                <!-- Leaderboard cards will be populated by JavaScript -->
+                <div class="leader-card" style="background: linear-gradient(135deg, rgba(247, 147, 26, 0.1), rgba(139, 69, 19, 0.05)); border: 2px solid #f7931a; border-radius: 12px; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: 800;">🥇</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #f7931a; margin: 0.5rem 0;">₿ MSTR</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-success);">$108,283</div>
+                    <div style="color: var(--text-secondary);">+8.28%</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">4 trades</div>
+                </div>
+                <div class="leader-card" style="background: linear-gradient(135deg, rgba(227, 24, 55, 0.1), rgba(139, 0, 0, 0.05)); border: 2px solid #e31837; border-radius: 12px; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: 800;">🥈</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #e31837; margin: 0.5rem 0;">🏪 COST</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-success);">$107,171</div>
+                    <div style="color: var(--text-secondary);">+7.17%</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">4 trades</div>
+                </div>
+                <div class="leader-card" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(153, 27, 27, 0.05)); border: 2px solid #dc2626; border-radius: 12px; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: 800;">🥉</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #dc2626; margin: 0.5rem 0;">🏢 KO</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-success);">$101,825</div>
+                    <div style="color: var(--text-secondary);">+1.82%</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">3 trades</div>
+                </div>
+            </div>
+            <div class="combined-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                <div style="text-align: center;">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Combined Portfolio</div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-success);">$317,279</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Total Return</div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-success);">+5.76%</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Total Trades</div>
+                    <div style="font-size: 1.75rem; font-weight: 700;">11</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+                🔄 Auto-updates every 60 seconds | Last: Feb 27, 2026 11:07 AM CST
+            </div>
+        </div>
+
         <!-- Reports -->
         <div class="section-title">📈 Reports</div>
         <div class="dashboard-grid">
@@ -308,6 +354,20 @@
                     </div>
                 </div>
                 <div class="card-desc">Detailed wheel strategy backtest results. 9.59% annual ROI on SPY/QQQ.</div>
+            </a>
+
+            <a href="wheel-scout.html" class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">🔍</div>
+                    <div>
+                        <div class="card-title">Wheel Scout</div>
+                        <div class="card-meta">
+                            <span><span class="status-dot status-live"></span>🟢 LIVE</span>
+                            <span>Auto-Scanning</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-desc">Scans 38 stocks for optimal wheel candidates. Updates every 5 min during market hours.</div>
             </a>
         </div>
 
