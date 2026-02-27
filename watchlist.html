@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
+    <title>📋 Watchlist | 19-Stock Targets</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-elevated: #252535;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-primary: #6366f1;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-color: #2a2a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+        .subtitle { opacity: 0.9; font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+        .back-link:hover { text-decoration: underline; }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tier-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+        }
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .tier-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .tier-allocation {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .tier-amount {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .stock-table th {
+            text-align: left;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stock-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stock-table tr:hover {
+            background: var(--bg-elevated);
+        }
+        .stock-symbol {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .stock-price {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+        .dte-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .dte-0 { background: rgba(239, 68, 68, 0.2); color: var(--accent-danger); }
+        .dte-1 { background: rgba(245, 158, 11, 0.2); color: var(--accent-warning); }
+        .dte-2 { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); }
+
+        .status-watching { color: var(--text-secondary); }
+        .status-ready { color: var(--accent-success); }
+        .status-trading { color: var(--accent-primary); }
+
+        .legend {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📋 Trading Watchlist</h1>
+        <div class="subtitle">19-Stock Targets | Scout Active During Market Hours</div>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Command Center</a>
+
+        <!-- TIER S+ -->
+        <div class="section-title">Tier S+ — 0DTE Focus (44% / $440K)</div>
+        
+        <div class="tier-grid">
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name" style="color: var(--accent-danger);">UVXY</div>
+                    <div class="tier-allocation">$110K</div>
+                </div>
+                <div class="tier-amount">Volatility ETF | IV: ~99% | 0DTE Scalps</div>
+                <table class="stock-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr><td>Target Allocation</td><td>$110,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-0">0DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$20K-30K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name" style="color: var(--accent-warning);">MSTR</div>
+                    <div class="tier-allocation">$110K</div>
+                </div>
+                <div class="tier-amount">MicroStrategy | BTC Proxy | IV: ~95%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$110,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-0">0DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$20K-30K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name" style="color: var(--accent-primary);">COIN</div>
+                    <div class="tier-allocation">$110K</div>
+                </div>
+                <div class="tier-amount">Coinbase | Crypto Exchange | IV: ~95%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$110,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-0">0DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$20K-30K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name" style="color: var(--accent-success);">UPST</div>
+                    <div class="tier-allocation">$110K</div>
+                </div>
+                <div class="tier-amount">Upstart | AI Lending | IV: ~95%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$110,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-0">0DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$20K-30K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TIER A -->
+        <div class="section-title">Tier A — 1DTE Focus (30% / $300K)</div>
+        
+        <div class="tier-grid">
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">TSLA</div>
+                    <div class="tier-allocation">$60K</div>
+                </div>
+                <div class="tier-amount">Tesla | Meme/Momentum | IV: ~90%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$60,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-1">1DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$15K-20K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">NVDA</div>
+                    <div class="tier-allocation">$60K</div>
+                </div>
+                <div class="tier-amount">NVIDIA | AI Chips | IV: ~80%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$60,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-1">1DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$15K-20K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">AMZN</div>
+                    <div class="tier-allocation">$60K</div>
+                </div>
+                <div class="tier-amount">Amazon | E-commerce/Cloud | IV: ~65%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$60,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-1">1DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$15K-20K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">PLTR</div>
+                    <div class="tier-allocation">$60K</div>
+                </div>
+                <div class="tier-amount">Palantir | Government AI | IV: ~85%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$60,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-1">1DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$15K-20K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">HOOD</div>
+                    <div class="tier-allocation">$60K</div>
+                </div>
+                <div class="tier-amount">Robinhood | Fintech/Retail | IV: ~90%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$60,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-1">1DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$15K-20K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TIER B -->
+        <div class="section-title">Tier B — 2DTE Focus (21% / $210K)</div>
+        
+        <div class="tier-grid">
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">SPY</div>
+                    <div class="tier-allocation">$35K</div>
+                </div>
+                <div class="tier-amount">S&P 500 ETF | Market Proxy | IV: ~50%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$35,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$10K-15K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">QQQ</div>
+                    <div class="tier-allocation">$35K</div>
+                </div>
+                <div class="tier-amount">Nasdaq 100 ETF | Tech Proxy | IV: ~55%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$35,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$10K-15K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">IWM</div>
+                    <div class="tier-allocation">$35K</div>
+                </div>
+                <div class="tier-amount">Russell 2000 ETF | Small Caps | IV: ~70%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$35,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$10K-15K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">SOXL</div>
+                    <div class="tier-allocation">$35K</div>
+                </div>
+                <div class="tier-amount">3x Semis ETF | Leveraged | IV: ~95%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$35,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$10K-15K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">TQQQ</div>
+                    <div class="tier-allocation">$35K</div>
+                </div>
+                <div class="tier-amount">3x Nasdaq ETF | Leveraged | IV: ~90%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$35,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$10K-15K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">META</div>
+                    <div class="tier-allocation">$35K</div>
+                </div>
+                <div class="tier-amount">Meta | Social/AI | IV: ~75%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$35,000</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$10K-15K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TIER C -->
+        <div class="section-title">Tier C — 2DTE Speculative (5% / $50K)</div>
+        
+        <div class="tier-grid">
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">NFLX</div>
+                    <div class="tier-allocation">$12.5K</div>
+                </div>
+                <div class="tier-amount">Netflix | Streaming | IV: ~75%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$12,500</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$5K-8K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">RIOT</div>
+                    <div class="tier-allocation">$12.5K</div>
+                </div>
+                <div class="tier-amount">Riot Blockchain | BTC Mining | IV: ~90%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$12,500</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$5K-8K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">SQ</div>
+                    <div class="tier-allocation">$12.5K</div>
+                </div>
+                <div class="tier-amount">Block | Fintech | IV: ~85%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$12,500</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$5K-8K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">SNAP</div>
+                    <div class="tier-allocation">$12.5K</div>
+                </div>
+                <div class="tier-amount">Snapchat | Social | IV: ~85%</div>
+                <table class="stock-table">
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Target Allocation</td><td>$12,500</td></tr>
+                    <tr><td>DTE Strategy</td><td><span class="dte-badge dte-2">2DTE</span></td></tr>
+                    <tr><td>Position Size</td><td>$5K-8K per trade</td></tr>
+                    <tr><td>Status</td><td class="status-watching">👁 Watching</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><span class="dte-badge dte-0">0DTE</span> Same-day expiry (aggressive)</div>
+            <div class="legend-item"><span class="dte-badge dte-1">1DTE</span> Next-day expiry (active)</div>
+            <div class="legend-item"><span class="dte-badge dte-2">2DTE</span> Two-day expiry (standard)</div>
+            <div class="legend-item">👁 Watching = Awaiting setup</div>
+            <div class="legend-item">🎯 Ready = Setup forming</div>
+            <div class="legend-item">⚡ Trading = Position open</div>
+        </div>
+    </div>
+</body>
+</html>
