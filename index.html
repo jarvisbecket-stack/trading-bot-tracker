@@ -664,106 +664,11 @@
                 <div class="section-title">Open Positions</div>
                 
                 <div id="positions-container">
-                    <!-- Position Card Example (shown when positions exist) -->
-                    <div class="position-card">
-                        <div class="position-card-header">
-                            <div class="position-info">
-                                <div class="position-title">UVXY $25 Put</div>
-                                <div class="position-otm-badge">$3.20 OTM</div>
-                                <div class="position-meta">0DTE • 5 contracts • Sold @ $0.85</div>
-                                <div class="position-current">Current: $0.42</div>
-                            </div>
-                            <div class="position-pnl">
-                                <div class="position-pnl-value">+$2,150</div>
-                                <div class="position-pnl-sub">@ $0.43/contract</div>
-                                <div style="color: var(--accent-success); font-size: 0.9rem;">↗ +$215 today</div>
-                            </div>
-                        </div>
-                        
-                        <div class="position-action-box">
-                            <div class="position-action-title">💰 Buy-to-Close Profit</div>
-                            <div class="position-action-grid">
-                                <div class="position-action-item">
-                                    <div class="position-action-label">Buy-to-Close</div>
-                                    <div class="position-action-value">$2,100</div>
-                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">@ $0.42/sh</div>
-                                </div>
-                                <div class="position-action-item">
-                                    <div class="position-action-label">Net Profit</div>
-                                    <div class="position-action-value profit">+$2,150</div>
-                                </div>
-                                <div class="position-action-item">
-                                    <div class="position-action-label">Profit %</div>
-                                    <div class="position-action-value profit">51%</div>
-                                </div>
-                            </div>
-                            <div class="position-progress">
-                                <div class="position-progress-bar">
-                                    <div class="position-progress-fill" style="width: 51%;"></div>
-                                </div>
-                                <div class="position-progress-markers">
-                                    <span>0%</span>
-                                    <span style="color: var(--accent-success);">50% threshold</span>
-                                    <span>Ask: $0.42</span>
-                                    <span>100%</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="position-status-box" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
-                            <div class="position-status-icon">✅</div>
-                            <div class="position-status-text">
-                                <div class="position-status-title" style="color: var(--accent-success);">CLOSE NOW</div>
-                                <div class="position-status-desc">Profit target reached: 51% • 0DTE expires today</div>
-                            </div>
-                            <div class="position-status-badge" style="background: rgba(16, 185, 129, 0.3); color: var(--accent-success);">PROFIT</div>
-                        </div>
-                        
-                        <div class="position-greeks">
-                            <div class="position-greek">
-                                <div class="position-greek-label">OTM %</div>
-                                <div class="position-greek-value positive">12.8%</div>
-                            </div>
-                            <div class="position-greek">
-                                <div class="position-greek-label">Theta</div>
-                                <div class="position-greek-value warning">-45%</div>
-                            </div>
-                            <div class="position-greek">
-                                <div class="position-greek-label">Risk</div>
-                                <div class="position-greek-value positive">Low</div>
-                            </div>
-                            <div class="position-greek">
-                                <div class="position-greek-label">Delta</div>
-                                <div class="position-greek-value">18%</div>
-                            </div>
-                        </div>
-                        
-                        <div class="position-footer">
-                            <div class="position-footer-item">
-                                <div class="position-footer-label">Bid/Ask</div>
-                                <div class="position-footer-value">$0.40 / $0.42</div>
-                            </div>
-                            <div class="position-footer-item">
-                                <div class="position-footer-label">Volume</div>
-                                <div class="position-footer-value">2,847</div>
-                            </div>
-                            <div class="position-footer-item">
-                                <div class="position-footer-label">Open Int</div>
-                                <div class="position-footer-value" style="color: var(--accent-primary);">12,543</div>
-                            </div>
-                        </div>
-                        
-                        <div class="position-actions">
-                            <button class="position-btn btn-close">CLOSE POSITION</button>
-                            <button class="position-btn btn-hold">HOLD</button>
-                        </div>
-                    </div>
-
-                    <!-- Empty State (shown when no positions) -->
-                    <div id="empty-positions" style="text-align: center; padding: 3rem; color: var(--text-secondary); background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+                    <!-- Empty State - No positions currently open -->
+                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary); background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
                         <div style="font-size: 2rem; margin-bottom: 1rem;">📭</div>
                         <div>No open positions — Fund fully in cash</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.5rem;">Positions will appear here when bots execute</div>
+                        <div style="font-size: 0.85rem; margin-top: 0.5rem;">Positions will appear here when bots execute during market hours</div>
                     </div>
                 </div>
             </div>
