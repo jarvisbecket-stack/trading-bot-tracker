@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Trading Reports | $1M Fund Dashboard</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-elevated: #252535;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-primary: #6366f1;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-color: #2a2a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            text-align: center;
+        }
+        h1 { font-size: 2rem; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 2rem; }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        /* P&L Tracking Tables */
+        .pnl-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .pnl-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .pnl-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .pnl-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .pnl-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .pnl-table th {
+            text-align: left;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .pnl-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .pnl-table tr:hover {
+            background: var(--bg-elevated);
+        }
+        .pnl-total {
+            font-weight: 700;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* ROI Progress Tracker */
+        .roi-tracker {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        .roi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .roi-target-bar {
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .roi-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-success) 0%, #34d399 100%);
+            border-radius: 16px;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #0a0a0f;
+        }
+        .roi-markers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Stop Loss Confirmation */
+        .stop-loss-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        .stop-loss-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stop-loss-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        .stop-loss-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .stop-loss-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
+        }
+        .confirm-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent-danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .confirm-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Calendar Integration */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        .calendar-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .event-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .event-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 60px;
+        }
+        .event-symbol {
+            font-weight: 700;
+            min-width: 50px;
+        }
+        .event-name {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+        .impact-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .impact-high { background: rgba(239, 68, 68, 0.2); color: var(--accent-danger); }
+        .impact-medium { background: rgba(245, 158, 11, 0.2); color: var(--accent-warning); }
+        .impact-low { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); }
+
+        /* Wash Sale Tracker */
+        .wash-sale-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        .wash-sale-alert {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .wash-sale-icon {
+            font-size: 1.5rem;
+        }
+        .countdown {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--accent-warning);
+        }
+
+        /* Commission Tracker */
+        .commission-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .commission-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .commission-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .commission-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Backtest Chart Placeholder */
+        .backtest-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chart-placeholder {
+            flex: 1;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .backtest-stats {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .backtest-stat {
+            text-align: center;
+        }
+        .backtest-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .backtest-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Tradier Simulation */
+        .order-preview {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .order-row:last-child {
+            border-bottom: none;
+        }
+        .order-label {
+            color: var(--text-secondary);
+        }
+        .order-value {
+            font-weight: 600;
+        }
+        .order-impact {
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Utility classes */
+        .positive { color: var(--accent-success); }
+        .negative { color: var(--accent-danger); }
+        .warning { color: var(--accent-warning); }
+        .text-right { text-align: right; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📊 Enhanced Trading Reports</h1>
+        <div style="opacity: 0.9;">$1M Fund | Comprehensive Analytics Dashboard</div>
+    </header>
+
+    <div class="container">
+        
+        <!-- SECTION 1: ROI TARGET TRACKER -->
+        <div class="section-title">🎯 100% ROI Target Progress</div>
+        
+        <div class="roi-tracker">
+            <div class="roi-header">
+                <div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Annual Target</div>
+                    <div style="font-size: 1.5rem; font-weight: 700;">$1,000,000 <span style="font-size: 0.875rem; color: var(--text-secondary);">(+100%)</span></div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Current Progress</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-success);">$0 <span style="font-size: 0.875rem;">(0.00%)</span></div>
+                </div>
+            </div>
+            
+            <div class="roi-target-bar">
+                <div class="roi-progress" style="width: 0%;">0%</div>
+            </div>
+            
+            <div class="roi-markers">
+                <span>Jan: $83K</span>
+                <span>Feb: $167K</span>
+                <span>Mar: $250K</span>
+                <span>Jun: $500K</span>
+                <span>Sep: $750K</span>
+                <span style="color: var(--accent-success);">Dec: $1M</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Monthly Target</div>
+                    <div style="font-size: 1.25rem; font-weight: 700;">$83,333</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">This Month</div>
+                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-secondary);">$0</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">% to Target</div>
+                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-secondary);">0%</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Projected ROI</div>
+                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-secondary);">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: P&L TRACKING TABLES -->
+        <div class="section-title">💰 P&L Tracking</div>
+        
+        <div class="pnl-grid">
+            <!-- Daily Breakdown -->
+            <div class="pnl-card">
+                <div class="pnl-card-header">
+                    <div class="pnl-card-title">📅 Daily Breakdown</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Last 7 Days</div>
+                </div>
+                <table class="pnl-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th class="text-right">Realized</th>
+                            <th class="text-right">Commissions</th>
+                            <th class="text-right">Net</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>--</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                        </tr>
+                        <tr class="pnl-total">
+                            <td>Week Total</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Monthly Summary -->
+            <div class="pnl-card">
+                <div class="pnl-card-header">
+                    <div class="pnl-card-title">📊 Monthly Summary</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Year to Date</div>
+                </div>
+                <table class="pnl-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th class="text-right">Gross</th>
+                            <th class="text-right">Comm</th>
+                            <th class="text-right">Net</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Feb 2026</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                        </tr>
+                        <tr class="pnl-total">
+                            <td>YTD Total</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                            <td class="text-right">$0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 3: STOP-LOSS CONFIRMATION FLOW -->
+        <div class="section-title">🛡️ Stop-Loss Confirmation</div>
+        
+        <div class="stop-loss-card">
+            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">⚠️ STOP-LOSS TRIGGERED — Confirmation Required</div>
+            
+            <div class="stop-loss-grid">
+                <div class="stop-loss-item">
+                    <div class="stop-loss-label">Symbol</div>
+                    <div class="stop-loss-value">--</div>
+                </div>
+                <div class="stop-loss-item">
+                    <div class="stop-loss-label">Entry Price</div>
+                    <div class="stop-loss-value">$0.00</div>
+                </div>
+                <div class="stop-loss-item">
+                    <div class="stop-loss-label">Stop Price</div>
+                    <div class="stop-loss-value negative">$0.00</div>
+                </div>
+                <div class="stop-loss-item">
+                    <div class="stop-loss-label">Position Size</div>
+                    <div class="stop-loss-value">0 contracts</div>
+                </div>
+            </div>
+            
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Risk Amount</div>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-danger);">$0</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Risk % of Portfolio</div>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-danger);">0.00%</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Daily Limit Impact</div>
+                        <div style="font-size: 1.25rem; font-weight: 700;">0%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="confirm-btn">CONFIRM STOP-LOSS EXECUTION</button>
+        </div>
+
+        <!-- SECTION 4: COMMISSION TRACKING -->
+        <div class="section-title">💸 Commission Tracking ($0.35/contract)</div>
+        
+        <div class="commission-summary">
+            <div class="commission-card">
+                <div class="commission-value">$0</div>
+                <div class="commission-label">Today's Commissions</div>
+            </div>
+            
+            <div class="commission-card">
+                <div class="commission-value">$0</div>
+                <div class="commission-label">Week to Date</div>
+            </div>
+            
+            <div class="commission-card">
+                <div class="commission-value">$0</div>
+                <div class="commission-label">Month to Date</div>
+            </div>
+            
+            <div class="commission-card">
+                <div class="commission-value">$0</div>
+                <div class="commission-label">YTD Commissions</div>
+            </div>
+            
+            <div class="commission-card">
+                <div class="commission-value">0</div>
+                <div class="commission-label">Contracts Traded</div>
+            </div>
+            
+            <div class="commission-card">
+                <div class="commission-value">0.00%</div>
+                <div class="commission-label">Commission Drag</div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: ECONOMIC/EARNINGS CALENDAR -->
+        <div class="section-title">📅 Economic & Earnings Calendar</div>
+        
+        <div class="calendar-grid">
+            <!-- Economic Events -->
+            <div class="calendar-card">
+                <div style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">🏛️ Economic Events</div>
+                
+                <div class="event-row">
+                    <div class="event-time">8:30 AM</div>
+                    <div class="event-name">Non-Farm Payrolls</div>
+                    <span class="impact-badge impact-high">High</span>
+                </div>
+                
+                <div class="event-row">
+                    <div class="event-time">10:00 AM</div>
+                    <div class="event-name">ISM Manufacturing</div>
+                    <span class="impact-badge impact-medium">Medium</span>
+                </div>
+                
+                <div class="event-row">
+                    <div class="event-time">2:00 PM</div>
+                    <div class="event-name">Fed Minutes</div>
+                    <span class="impact-badge impact-high">High</span>
+                </div>
+                
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary);">
+                    🚫 No trades 15 min before/after high-impact events
+                </div>
+            </div>
+
+            <!-- Earnings Calendar -->
+            <div class="calendar-card">
+                <div style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">📈 Earnings (Our Watchlist)</div>
+                
+                <div class="event-row">
+                    <div class="event-symbol">NVDA</div>
+                    <div class="event-time">After Close</div>
+                    <div class="event-name">Q4 Earnings</div>
+                    <span class="impact-badge impact-high">High</span>
+                </div>
+                
+                <div class="event-row">
+                    <div class="event-symbol">TSLA</div>
+                    <div class="event-time">Before Open</div>
+                    <div class="event-name">Delivery Numbers</div>
+                    <span class="impact-badge impact-medium">Medium</span>
+                </div>
+                
+                <div class="event-row">
+                    <div class="event-symbol">COIN</div>
+                    <div class="event-time">After Close</div>
+                    <div class="event-name">Q4 Earnings</div>
+                    <span class="impact-badge impact-medium">Medium</span>
+                </div>
+                
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary);">
+                    ⏸️ No overnight holds through earnings
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: WASH SALE TRACKER -->
+        <div class="section-title">⚠️ IRS Wash Sale Rule Compliance</div>
+        
+        <div class="wash-sale-card">
+            <div style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Active 30-Day Windows</div>
+            
+            <!-- Example Wash Sale Alert -->
+            <div class="wash-sale-alert">
+                <div class="wash-sale-icon">⚠️</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600;">TSLA — Loss Disallowed</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Realized loss of $5,240 on Feb 15. Cannot re-enter until Mar 17.
+                    </div>
+                </div>
+                <div class="countdown">28 days left</div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
+                <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Adjusted Cost Basis</div>
+                    <div style="font-size: 1.25rem; font-weight: 700;">$0</div>
+                </div>
+                
+                <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Deferred Losses</div>
+                    <div style="font-size: 1.25rem; font-weight: 700;">$0</div>
+                </div>
+                
+                <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Compliant Alternatives</div>
+                    <div style="font-size: 1rem; font-weight: 600; color: var(--accent-success);">None Active</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: 24-MONTH BACKTEST -->
+        <div class="section-title">📈 24-Month Backtest Performance</div>
+        
+        <div class="backtest-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="font-size: 1rem; font-weight: 600;">Cumulative P&L Curve</div>
+                <div style="font-size: 0.875rem; color: var(--text-secondary);">Feb 2024 — Feb 2026</div>
+            </div>
+            
+            <div class="chart-placeholder">
+                [Backtest Chart Placeholder — Populate with historical data]
+            </div>
+            
+            <div class="backtest-stats">
+                <div class="backtest-stat">
+                    <div class="backtest-value positive">+0%</div>
+                    <div class="backtest-label">Total Return</div>
+                </div>
+                
+                <div class="backtest-stat">
+                    <div class="backtest-value">0.00</div>
+                    <div class="backtest-label">Sharpe Ratio</div>
+                </div>
+                
+                <div class="backtest-stat">
+                    <div class="backtest-value">0%</div>
+                    <div class="backtest-label">Max Drawdown</div>
+                </div>
+                
+                <div class="backtest-stat">
+                    <div class="backtest-value">0%</div>
+                    <div class="backtest-label">Win Rate</div>
+                </div>
+                
+                <div class="backtest-stat">
+                    <div class="backtest-value">0</div>
+                    <div class="backtest-label">Total Trades</div>
+                </div>
+                
+                <div class="backtest-stat">
+                    <div class="backtest-value">0.0x</div>
+                    <div class="backtest-label">Profit Factor</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: TRADIER PLATFORM SIMULATION -->
+        <div class="section-title">🔷 Tradier Platform Simulation</div>
+        
+        <div class="order-preview">
+            <div style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Order Preview</div>
+            
+            <div class="order-row">
+                <span class="order-label">Order Type</span>
+                <span class="order-value">Buy to Open</span>
+            </div>
+            
+            <div class="order-row">
+                <span class="order-label">Symbol</span>
+                <span class="order-value">--</span>
+            </div>
+            
+            <div class="order-row">
+                <span class="order-label">Option</span>
+                <span class="order-value">--</span>
+            </div>
+            
+            <div class="order-row">
+                <span class="order-label">Quantity</span>
+                <span class="order-value">0 contracts</span>
+            </div>
+            
+            <div class="order-row">
+                <span class="order-label">Limit Price</span>
+                <span class="order-value">$0.00</span>
+            </div>
+            
+            <div class="order-row">
+                <span class="order-label">Commission</span>
+                <span class="order-value">$0.00</span>
+            </div>
+            
+            <div class="order-row">
+                <span class="order-label">Total Cost</span>
+                <span class="order-value">$0.00</span>
+            </div>
+            
+            <div class="order-impact">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Buying Power Impact</div>
+                        <div style="font-size: 1.25rem; font-weight: 700;">$0</div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Margin Required</div>
+                        <div style="font-size: 1.25rem; font-weight: 700;">$0</div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Settlement Date</div>
+                        <div style="font-size: 1.25rem; font-weight: 700;">T+1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
