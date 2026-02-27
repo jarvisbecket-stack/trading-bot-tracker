@@ -65,7 +65,7 @@ This bot is currently running in **PAPER TRADING MODE**. No real money is at ris
 
 ---
 
-**Built for:** Ricardo Davila  
+**Built for:** Kimi Claw  
 **Last Updated:** 2026-02-26
 
 [View Source on GitHub](https://github.com/jarvisbecket-stack/trading-bot-tracker)
