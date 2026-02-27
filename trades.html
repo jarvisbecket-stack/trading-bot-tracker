@@ -135,6 +135,13 @@
         .bot-header.mstr { color: var(--accent-bitcoin); border-color: var(--accent-bitcoin); }
         .bot-header.ko { color: var(--accent-ko); border-color: var(--accent-ko); }
         
+        .update-time {
+            text-align: center;
+            color: var(--text-secondary);
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
     </style>
 </head>
@@ -145,11 +152,13 @@
     </header>
 
     <div class="container">
+        <div class="update-time">🔄 Last Updated: Feb 27, 2026 11:07 AM CST | Auto-refresh: 60s</div>
+
         <!-- Alert Box -->
         <div class="alert-box">
-            <div class="alert-title">🟢 RACE IS LIVE - TRADES ACTIVE</div>
+            <div class="alert-title">🟢 RACE IS LIVE - MULTIPLE TRADES EXECUTED</div>
             <div style="color: var(--text-secondary); margin-top: 0.5rem;">
-                All 3 bots executed opening trades today at 10:47 AM CST.
+                All 3 bots have executed multiple trades today. Latest: 11:07 AM CST.
             </div>
         </div>
 
@@ -163,26 +172,29 @@
         <!-- Race Summary -->
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-value">3</div>
+                <div class="summary-value">10</div>
                 <div class="summary-label">Total Trades Today</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value" style="color: var(--accent-success);">$4,467</div>
+                <div class="summary-value" style="color: var(--accent-success);">$4,492</div>
                 <div class="summary-label">Premium Collected</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value" style="color: var(--accent-success);">+$4,466</div>
-                <div class="summary-label">Net P&L (Open)</div>
+                <div class="summary-value" style="color: var(--accent-success);">+$16,670</div>
+                <div class="summary-label">Combined P&L</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value">$300K</div>
-                <div class="summary-label">Total Capital</div>
+                <div class="summary-value">$316.7K</div>
+                <div class="summary-label">Total Portfolio Value</div>
             </div>
         </div>
 
-        <!-- All Trades Table -->
+        <!-- Current Active Positions -->
         <div class="bot-section">
-            <div class="bot-header cost">🏪 COSTCO (COST) Trades</div>
+            <div class="bot-header cost">🏪 COSTCO (COST) - Current Active Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 4 trades today | <strong>Cash:</strong> $107,170.60 | <strong>Return:</strong> +7.17%
+            </div>
             <table class="trades-table">
                 <thead>
                     <tr>
@@ -198,21 +210,28 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2026-02-27 10:47:47</td>
+                        <td>2026-02-27 11:07:45</td>
                         <td>SELL PUT</td>
-                        <td>COST260329P00950950</td>
-                        <td>$950.95</td>
+                        <td>COST260329P00952190</td>
+                        <td>$952.19</td>
                         <td>Mar 29 (30 DTE)</td>
                         <td>1</td>
-                        <td style="color: var(--accent-success);">+$1,801.65</td>
+                        <td style="color: var(--accent-success);">+$1,803.65</td>
                         <td><span class="status-open">OPEN</span></td>
                     </tr>
                 </tbody>
             </table>
+            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
+                Note: Previous 3 trades were rolled into new positions. Current active: Trade #4.
+            </div>
         </div>
 
         <div class="bot-section">
-            <div class="bot-header mstr">₿ MICROSTRATEGY (MSTR) Trades</div>
+            <div class="bot-header mstr">₿ MICROSTRATEGY (MSTR) - Current Active Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 4 trades today | <strong>Cash:</strong> $108,283.20 | <strong>Return:</strong> +8.28%
+            </div>
+            
             <table class="trades-table">
                 <thead>
                     <tr>
@@ -228,21 +247,28 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2026-02-27 10:47:51</td>
+                        <td>2026-02-27 11:07:45</td>
                         <td>SELL PUT</td>
-                        <td>MSTR260320P00115810</td>
-                        <td>$115.81</td>
+                        <td>MSTR260320P00116840</td>
+                        <td>$116.84</td>
                         <td>Mar 20 (21 DTE)</td>
                         <td>2</td>
-                        <td style="color: var(--accent-success);">+$2,057.30</td>
+                        <td style="color: var(--accent-success);">+$2,077.30</td>
                         <td><span class="status-open">OPEN</span></td>
                     </tr>
                 </tbody>
             </table>
+            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
+                Note: Previous 3 trades were rolled into new positions. Current active: Trade #4.
+            </div>
         </div>
 
         <div class="bot-section">
-            <div class="bot-header ko">🏢 COCA-COLA (KO) Trades</div>
+            <div class="bot-header ko">🏢 COCA-COLA (KO) - Current Active Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 2 trades today | <strong>Cash:</strong> $101,216.50 | <strong>Return:</strong> +1.22%
+            </div>
+            
             <table class="trades-table">
                 <thead>
                     <tr>
@@ -258,10 +284,10 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2026-02-27 10:47:56</td>
+                        <td>2026-02-27 11:07:46</td>
                         <td>SELL PUT</td>
-                        <td>KO260329P00079140</td>
-                        <td>$79.14</td>
+                        <td>KO260329P00079030</td>
+                        <td>$79.03</td>
                         <td>Mar 29 (30 DTE)</td>
                         <td>5</td>
                         <td style="color: var(--accent-success);">+$608.25</td>
@@ -269,11 +295,19 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
+                Note: Previous 1 trade was rolled into new position. Current active: Trade #2.
+            </div>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 1rem; margin: 2rem 0;">
+            <strong>⚠️ Note on Trade History:</strong> The bots only display the current active position in this log. When a position is closed and a new one opened, the trade counter increments but only the active position is shown here. Check individual bot pages for detailed P&L tracking.
         </div>
     </div>
 
     <div class="footer">
-        <p>Paper Trading Trade Log | 3-Way Bot Race | Last Updated: Feb 27, 2026 10:47 AM CST</p>
+        <p>Paper Trading Trade Log | 3-Way Bot Race | Last Updated: Feb 27, 2026 11:07 AM CST</p>
         <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a> | 
         <a href="index.html" style="color: var(--accent-info);">← Command Center</a></p>
     </div>

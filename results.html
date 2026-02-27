@@ -39,6 +39,13 @@
         .subtitle { opacity: 0.9; margin-top: 0.5rem; }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
         
+        .update-time {
+            text-align: center;
+            color: var(--text-secondary);
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        
         .race-status {
             background: rgba(16, 185, 129, 0.1);
             border: 2px solid rgba(16, 185, 129, 0.5);
@@ -72,6 +79,7 @@
         .bot-name { font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0; }
         .bot-pnl { font-size: 2rem; font-weight: 700; }
         .bot-premium { color: var(--text-secondary); margin-top: 0.5rem; }
+        .bot-trades { color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem; }
         
         .current-stats {
             background: var(--bg-card);
@@ -117,12 +125,15 @@
     </header>
 
     <div class="container">
+        <div class="update-time">🔄 Last Updated: Feb 27, 2026 11:07 AM CST | Auto-refresh: 60s</div>
+        
         <!-- Race Status -->
         <div class="race-status">
-            <div class="race-status-title">🟢 RACE IS LIVE - DAY 1</div>
+            <div class="race-status-title">🟢 RACE IS LIVE - DAY 1 (MULTIPLE TRADES)</div>
             <div style="color: var(--text-secondary);">
                 Race started at 8:30 AM CST on Friday Feb 27, 2026.
-                <br>First trades executed at 10:47 AM CST.
+                <br>Latest trades executed at 11:07 AM CST.
+                <br>COST: 4 trades | MSTR: 4 trades | KO: 2 trades
             </div>
         </div>
 
@@ -131,36 +142,40 @@
             <div class="bot-card mstr">
                 <div class="bot-rank">🥇</div>
                 <div class="bot-name" style="color: var(--accent-bitcoin);">₿ MSTR</div>
-                <div class="bot-pnl" style="color: var(--accent-success);">+$6,205.90</div>
-                <div class="bot-premium">(+6.21%)</div>
-                <div style="margin-top: 1rem; color: var(--text-secondary);">Premium: $2,057.30</div>
+                <div class="bot-pnl" style="color: var(--accent-success);">$108,283.20</div>
+                <div class="bot-premium">(+8.28%)</div>
+                <div class="bot-trades">4 trades executed</div>
             </div>
             
             <div class="bot-card cost">
                 <div class="bot-rank">🥈</div>
                 <div class="bot-name" style="color: var(--accent-costco);">🏪 COST</div>
-                <div class="bot-pnl" style="color: var(--accent-success);">+$5,366.95</div>
-                <div class="bot-premium">(+5.37%)</div>
-                <div style="margin-top: 1rem; color: var(--text-secondary);">Premium: $1,801.65</div>
+                <div class="bot-pnl" style="color: var(--accent-success);">$107,170.60</div>
+                <div class="bot-premium">(+7.17%)</div>
+                <div class="bot-trades">4 trades executed</div>
             </div>
             
             <div class="bot-card ko">
                 <div class="bot-rank">🥉</div>
                 <div class="bot-name" style="color: var(--accent-ko);">🏢 KO</div>
-                <div class="bot-pnl" style="color: var(--accent-success);">+$608.25</div>
-                <div class="bot-premium">(+0.61%)</div>
-                <div style="margin-top: 1rem; color: var(--text-secondary);">Premium: $608.25</div>
+                <div class="bot-pnl" style="color: var(--accent-success);">$101,216.50</div>
+                <div class="bot-premium">(+1.22%)</div>
+                <div class="bot-trades">2 trades executed</div>
             </div>
         </div>
 
         <!-- Current Stats -->
         <div class="current-stats">
-            <div class="stats-title">📈 Live Race Statistics (Feb 27, 2026)</div>
+            <div class="stats-title">📈 Live Race Statistics (Feb 27, 2026 - 11:07 AM)</div>
             
             <div class="stats-grid">
                 <div class="stat-card">
+                    <div class="stat-label">Total Trades Today</div>
+                    <div class="stat-value">10</div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-label">Total Premium Collected</div>
-                    <div class="stat-value" style="color: var(--accent-success);">$4,467.20</div>
+                    <div class="stat-value" style="color: var(--accent-success);">$4,492</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Total Commissions Paid</div>
@@ -168,11 +183,15 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Combined Portfolio Value</div>
-                    <div class="stat-value" style="color: var(--accent-success);">$312,181.10</div>
+                    <div class="stat-value" style="color: var(--accent-success);">$316,670.30</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Combined Return</div>
-                    <div class="stat-value" style="color: var(--accent-success);">+4.06%</div>
+                    <div class="stat-value" style="color: var(--accent-success);">+5.56%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Starting Capital</div>
+                    <div class="stat-value">$300,000</div>
                 </div>
             </div>
         </div>
@@ -223,7 +242,7 @@
     </div>
 
     <div class="footer">
-        <p>Paper Trading Results | 3-Way Bot Race | Last Updated: Feb 27, 2026 10:47 AM CST</p>
+        <p>Paper Trading Results | 3-Way Bot Race | Last Updated: Feb 27, 2026 11:07 AM CST</p>
         <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a> | 
         <a href="index.html" style="color: var(--accent-info);">← Command Center</a></p>
     </div>
