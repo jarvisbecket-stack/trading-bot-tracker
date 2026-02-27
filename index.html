@@ -265,6 +265,293 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+
+        /* Position Cards */
+        .position-card {
+            background: linear-gradient(135deg, #1a1a25 0%, #12121a 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .position-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+        }
+        .position-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .position-info {
+            flex: 1;
+        }
+        .position-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .position-otm-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .position-otm-badge.itm {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-danger);
+        }
+        .position-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .position-current {
+            color: var(--accent-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .position-pnl {
+            text-align: right;
+        }
+        .position-pnl-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-success);
+        }
+        .position-pnl-value.negative {
+            color: var(--accent-danger);
+        }
+        .position-pnl-sub {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Action Box */
+        .position-action-box {
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        .position-action-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .position-action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .position-action-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+        }
+        .position-action-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        .position-action-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .position-action-value.profit {
+            color: var(--accent-success);
+        }
+        .position-action-value.loss {
+            color: var(--accent-danger);
+        }
+
+        /* Progress Bar */
+        .position-progress {
+            margin-top: 0.75rem;
+        }
+        .position-progress-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .position-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-success) 0%, #34d399 100%);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        .position-progress-fill.warning {
+            background: linear-gradient(90deg, var(--accent-warning) 0%, #fbbf24 100%);
+        }
+        .position-progress-fill.danger {
+            background: linear-gradient(90deg, var(--accent-danger) 0%, #f87171 100%);
+        }
+        .position-progress-markers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Status Box */
+        .position-status-box {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .position-status-icon {
+            font-size: 1.5rem;
+        }
+        .position-status-text {
+            flex: 1;
+        }
+        .position-status-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .position-status-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        .position-status-badge {
+            background: rgba(107, 114, 128, 0.3);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Greeks */
+        .position-greeks {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        .position-greek {
+            text-align: center;
+        }
+        .position-greek-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        .position-greek-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .position-greek-value.positive {
+            color: var(--accent-success);
+        }
+        .position-greek-value.negative {
+            color: var(--accent-danger);
+        }
+        .position-greek-value.warning {
+            color: var(--accent-warning);
+        }
+
+        /* Footer */
+        .position-footer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        .position-footer-item {
+            text-align: center;
+        }
+        .position-footer-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        .position-footer-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .position-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .position-btn {
+            flex: 1;
+            padding: 0.875rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .position-btn:hover {
+            opacity: 0.9;
+        }
+        .btn-close {
+            background: var(--accent-success);
+            color: #0a0a0f;
+        }
+        .btn-hold {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-stop {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .position-card-header {
+                flex-direction: column;
+            }
+            .position-pnl {
+                text-align: left;
+                margin-top: 1rem;
+            }
+            .position-action-grid {
+                grid-template-columns: 1fr;
+            }
+            .position-greeks {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .position-footer {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -376,23 +663,107 @@
             <div>
                 <div class="section-title">Open Positions</div>
                 
-                <div class="positions-container">
-                    <div class="positions-header">
-                        <div>Symbol / Type</div>
-                        <div>Entry</div>
-                        <div>Current</div>
-                        <div>Size</div>
-                        <div>Unrealized</div>
-                        <div>% P&L</div>
-                        <div>Time</div>
-                        <div>Action</div>
-                    </div>
-                    
-                    <!-- Empty State -->
-                    <div class="position-row">
-                        <div colspan="8" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
-                            No open positions — Fund fully in cash
+                <div id="positions-container">
+                    <!-- Position Card Example (shown when positions exist) -->
+                    <div class="position-card">
+                        <div class="position-card-header">
+                            <div class="position-info">
+                                <div class="position-title">UVXY $25 Put</div>
+                                <div class="position-otm-badge">$3.20 OTM</div>
+                                <div class="position-meta">0DTE • 5 contracts • Sold @ $0.85</div>
+                                <div class="position-current">Current: $0.42</div>
+                            </div>
+                            <div class="position-pnl">
+                                <div class="position-pnl-value">+$2,150</div>
+                                <div class="position-pnl-sub">@ $0.43/contract</div>
+                                <div style="color: var(--accent-success); font-size: 0.9rem;">↗ +$215 today</div>
+                            </div>
                         </div>
+                        
+                        <div class="position-action-box">
+                            <div class="position-action-title">💰 Buy-to-Close Profit</div>
+                            <div class="position-action-grid">
+                                <div class="position-action-item">
+                                    <div class="position-action-label">Buy-to-Close</div>
+                                    <div class="position-action-value">$2,100</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">@ $0.42/sh</div>
+                                </div>
+                                <div class="position-action-item">
+                                    <div class="position-action-label">Net Profit</div>
+                                    <div class="position-action-value profit">+$2,150</div>
+                                </div>
+                                <div class="position-action-item">
+                                    <div class="position-action-label">Profit %</div>
+                                    <div class="position-action-value profit">51%</div>
+                                </div>
+                            </div>
+                            <div class="position-progress">
+                                <div class="position-progress-bar">
+                                    <div class="position-progress-fill" style="width: 51%;"></div>
+                                </div>
+                                <div class="position-progress-markers">
+                                    <span>0%</span>
+                                    <span style="color: var(--accent-success);">50% threshold</span>
+                                    <span>Ask: $0.42</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="position-status-box" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
+                            <div class="position-status-icon">✅</div>
+                            <div class="position-status-text">
+                                <div class="position-status-title" style="color: var(--accent-success);">CLOSE NOW</div>
+                                <div class="position-status-desc">Profit target reached: 51% • 0DTE expires today</div>
+                            </div>
+                            <div class="position-status-badge" style="background: rgba(16, 185, 129, 0.3); color: var(--accent-success);">PROFIT</div>
+                        </div>
+                        
+                        <div class="position-greeks">
+                            <div class="position-greek">
+                                <div class="position-greek-label">OTM %</div>
+                                <div class="position-greek-value positive">12.8%</div>
+                            </div>
+                            <div class="position-greek">
+                                <div class="position-greek-label">Theta</div>
+                                <div class="position-greek-value warning">-45%</div>
+                            </div>
+                            <div class="position-greek">
+                                <div class="position-greek-label">Risk</div>
+                                <div class="position-greek-value positive">Low</div>
+                            </div>
+                            <div class="position-greek">
+                                <div class="position-greek-label">Delta</div>
+                                <div class="position-greek-value">18%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="position-footer">
+                            <div class="position-footer-item">
+                                <div class="position-footer-label">Bid/Ask</div>
+                                <div class="position-footer-value">$0.40 / $0.42</div>
+                            </div>
+                            <div class="position-footer-item">
+                                <div class="position-footer-label">Volume</div>
+                                <div class="position-footer-value">2,847</div>
+                            </div>
+                            <div class="position-footer-item">
+                                <div class="position-footer-label">Open Int</div>
+                                <div class="position-footer-value" style="color: var(--accent-primary);">12,543</div>
+                            </div>
+                        </div>
+                        
+                        <div class="position-actions">
+                            <button class="position-btn btn-close">CLOSE POSITION</button>
+                            <button class="position-btn btn-hold">HOLD</button>
+                        </div>
+                    </div>
+
+                    <!-- Empty State (shown when no positions) -->
+                    <div id="empty-positions" style="text-align: center; padding: 3rem; color: var(--text-secondary); background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📭</div>
+                        <div>No open positions — Fund fully in cash</div>
+                        <div style="font-size: 0.85rem; margin-top: 0.5rem;">Positions will appear here when bots execute</div>
                     </div>
                 </div>
             </div>
