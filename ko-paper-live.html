@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="60">
-    <title>MSTR Paper Trading Bot - Ready</title>
+    <title>KO Paper Trading Bot - Ready</title>
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -17,7 +17,7 @@
             --accent-danger: #ef4444;
             --accent-warning: #f59e0b;
             --accent-info: #3b82f6;
-            --accent-bitcoin: #f7931a;
+            --accent-ko: #dc2626;
             --border-color: #2a2a3a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,7 +29,7 @@
             min-height: 100vh;
         }
         header {
-            background: linear-gradient(135deg, var(--accent-bitcoin) 0%, #8b4513 100%);
+            background: linear-gradient(135deg, var(--accent-ko) 0%, #991b1b 100%);
             border-bottom: 1px solid var(--border-color);
             padding: 2rem 1rem;
             text-align: center;
@@ -48,25 +48,25 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
         
         .alert-box {
-            background: rgba(245, 158, 11, 0.1);
-            border: 2px solid rgba(245, 158, 11, 0.5);
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.5);
             border-radius: 12px;
             padding: 1.5rem;
             margin: 2rem 0;
             text-align: center;
         }
-        .alert-title { color: var(--accent-warning); font-size: 1.5rem; font-weight: 700; }
+        .alert-title { color: var(--accent-info); font-size: 1.5rem; font-weight: 700; }
         .alert-text { color: var(--text-secondary); margin-top: 0.5rem; }
         
-        .warning-box {
-            background: rgba(239, 68, 68, 0.1);
-            border: 2px solid rgba(239, 68, 68, 0.5);
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
             border-radius: 12px;
             padding: 1.5rem;
             margin: 2rem 0;
         }
-        .warning-title { color: var(--accent-danger); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .warning-text { color: var(--text-secondary); }
+        .info-title { color: var(--accent-success); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .info-text { color: var(--text-secondary); }
         
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
         .card {
@@ -120,24 +120,13 @@
         .config-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
         .config-value { font-size: 1.25rem; font-weight: 600; margin-top: 0.25rem; }
         
-        .risk-indicator {
-            display: inline-block;
-            background: var(--accent-danger);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
         .last-updated { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem; }
     </style>
 </head>
 <body>
     <header>
-        <h1>₿ MICROSTRATEGY (MSTR) Paper Trading</h1>
+        <h1>🏢 COCA-COLA (KO) Paper Trading</h1>
         <div class="status-badge">⏳ READY - Starts Monday March 2, 8:30 AM CST</div>
         <div class="last-updated">Last Updated: February 27, 2026 | Auto-refresh: 60s</div>
     </header>
@@ -152,13 +141,13 @@
             </div>
         </div>
 
-        <!-- Warning Box -->
-        <div class="warning-box">
-            <div class="warning-title">⚠️ HIGH VOLATILITY WARNING</div>
-            <div class="warning-text">
-                MSTR is a Bitcoin proxy with extreme volatility (150%+ IV). 
-                This is the AGGRESSIVE bot in the race. Position sizes are reduced to 40% max.
-                <br>Backtest: 5.24% ROI | 67% win rate | 74% max drawdown
+        <!-- Info Box -->
+        <div class="info-box">
+            <div class="info-title">🛡️ DEFENSIVE STRATEGY</div>
+            <div class="info-text">
+                KO is a Dividend King with ultra-low volatility. This is the CONSERVATIVE bot in the race.
+                Backtest shows 100% win rate with minimal drawdowns.
+                <br>Backtest: ~8-10% ROI | 100% win rate | <5% max drawdown
             </div>
         </div>
 
@@ -301,7 +290,7 @@
             <div class="config-grid">
                 <div class="config-item">
                     <div class="config-label">Symbol</div>
-                    <div class="config-value">MSTR</div>
+                    <div class="config-value">KO</div>
                 </div>
                 
                 
@@ -313,13 +302,13 @@
                 
                 <div class="config-item">
                     <div class="config-label">Put OTM%</div>
-                    <div class="config-value">10%</div>
+                    <div class="config-value">3%</div>
                 </div>
                 
                 
                 <div class="config-item">
                     <div class="config-label">Target DTE</div>
-                    <div class="config-value">21</div>
+                    <div class="config-value">30</div>
                 </div>
                 
                 
@@ -345,13 +334,13 @@
                 <p>• All trades are simulated for testing purposes</p>
                 <p>• Cron runs every hour from 8:30 AM - 3:30 PM CST</p>
                 <p>• Telegram notifications sent to 7954184484</p>
-                <p>• MSTR is HIGH RISK - expect large swings</p>
+                <p>• KO is the SAFEST bot - expect steady, small gains</p>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <p>MSTR Paper Trading Bot | Part of 3-Way Bot Race</p>
+        <p>KO Paper Trading Bot | Part of 3-Way Bot Race</p>
         <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a> | 
         <a href="index.html" style="color: var(--accent-info);">← Command Center</a></p>
     </div>

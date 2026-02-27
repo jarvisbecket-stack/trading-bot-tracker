@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Options Wheel Strategy Results</title>
+    <meta http-equiv="refresh" content="60">
+    <title>Options Wheel Strategy - Bot Race</title>
     <style>
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
             --bg-card: #1a1a25;
+            --bg-hover: #252535;
             --text-primary: #e8e8f0;
             --text-secondary: #a0a0b0;
             --accent-success: #10b981;
+            --accent-danger: #ef4444;
             --accent-warning: #f59e0b;
+            --accent-info: #3b82f6;
+            --accent-costco: #e31837;
+            --accent-bitcoin: #f7931a;
+            --accent-ko: #dc2626;
             --border-color: #2a2a3a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,128 +31,224 @@
             min-height: 100vh;
         }
         header {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
-            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 2rem 1rem;
             text-align: center;
         }
-        h1 { font-size: 2rem; background: linear-gradient(135deg, var(--text-primary), #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { color: var(--text-secondary); margin-top: 0.5rem; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
-        .big-number { font-size: 3rem; font-weight: 800; text-align: center; margin: 1rem 0; }
-        .positive { color: var(--accent-success); }
-        .warning { color: var(--accent-warning); }
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(99, 102, 241, 0.1));
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        h1 { font-size: 2rem; }
+        .subtitle { opacity: 0.9; margin-top: 0.5rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        .strategy-card {
+            background: var(--bg-card);
             border-radius: 12px;
             padding: 2rem;
             margin: 2rem 0;
-            text-align: center;
+            border: 1px solid var(--border-color);
         }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); }
-        .card-title { font-size: 0.875rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-        .card-value { font-size: 1.75rem; font-weight: 700; }
+        .strategy-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
+        .strategy-desc { color: var(--text-secondary); line-height: 1.8; }
+        
+        .bot-strategies {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        @media (max-width: 768px) { .bot-strategies { grid-template-columns: 1fr; } }
+        
+        .bot-strategy-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid;
+        }
+        .bot-strategy-card.cost { border-color: var(--accent-costco); }
+        .bot-strategy-card.mstr { border-color: var(--accent-bitcoin); }
+        .bot-strategy-card.ko { border-color: var(--accent-ko); }
+        
+        .bot-strategy-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+        .param { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); }
+        .param:last-child { border-bottom: none; }
+        .param-label { color: var(--text-secondary); }
+        .param-value { font-weight: 600; }
+        
+        .backtest-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+        .backtest-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; }
+        
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .success-title { color: var(--accent-success); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
     </style>
 </head>
 <body>
     <header>
-        <h1>📈 Options Wheel Strategy</h1>
-        <div class="subtitle">Sell Puts → Collect Premium → Sell Calls → Repeat</div>
+        <h1>🎯 Options Wheel Strategy</h1>
+        <div class="subtitle">How the 3 bots trade | Strategy breakdown</div>
     </header>
 
     <div class="container">
-        <div class="highlight-box">
-            <div class="card-title">24-MONTH PERFORMANCE</div>
-            <div class="big-number positive">+$20,089.56</div>
-            <div style="font-size: 1.25rem; color: var(--text-secondary);">
-                Premium Collected | Starting: $100,000 → Final: $120,089
-            </div>            
-            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
-                <span style="color: var(--accent-success); font-size: 1.3rem;">
-                    ✅ Annual ROI: 9.59% (Beats 4.5% savings!)
-                </span>
+        <!-- Strategy Overview -->
+        <div class="strategy-card">
+            <div class="strategy-title">📖 What is the Wheel Strategy?</div>
+            <div class="strategy-desc">
+                <p>The Wheel is an options strategy that generates income by selling cash-secured puts, and if assigned, selling covered calls.</p>
+                <p style="margin-top: 1rem;"><strong>Phase 1 (Put Selling):</strong> Sell OTM puts to collect premium. If stock stays above strike, keep premium. If assigned, you own the stock at a discount.</p>
+                <p style="margin-top: 1rem;"><strong>Phase 2 (Call Selling):</strong> If assigned, sell covered calls above your cost basis. If called away, you profit from premium + capital gains.</p>
+                <p style="margin-top: 1rem;"><strong>Key Benefits:</strong> Consistent income, lower risk than buying stock outright, works in sideways or slightly bullish markets.</p>
             </div>
         </div>
 
-        <div class="grid">
-            <div class="card">
-                <div class="card-title">SPY Performance</div>
-                <div class="card-value positive">+$9,417</div>
-                <div style="margin-top: 0.5rem;">3 trades | 100% win rate</div>
-                <div>4.60% annual ROI</div>
-            </div>
+        <!-- Bot Strategies -->
+        <div class="strategy-card">
+            <div class="strategy-title">🤖 Each Bot's Strategy</div>
             
-            <div class="card">
-                <div class="card-title">QQQ Performance</div>
-                <div class="card-value positive">+$10,672</div>
-                <div style="margin-top: 0.5rem;">4 trades | 100% win rate</div>
-                <div>5.20% annual ROI</div>
+            <div class="bot-strategies">
+                <div class="bot-strategy-card cost">
+                    <div class="bot-strategy-name" style="color: var(--accent-costco);">🏪 COST</div>
+                    <div class="param">
+                        <span class="param-label">Put OTM</span>
+                        <span class="param-value">5%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">DTE</span>
+                        <span class="param-value">30 days</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Profit Target</span>
+                        <span class="param-value">50%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Max Position</span>
+                        <span class="param-value">75%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Commission</span>
+                        <span class="param-value">$0.35/contract</span>
+                    </div>
+                </div>
+
+                <div class="bot-strategy-card mstr">
+                    <div class="bot-strategy-name" style="color: var(--accent-bitcoin);">₿ MSTR</div>
+                    <div class="param">
+                        <span class="param-label">Put OTM</span>
+                        <span class="param-value">10%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">DTE</span>
+                        <span class="param-value">21 days</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Profit Target</span>
+                        <span class="param-value">50%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Max Position</span>
+                        <span class="param-value">40%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Commission</span>
+                        <span class="param-value">$0.35/contract</span>
+                    </div>
+                </div>
+
+                <div class="bot-strategy-card ko">
+                    <div class="bot-strategy-name" style="color: var(--accent-ko);">🏢 KO</div>
+                    <div class="param">
+                        <span class="param-label">Put OTM</span>
+                        <span class="param-value">3%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">DTE</span>
+                        <span class="param-value">30 days</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Profit Target</span>
+                        <span class="param-value">50%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Max Position</span>
+                        <span class="param-value">80%</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-label">Commission</span>
+                        <span class="param-value">$0.35/contract</span>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Historical Backtest -->
+        <div class="backtest-section">
+            <div class="backtest-title">📊 Historical Backtest Results (24-Month)</div>
             
-            <div class="card">
-                <div class="card-title">Total Premium</div>
-                <div class="card-value">$20,089</div>
-                <div style="margin-top: 0.5rem;">7 trades total</div>
-                <div>Avg: $2,870/trade</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-title">Put Assignments</div>
-                <div class="card-value">0</div>
-                <div style="margin-top: 0.5rem;">No shares assigned</div>
-                <div>All puts expired worthless ✅</div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 1rem; text-align: left;">Stock</th>
+                            <th style="padding: 1rem; text-align: left;">Annual ROI</th>
+                            <th style="padding: 1rem; text-align: left;">Win Rate</th>
+                            <th style="padding: 1rem; text-align: left;">Max Drawdown</th>
+                            <th style="padding: 1rem; text-align: left;">Trades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">COST (Conservative)</td>
+                            <td style="padding: 1rem; color: var(--accent-success);">12.64%</td>
+                            <td style="padding: 1rem;">93%</td>
+                            <td style="padding: 1rem;">16.7%</td>
+                            <td style="padding: 1rem;">~24</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">KO (Ultra-Conservative)</td>
+                            <td style="padding: 1rem; color: var(--accent-success);">~8-10%</td>
+                            <td style="padding: 1rem;">100%</td>
+                            <td style="padding: 1rem;"><5%</td>
+                            <td style="padding: 1rem;">~24</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">MSTR (Aggressive)</td>
+                            <td style="padding: 1rem; color: var(--accent-warning);">5.24%</td>
+                            <td style="padding: 1rem;">67%</td>
+                            <td style="padding: 1rem; color: var(--accent-danger);">74%</td>
+                            <td style="padding: 1rem;">~34</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem;">
-            <div class="card-title">Strategy Parameters</div>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
-                <div><strong>Put Strike:</strong> 6% OTM</div>
-                <div><strong>Put DTE:</strong> 35 days</div>
-                <div><strong>VIX Filter:</strong> > 18</div>
-                <div><strong>Position Size:</strong> 30%</div>
-                <div><strong>Min Premium:</strong> 0.3%</div>
-                <div><strong>Trade Frequency:</strong> Every 35 days</div>
+        <!-- Success Factors -->
+        <div class="success-box">
+            <div class="success-title">✅ Why the Wheel Works</div>
+            <div style="color: var(--text-secondary); line-height: 1.8;">
+                <p>1. <strong>Time Decay:</strong> Options lose value as expiration approaches, benefiting the seller</p>
+                <p>2. <strong>Volatility Premium:</strong> High IV stocks pay more premium (but carry more risk)</p>
+                <p>3. <strong>Downside Protection:</strong> OTM strikes provide cushion against drops</p>
+                <p>4. <strong>Consistent Income:</strong> Regular premium collection vs. waiting for stock appreciation</p>
             </div>
-        </div>
-
-        <div class="card" style="margin-top: 2rem; border-left: 4px solid var(--accent-success);">
-            <div class="card-title">✅ STRATEGY VALIDATED</div>
-            <p style="margin-top: 0.5rem;">
-                The Options Wheel strategy <strong>beats savings accounts</strong> with a 9.59% annual ROI 
-                vs 4.5% high-yield savings. All 7 trades were winners with zero put assignments.
-            </p>
-            <p style="margin-top: 1rem;">
-                <strong>Key Success Factors:</strong>
-            </p>
-            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                <li>VIX filter > 18 captured high volatility premium</li>
-                <li>6% OTM puts provided cushion against drops</li>
-                <li>35 DTE balanced time decay with assignment risk</li>
-                <li>Bullish 2024-2025 market kept puts OTM</li>
-            </ul>
-        </div>
-
-        <div class="card" style="margin-top: 2rem;">
-            <div class="card-title">⚠️ Implementation Requirements</div>
-            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                <li>Tradier options approval (Level 2)</li>
-                <li>Margin account for cash-secured puts</li>
-                <li>Min $25K capital (Pattern Day Trader rule)</li>
-                <li>Monitor for early assignment risk</li>
-                <li>Handle dividends (ex-div dates)</li>
-            </ul>
         </div>
     </div>
 
     <div class="footer">
-        <p>Options Wheel Strategy Results | 24-Month Backtest | Tradier Platform</p>
-        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
-            Note: Simplified simulation. Real options involve assignment risk, early exercise, and margin requirements.
-        </p>
+        <p>Options Wheel Strategy | 3-Way Bot Race</p>
+        <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a> | 
+        <a href="index.html" style="color: var(--accent-info);">← Command Center</a></p>
     </div>
 </body>
 </html>
