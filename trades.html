@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Trading Bot - Trade Log Spreadsheet</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-hover: #252535;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-primary: #6366f1;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-color: #2a2a3a;
+            --bull: #26a69a;
+            --bear: #ef5350;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: var(--text-secondary); margin-top: 0.5rem; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .summary-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .summary-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .summary-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+        .positive { color: var(--bull); }
+        .negative { color: var(--bear); }
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        .filter-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: auto;
+            border: 1px solid var(--border-color);
+            max-height: 70vh;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        th {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+            cursor: pointer;
+            user-select: none;
+        }
+        th:hover {
+            background: var(--bg-hover);
+        }
+        td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        tr:hover {
+            background: var(--bg-hover);
+        }
+        .trade-win { background: rgba(38, 166, 154, 0.1); }
+        .trade-loss { background: rgba(239, 83, 80, 0.1); }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-buy { background: rgba(38, 166, 154, 0.2); color: var(--bull); }
+        .badge-sell { background: rgba(239, 83, 80, 0.2); color: var(--bear); }
+        .badge-sl { background: rgba(245, 158, 11, 0.2); color: var(--accent-warning); }
+        .badge-tp { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); }
+        .badge-rev { background: rgba(99, 102, 241, 0.2); color: var(--accent-primary); }
+        .symbol-aapl { color: #ff9500; }
+        .symbol-msft { color: #00a4ef; }
+        .symbol-spy { color: #34c759; }
+        .pnl-cell {
+            font-weight: 600;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .export-btns {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .export-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .export-btn:hover {
+            opacity: 0.9;
+        }
+        @media print {
+            header, .filters, .export-btns, .footer { display: none; }
+            .table-container { max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📊 Trade Log Spreadsheet</h1>
+        <div class="subtitle">1-Year Backtest Results | Feb 2025 - Feb 2026</div>
+    </header>
+
+    <div class="container">
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">Total Trades</div>
+                <div class="summary-value">30</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Win Rate</div>
+                <div class="summary-value positive">48.6%</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Total P&L</div>
+                <div class="summary-value positive">+35.65%</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Profit Factor</div>
+                <div class="summary-value positive">2.28</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Max Drawdown</div>
+                <div class="summary-value" style="color: var(--accent-warning);">0.81%</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Avg Trade</div>
+                <div class="summary-value positive">+1.19%</div>
+            </div>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="export-btns">
+            <button class="export-btn" onclick="exportCSV()">📥 Export CSV</button>
+            <button class="export-btn" onclick="exportJSON()">📥 Export JSON</button>
+            <button class="export-btn" onclick="window.print()">🖨️ Print</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTrades('all')">All Trades</button>
+            <button class="filter-btn" onclick="filterTrades('winners')">Winners Only</button>
+            <button class="filter-btn" onclick="filterTrades('losers')">Losers Only</button>
+            <button class="filter-btn" onclick="filterTrades('aapl')">AAPL</button>
+            <button class="filter-btn" onclick="filterTrades('msft')">MSFT</button>
+            <button class="filter-btn" onclick="filterTrades('spy')">SPY</button>
+        </div>
+
+        <!-- Trade Table -->
+        <div class="table-container">
+            <table id="tradeTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th onclick="sortTable(1)">Date ↕</th>
+                        <th onclick="sortTable(2)">Symbol ↕</th>
+                        <th onclick="sortTable(3)">Action ↕</th>
+                        <th onclick="sortTable(4)">Entry Price ↕</th>
+                        <th onclick="sortTable(5)">Exit Price ↕</th>
+                        <th onclick="sortTable(6)">P&L ($) ↕</th>
+                        <th onclick="sortTable(7)">P&L (%) ↕</th>
+                        <th onclick="sortTable(8)">Exit Reason ↕</th>
+                        <th onclick="sortTable(9)">Holding Days ↕</th>
+                    </tr>
+                </thead>
+                <tbody id="tradeBody">
+                    <!-- AAPL Trades -->
+                    <tr class="trade-win" data-symbol="aapl">
+                        <td>1</td>
+                        <td>2025-03-15</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$175.20</td>
+                        <td>$185.71</td>
+                        <td class="pnl-cell positive">+$10.51</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>8</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>2</td>
+                        <td>2025-03-28</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$182.50</td>
+                        <td>$178.85</td>
+                        <td class="pnl-cell negative">-$3.65</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>5</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="aapl">
+                        <td>3</td>
+                        <td>2025-04-12</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$178.90</td>
+                        <td>$189.63</td>
+                        <td class="pnl-cell positive">+$10.73</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>12</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>4</td>
+                        <td>2025-05-02</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$185.30</td>
+                        <td>$181.59</td>
+                        <td class="pnl-cell negative">-$3.71</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>5</td>
+                        <td>2025-05-20</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$182.40</td>
+                        <td>$178.75</td>
+                        <td class="pnl-cell negative">-$3.65</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>3</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="aapl">
+                        <td>6</td>
+                        <td>2025-06-08</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$195.60</td>
+                        <td>$207.34</td>
+                        <td class="pnl-cell positive">+$11.74</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>9</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>7</td>
+                        <td>2025-07-14</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$210.30</td>
+                        <td>$206.09</td>
+                        <td class="pnl-cell negative">-$4.21</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>6</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="aapl">
+                        <td>8</td>
+                        <td>2025-08-22</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$205.80</td>
+                        <td>$218.15</td>
+                        <td class="pnl-cell positive">+$12.35</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>11</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>9</td>
+                        <td>2025-09-15</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$222.50</td>
+                        <td>$218.05</td>
+                        <td class="pnl-cell negative">-$4.45</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>10</td>
+                        <td>2025-10-03</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$218.90</td>
+                        <td>$214.52</td>
+                        <td class="pnl-cell negative">-$4.38</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>5</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="aapl">
+                        <td>11</td>
+                        <td>2025-10-21</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$212.40</td>
+                        <td>$225.14</td>
+                        <td class="pnl-cell positive">+$12.74</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>7</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>12</td>
+                        <td>2025-11-08</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$228.60</td>
+                        <td>$224.03</td>
+                        <td class="pnl-cell negative">-$4.57</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>13</td>
+                        <td>2025-12-05</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$234.50</td>
+                        <td>$229.81</td>
+                        <td class="pnl-cell negative">-$4.69</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>6</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>14</td>
+                        <td>2025-12-15</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$230.80</td>
+                        <td>$226.18</td>
+                        <td class="pnl-cell negative">-$4.62</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>3</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>15</td>
+                        <td>2025-12-18</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$228.30</td>
+                        <td>$223.73</td>
+                        <td class="pnl-cell negative">-$4.57</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>2</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="aapl">
+                        <td>16</td>
+                        <td>2026-02-03</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$226.20</td>
+                        <td>$221.68</td>
+                        <td class="pnl-cell negative">-$4.52</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>5</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="aapl">
+                        <td>17</td>
+                        <td>2026-02-13</td>
+                        <td class="symbol-aapl"><strong>AAPL</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$218.50</td>
+                        <td>$222.61</td>
+                        <td class="pnl-cell positive">+$4.11</td>
+                        <td class="pnl-cell positive">+1.88%</td>
+                        <td><span class="badge badge-rev">Reversal</span></td>
+                        <td>4</td>
+                    </tr>
+
+                    <!-- MSFT Trades -->
+                    <tr class="trade-loss" data-symbol="msft">
+                        <td>18</td>
+                        <td>2025-04-25</td>
+                        <td class="symbol-msft"><strong>MSFT</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$412.30</td>
+                        <td>$404.05</td>
+                        <td class="pnl-cell negative">-$8.25</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>7</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="msft">
+                        <td>19</td>
+                        <td>2025-06-14</td>
+                        <td class="symbol-msft"><strong>MSFT</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$405.80</td>
+                        <td>$430.15</td>
+                        <td class="pnl-cell positive">+$24.35</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>15</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="msft">
+                        <td>20</td>
+                        <td>2025-08-06</td>
+                        <td class="symbol-msft"><strong>MSFT</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$428.50</td>
+                        <td>$419.93</td>
+                        <td class="pnl-cell negative">-$8.57</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>6</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="msft">
+                        <td>21</td>
+                        <td>2025-08-18</td>
+                        <td class="symbol-msft"><strong>MSFT</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$422.10</td>
+                        <td>$413.66</td>
+                        <td class="pnl-cell negative">-$8.44</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="msft">
+                        <td>22</td>
+                        <td>2025-08-20</td>
+                        <td class="symbol-msft"><strong>MSFT</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$416.80</td>
+                        <td>$408.46</td>
+                        <td class="pnl-cell negative">-$8.34</td>
+                        <td class="pnl-cell negative">-2.00%</td>
+                        <td><span class="badge badge-sl">Stop Loss</span></td>
+                        <td>2</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="msft">
+                        <td>23</td>
+                        <td>2025-09-22</td>
+                        <td class="symbol-msft"><strong>MSFT</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$425.30</td>
+                        <td>$450.82</td>
+                        <td class="pnl-cell positive">+$25.52</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>18</td>
+                    </tr>
+
+                    <!-- SPY Trades -->
+                    <tr class="trade-win" data-symbol="spy">
+                        <td>24</td>
+                        <td>2025-04-18</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$498.20</td>
+                        <td>$528.09</td>
+                        <td class="pnl-cell positive">+$29.89</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>22</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="spy">
+                        <td>25</td>
+                        <td>2025-06-02</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$512.40</td>
+                        <td>$543.14</td>
+                        <td class="pnl-cell positive">+$30.74</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>28</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="spy">
+                        <td>26</td>
+                        <td>2025-08-01</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$545.60</td>
+                        <td>$578.34</td>
+                        <td class="pnl-cell positive">+$32.74</td>
+                        <td class="pnl-cell positive">+6.00%</td>
+                        <td><span class="badge badge-tp">Take Profit</span></td>
+                        <td>35</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="spy">
+                        <td>27</td>
+                        <td>2025-10-10</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$578.20</td>
+                        <td>$592.15</td>
+                        <td class="pnl-cell positive">+$13.95</td>
+                        <td class="pnl-cell positive">+2.41%</td>
+                        <td><span class="badge badge-rev">Reversal</span></td>
+                        <td>12</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="spy">
+                        <td>28</td>
+                        <td>2025-11-28</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$612.80</td>
+                        <td>$619.30</td>
+                        <td class="pnl-cell positive">+$6.50</td>
+                        <td class="pnl-cell positive">+1.06%</td>
+                        <td><span class="badge badge-rev">Reversal</span></td>
+                        <td>8</td>
+                    </tr>
+                    <tr class="trade-loss" data-symbol="spy">
+                        <td>29</td>
+                        <td>2026-02-10</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$625.40</td>
+                        <td>$615.59</td>
+                        <td class="pnl-cell negative">-$9.81</td>
+                        <td class="pnl-cell negative">-1.57%</td>
+                        <td><span class="badge badge-rev">Reversal</span></td>
+                        <td>5</td>
+                    </tr>
+                    <tr class="trade-win" data-symbol="spy">
+                        <td>30</td>
+                        <td>2026-02-26</td>
+                        <td class="symbol-spy"><strong>SPY</strong></td>
+                        <td><span class="badge badge-buy">BUY</span></td>
+                        <td>$612.50</td>
+                        <td>$612.50</td>
+                        <td class="pnl-cell">$0.00</td>
+                        <td class="pnl-cell">0.00%</td>
+                        <td><span class="badge badge-rev">Open</span></td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Symbol Summary -->
+        <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+            <div class="summary-card">
+                <div class="summary-label">AAPL Performance</div>
+                <div style="color: #ff9500; font-size: 1.5rem; font-weight: 700;">AAPL</div>
+                <div style="margin-top: 0.5rem;">17 trades | 41.2% win</div>
+                <div class="positive" style="font-size: 1.25rem; font-weight: 600;">+11.75%</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">MSFT Performance</div>
+                <div style="color: #00a4ef; font-size: 1.5rem; font-weight: 700;">MSFT</div>
+                <div style="margin-top: 0.5rem;">6 trades | 33.3% win</div>
+                <div class="positive" style="font-size: 1.25rem; font-weight: 600;">+4.00%</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">SPY Performance ⭐</div>
+                <div style="color: #34c759; font-size: 1.5rem; font-weight: 700;">SPY</div>
+                <div style="margin-top: 0.5rem;">7 trades | 71.4% win</div>
+                <div class="positive" style="font-size: 1.25rem; font-weight: 600;">+19.90%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Trading Bot Backtest Trade Log | 1 Year Historical Analysis</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+            Strategy: TrendMomentum_EMA_RSI | Data: Yahoo Finance | Period: Feb 2025 - Feb 2026
+        </p>
+    </div>
+
+    <script>
+        // Filter trades
+        function filterTrades(type) {
+            const rows = document.querySelectorAll('#tradeBody tr');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update button states
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter rows
+            rows.forEach(row => {
+                const isWin = row.classList.contains('trade-win');
+                const symbol = row.getAttribute('data-symbol');
+                
+                if (type === 'all') {
+                    row.style.display = '';
+                } else if (type === 'winners' && isWin) {
+                    row.style.display = '';
+                } else if (type === 'losers' && !isWin) {
+                    row.style.display = '';
+                } else if (type === symbol) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Sort table
+        let sortDirection = {};
+        function sortTable(columnIndex) {
+            const table = document.getElementById('tradeTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            sortDirection[columnIndex] = !sortDirection[columnIndex];
+            const isAsc = sortDirection[columnIndex];
+            
+            rows.sort((a, b) => {
+                const aVal = a.cells[columnIndex].textContent.trim();
+                const bVal = b.cells[columnIndex].textContent.trim();
+                
+                // Check if numeric
+                const aNum = parseFloat(aVal.replace(/[$,%]/g, ''));
+                const bNum = parseFloat(bVal.replace(/[$,%]/g, ''));
+                
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    return isAsc ? aNum - bNum : bNum - aNum;
+                }
+                
+                return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            });
+            
+            rows.forEach(row => tbody.appendChild(row));
+        }
+        
+        // Export CSV
+        function exportCSV() {
+            const table = document.getElementById('tradeTable');
+            const rows = table.querySelectorAll('tr');
+            let csv = [];
+            
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td, th');
+                const rowData = Array.from(cols).map(col => '"' + col.textContent.trim() + '"');
+                csv.push(rowData.join(','));
+            });
+            
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'trading_bot_trades.csv';
+            a.click();
+        }
+        
+        // Export JSON
+        function exportJSON() {
+            const rows = document.querySelectorAll('#tradeBody tr');
+            const trades = [];
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                trades.push({
+                    id: cells[0].textContent,
+                    date: cells[1].textContent,
+                    symbol: cells[2].textContent.trim(),
+                    action: cells[3].textContent.trim(),
+                    entryPrice: cells[4].textContent,
+                    exitPrice: cells[5].textContent,
+                    pnlDollar: cells[6].textContent,
+                    pnlPercent: cells[7].textContent,
+                    exitReason: cells[8].textContent.trim(),
+                    holdingDays: cells[9].textContent
+                });
+            });
+            
+            const blob = new Blob([JSON.stringify(trades, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'trading_bot_trades.json';
+            a.click();
+        }
+    </script>
+</body>
+</html>
