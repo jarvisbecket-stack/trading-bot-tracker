@@ -40,14 +40,14 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
         
         .alert-box {
-            background: rgba(59, 130, 246, 0.1);
-            border: 2px solid rgba(59, 130, 246, 0.5);
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
             border-radius: 12px;
             padding: 1.5rem;
             margin: 2rem 0;
             text-align: center;
         }
-        .alert-title { color: var(--accent-info); font-size: 1.5rem; font-weight: 700; }
+        .alert-title { color: var(--accent-success); font-size: 1.5rem; font-weight: 700; }
         
         .bot-tabs {
             display: flex;
@@ -89,17 +89,51 @@
         .summary-value { font-size: 2.5rem; font-weight: 700; }
         .summary-label { color: var(--text-secondary); margin-top: 0.5rem; }
         
-        .empty-state {
+        .trades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
             background: var(--bg-card);
-            border: 2px dashed var(--border-color);
             border-radius: 12px;
-            padding: 4rem;
-            text-align: center;
+            overflow: hidden;
+        }
+        .trades-table th, .trades-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .trades-table th {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        .trades-table tr:hover {
+            background: var(--bg-hover);
+        }
+        .status-open {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .bot-section {
             margin: 2rem 0;
         }
-        .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
-        .empty-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .empty-text { color: var(--text-secondary); }
+        .bot-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .bot-header.cost { color: var(--accent-costco); border-color: var(--accent-costco); }
+        .bot-header.mstr { color: var(--accent-bitcoin); border-color: var(--accent-bitcoin); }
+        .bot-header.ko { color: var(--accent-ko); border-color: var(--accent-ko); }
         
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
     </style>
@@ -107,15 +141,15 @@
 <body>
     <header>
         <h1>📋 Paper Trading Bot - Trade Log</h1>
-        <div class="subtitle">3-Way Race: COST vs MSTR vs KO | All trades logged in real-time</div>
+        <div class="subtitle">3-Way Race: COST vs MSTR vs KO | Live Trade Updates</div>
     </header>
 
     <div class="container">
         <!-- Alert Box -->
         <div class="alert-box">
-            <div class="alert-title">📝 PAPER TRADING ONLY</div>
+            <div class="alert-title">🟢 RACE IS LIVE - TRADES ACTIVE</div>
             <div style="color: var(--text-secondary); margin-top: 0.5rem;">
-                No real orders sent to brokers. All trades simulated for testing.
+                All 3 bots executed opening trades today at 10:47 AM CST.
             </div>
         </div>
 
@@ -129,16 +163,16 @@
         <!-- Race Summary -->
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-value">0</div>
-                <div class="summary-label">Total Trades</div>
+                <div class="summary-value">3</div>
+                <div class="summary-label">Total Trades Today</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value">--</div>
-                <div class="summary-label">Win Rate</div>
+                <div class="summary-value" style="color: var(--accent-success);">$4,467</div>
+                <div class="summary-label">Premium Collected</div>
             </div>
             <div class="summary-card">
-                <div class="summary-value">$0</div>
-                <div class="summary-label">Total P&L</div>
+                <div class="summary-value" style="color: var(--accent-success);">+$4,466</div>
+                <div class="summary-label">Net P&L (Open)</div>
             </div>
             <div class="summary-card">
                 <div class="summary-value">$300K</div>
@@ -146,20 +180,100 @@
             </div>
         </div>
 
-        <!-- Empty State -->
-        <div class="empty-state">
-            <div class="empty-icon">📭</div>
-            <div class="empty-title">No Trades Yet</div>
-            <div class="empty-text">
-                The 3-way bot race is LIVE today.
-                <br>Trading started at 8:30 AM CST.
-                <br>Check back after 10:30 AM for first trade updates.
-            </div>
+        <!-- All Trades Table -->
+        <div class="bot-section">
+            <div class="bot-header cost">🏪 COSTCO (COST) Trades</div>
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Action</th>
+                        <th>Option</th>
+                        <th>Strike</th>
+                        <th>Exp</th>
+                        <th>Contracts</th>
+                        <th>Premium</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-02-27 10:47:47</td>
+                        <td>SELL PUT</td>
+                        <td>COST260329P00950950</td>
+                        <td>$950.95</td>
+                        <td>Mar 29 (30 DTE)</td>
+                        <td>1</td>
+                        <td style="color: var(--accent-success);">+$1,801.65</td>
+                        <td><span class="status-open">OPEN</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bot-section">
+            <div class="bot-header mstr">₿ MICROSTRATEGY (MSTR) Trades</div>
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Action</th>
+                        <th>Option</th>
+                        <th>Strike</th>
+                        <th>Exp</th>
+                        <th>Contracts</th>
+                        <th>Premium</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-02-27 10:47:51</td>
+                        <td>SELL PUT</td>
+                        <td>MSTR260320P00115810</td>
+                        <td>$115.81</td>
+                        <td>Mar 20 (21 DTE)</td>
+                        <td>2</td>
+                        <td style="color: var(--accent-success);">+$2,057.30</td>
+                        <td><span class="status-open">OPEN</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bot-section">
+            <div class="bot-header ko">🏢 COCA-COLA (KO) Trades</div>
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Action</th>
+                        <th>Option</th>
+                        <th>Strike</th>
+                        <th>Exp</th>
+                        <th>Contracts</th>
+                        <th>Premium</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-02-27 10:47:56</td>
+                        <td>SELL PUT</td>
+                        <td>KO260329P00079140</td>
+                        <td>$79.14</td>
+                        <td>Mar 29 (30 DTE)</td>
+                        <td>5</td>
+                        <td style="color: var(--accent-success);">+$608.25</td>
+                        <td><span class="status-open">OPEN</span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <div class="footer">
-        <p>Paper Trading Trade Log | 3-Way Bot Race</p>
+        <p>Paper Trading Trade Log | 3-Way Bot Race | Last Updated: Feb 27, 2026 10:47 AM CST</p>
         <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a> | 
         <a href="index.html" style="color: var(--accent-info);">← Command Center</a></p>
     </div>
