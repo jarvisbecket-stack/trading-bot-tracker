@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positions | White Wolf Clan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ww-dark': '#0a0a0f',
+                        'ww-card': '#12121a',
+                        'ww-elevated': '#1a1a25',
+                        'ww-border': '#2a2a3a',
+                        'ww-text': '#e8e8f0',
+                        'ww-muted': '#8b8b9e',
+                        'ww-accent': '#6366f1',
+                        'ww-success': '#10b981',
+                        'ww-danger': '#ef4444',
+                        'ww-warning': '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { scrollbar-width: thin; scrollbar-color: #2a2a3a #0a0a0f; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+        body { font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .glass { background: rgba(18, 18, 26, 0.8); backdrop-filter: blur(12px); }
+        .gradient-text { background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pulse-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .greek-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .greek-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.1); }
+        .progress-ring { transform: rotate(-90deg); }
+        .progress-ring-circle { transition: stroke-dashoffset 0.5s ease; }
+    </style>
+</head>
+<body class="bg-ww-dark text-ww-text min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass border-b border-ww-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">WW</span>
+                    </div>
+                    <span class="font-bold text-lg tracking-tight">White Wolf<span class="gradient-text">Clan</span></span>
+                </div>
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Dashboard</a>
+                    <a href="positions.html" class="px-4 py-2 rounded-lg bg-ww-accent/20 text-ww-accent text-sm font-medium">Positions</a>
+                    <a href="watchlist.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Watchlist</a>
+                    <a href="trades.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Trades</a>
+                    <a href="performance.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Analytics</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-xs text-ww-muted">
+                        <span class="w-2 h-2 bg-ww-success rounded-full pulse-dot"></span>
+                        LIVE
+                    </div>
+                    <div id="refresh-timer" class="text-xs text-ww-muted font-mono">30s</div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden flex overflow-x-auto px-4 pb-3 gap-2 border-t border-ww-border pt-3">
+            <a href="index.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Dashboard</a>
+            <a href="positions.html" class="px-3 py-1.5 rounded-lg bg-ww-accent/20 text-ww-accent text-xs font-medium whitespace-nowrap">Positions</a>
+            <a href="watchlist.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Watchlist</a>
+            <a href="trades.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Trades</a>
+            <a href="performance.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Analytics</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold mb-1">Position Details</h1>
+            <p class="text-ww-muted text-sm">Live Greeks • Risk Metrics • Market Data</p>
+        </div>
+
+        <!-- Summary Bar -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
+                <div class="text-xs text-ww-muted uppercase">Total Delta</div>
+                <div class="text-2xl font-bold" id="total-delta">+0.45</div>
+                <div class="text-xs text-ww-muted">Directional Risk</div>
+            </div>
+            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
+                <div class="text-xs text-ww-muted uppercase">Total Theta</div>
+                <div class="text-2xl font-bold text-ww-success" id="total-theta">+$142</div>
+                <div class="text-xs text-ww-muted">Daily Decay</div>
+            </div>
+            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
+                <div class="text-xs text-ww-muted uppercase">Total Vega</div>
+                <div class="text-2xl font-bold text-ww-warning">-$89</div>
+                <div class="text-xs text-ww-muted">IV Risk</div>
+            </div>
+            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
+                <div class="text-xs text-ww-muted uppercase">Portfolio Gamma</div>
+                <div class="text-2xl font-bold">-0.02</div>
+                <div class="text-xs text-ww-muted">Acceleration</div>
+            </div>
+        </div>
+
+        <!-- Position Cards Grid -->
+        <div id="positions-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <!-- Cards generated by JS -->
+        </div>
+
+        <!-- Risk Analysis Section -->
+        <div class="mt-8 bg-ww-card border border-ww-border rounded-xl p-6">
+            <h2 class="font-semibold mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-ww-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                Risk Analysis
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h3 class="text-sm font-medium text-ww-muted mb-3">Concentration Risk</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>COST</span>
+                            <span class="font-mono">39.1%</span>
+                        </div>
+                        <div class="w-full bg-ww-elevated rounded-full h-2">
+                            <div class="bg-ww-warning h-2 rounded-full" style="width: 39.1%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>MSTR</span>
+                            <span class="font-mono">9.5%</span>
+                        </div>
+                        <div class="w-full bg-ww-elevated rounded-full h-2">
+                            <div class="bg-ww-accent h-2 rounded-full" style="width: 9.5%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>VZ</span>
+                            <span class="font-mono">19.7%</span>
+                        </div>
+                        <div class="w-full bg-ww-elevated rounded-full h-2">
+                            <div class="bg-ww-accent h-2 rounded-full" style="width: 19.7%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-medium text-ww-muted mb-3">DTE Distribution</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>< 7 days</span>
+                            <span class="font-mono text-ww-danger">1 position</span>
+                        </div>
+                        <div class="w-full bg-ww-elevated rounded-full h-2">
+                            <div class="bg-ww-danger h-2 rounded-full" style="width: 20%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>7-14 days</span>
+                            <span class="font-mono">2 positions</span>
+                        </div>
+                        <div class="w-full bg-ww-elevated rounded-full h-2">
+                            <div class="bg-ww-accent h-2 rounded-full" style="width: 40%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>15-30 days</span>
+                            <span class="font-mono">2 positions</span>
+                        </div>
+                        <div class="w-full bg-ww-elevated rounded-full h-2">
+                            <div class="bg-ww-success h-2 rounded-full" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-medium text-ww-muted mb-3">Margin Utilization</h3>
+                    <div class="relative w-32 h-32 mx-auto">
+                        <svg class="w-full h-full progress-ring" viewBox="0 0 36 36">
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                                  fill="none" stroke="#1a1a25" stroke-width="3"/>
+                            <path id="margin-ring" class="progress-ring-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                                  fill="none" stroke="#6366f1" stroke-width="3" 
+                                  stroke-dasharray="24.3, 100" stroke-dashoffset="0"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-2xl font-bold">24.3%</span>
+                            <span class="text-xs text-ww-muted">Used</span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <span class="text-xs text-ww-muted">$243K / $1M Available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Position Data with Greeks
+        const positions = [
+            {
+                symbol: 'MSTR', type: 'Put', strike: 115.55, expiry: '2026-03-15', 
+                contracts: 2, capital: 23110, side: 'Short',
+                entry: 10.25, current: 5.98, pnl: 2054, pnlPct: 41.7,
+                underlying: 128.45, otm: 10.0, itm: false,
+                greeks: { delta: -0.18, gamma: 0.012, theta: 2.15, vega: 0.08 },
+                bid: 5.85, ask: 6.10, volume: 2450, oi: 18750,
+                dte: 12, iv: 78.5
+            },
+            {
+                symbol: 'COST', type: 'Put', strike: 950.72, expiry: '2026-03-21',
+                contracts: 1, capital: 95072, side: 'Short',
+                entry: 25.50, current: 17.25, pnl: 1801, pnlPct: 32.4,
+                underlying: 995.30, otm: 4.5, itm: false,
+                greeks: { delta: -0.28, gamma: 0.008, theta: 4.85, vega: 0.12 },
+                bid: 17.10, ask: 17.40, volume: 890, oi: 12400,
+                dte: 18, iv: 35.2
+            },
+            {
+                symbol: 'KO', type: 'Put', strike: 79.08, expiry: '2026-03-28',
+                contracts: 5, capital: 39540, side: 'Short',
+                entry: 1.85, current: 1.25, pnl: 610, pnlPct: 32.4,
+                underlying: 81.45, otm: 2.9, itm: false,
+                greeks: { delta: -0.22, gamma: 0.035, theta: 1.95, vega: 0.06 },
+                bid: 1.20, ask: 1.30, volume: 5620, oi: 45600,
+                dte: 25, iv: 22.8
+            },
+            {
+                symbol: 'VZ', type: 'Put', strike: 47.86, expiry: '2026-03-08',
+                contracts: 10, capital: 47860, side: 'Short',
+                entry: 1.20, current: 0.65, pnl: 600, pnlPct: 45.8,
+                underlying: 50.12, otm: 4.5, itm: false,
+                greeks: { delta: -0.12, gamma: 0.028, theta: 3.25, vega: 0.04 },
+                bid: 0.62, ask: 0.68, volume: 12800, oi: 89300,
+                dte: 5, iv: 28.4
+            },
+            {
+                symbol: 'BAC', type: 'Put', strike: 47.13, expiry: '2026-03-15',
+                contracts: 8, capital: 37704, side: 'Short',
+                entry: 1.45, current: 0.88, pnl: 592, pnlPct: 39.3,
+                underlying: 49.85, otm: 5.5, itm: false,
+                greeks: { delta: -0.15, gamma: 0.022, theta: 2.45, vega: 0.05 },
+                bid: 0.85, ask: 0.91, volume: 8750, oi: 67200,
+                dte: 12, iv: 32.1
+            }
+        ];
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+        }
+
+        function formatGreek(value) {
+            return value > 0 ? `+${value.toFixed(3)}` : value.toFixed(3);
+        }
+
+        function renderPositionCard(pos) {
+            const profit50 = pos.entry * 0.5;
+            const profitPct50 = ((pos.entry - profit50) / pos.entry) * 100;
+            const currentProfitPct = ((pos.entry - pos.current) / pos.entry) * 100;
+            const profitColor = currentProfitPct >= profitPct50 ? 'bg-ww-success' : 'bg-ww-accent';
+            
+            return `
+                <div class="bg-ww-card border border-ww-border rounded-xl overflow-hidden greek-card">
+                    <!-- Header -->
+                    <div class="px-5 py-4 border-b border-ww-border flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-ww-accent/20 rounded-lg flex items-center justify-center">
+                                <span class="font-bold text-ww-accent">${pos.symbol}</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold">${pos.type} $${pos.strike.toFixed(2)}</div>
+                                <div class="text-xs text-ww-muted">Exp: ${pos.expiry} <span class="${pos.dte < 7 ? 'text-ww-danger' : ''}">(${pos.dte} DTE)</span></div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-ww-success">+${formatCurrency(pos.pnl)}</div>
+                            <div class="text-xs text-ww-success">+${pos.pnlPct.toFixed(1)}%</div>
+                        </div>
+                    </div>
+
+                    <div class="p-5">
+                        <!-- Buy-to-Close Box -->
+                        <div class="bg-ww-elevated rounded-lg p-4 mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-ww-muted uppercase">Buy-to-Close Cost</span>
+                                <span class="text-sm font-mono">${formatCurrency(pos.current * 100)}/contract</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs text-ww-muted">Net Profit</span>
+                                <span class="text-sm font-bold text-ww-success">${formatCurrency(pos.pnl * pos.contracts)}</span>
+                            </div>
+                            
+                            <!-- 50% Profit Threshold Bar -->
+                            <div class="flex items-center justify-between text-xs mb-1">
+                                <span class="text-ww-muted">50% Target</span>
+                                <span class="${currentProfitPct >= 50 ? 'text-ww-success' : 'text-ww-muted'}">${currentProfitPct.toFixed(1)}%</span>
+                            </div>
+                            <div class="w-full bg-ww-dark rounded-full h-2 mb-3">
+                                <div class="${currentProfitPct >= 50 ? 'bg-ww-success' : 'bg-ww-accent'} h-2 rounded-full transition-all" style="width: ${Math.min(currentProfitPct, 100)}%"></div>
+                            </div>
+
+                            ${currentProfitPct >= 50 ? `
+                                <div class="flex items-center gap-2 text-xs bg-ww-success/10 text-ww-success px-3 py-2 rounded">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    50% profit target reached! Consider closing.
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Greeks Grid -->
+                        <div class="grid grid-cols-4 gap-3 mb-4">
+                            <div class="bg-ww-elevated rounded-lg p-2 text-center">
+                                <div class="text-xs text-ww-muted">Delta</div>
+                                <div class="text-sm font-mono font-medium" style="color: ${pos.greeks.delta > 0 ? '#10b981' : pos.greeks.delta < 0 ? '#ef4444' : '#e8e8f0'}">${formatGreek(pos.greeks.delta)}</div>
+                            </div>
+                            <div class="bg-ww-elevated rounded-lg p-2 text-center">
+                                <div class="text-xs text-ww-muted">Gamma</div>
+                                <div class="text-sm font-mono font-medium">${pos.greeks.gamma.toFixed(3)}</div>
+                            </div>
+                            <div class="bg-ww-elevated rounded-lg p-2 text-center">
+                                <div class="text-xs text-ww-muted">Theta</div>
+                                <div class="text-sm font-mono font-medium text-ww-success">+$${pos.greeks.theta.toFixed(2)}</div>
+                            </div>
+                            <div class="bg-ww-elevated rounded-lg p-2 text-center">
+                                <div class="text-xs text-ww-muted">Vega</div>
+                                <div class="text-sm font-mono font-medium text-ww-warning">-$${pos.greeks.vega.toFixed(2)}</div>
+                            </div>
+                        </div>
+
+                        <!-- Market Data -->
+                        <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-ww-muted">Underlying</span>
+                                <span class="font-mono">$${pos.underlying.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-ww-muted">OTM %</span>
+                                <span class="font-mono text-ww-success">${pos.otm.toFixed(1)}%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-ww-muted">Bid/Ask</span>
+                                <span class="font-mono">${pos.bid.toFixed(2)} / ${pos.ask.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-ww-muted">IV</span>
+                                <span class="font-mono">${pos.iv.toFixed(1)}%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-ww-muted">Volume</span>
+                                <span class="font-mono">${pos.volume.toLocaleString()}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-ww-muted">Open Int</span>
+                                <span class="font-mono">${(pos.oi/1000).toFixed(1)}K</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="closePosition('${pos.symbol}')" class="py-2 px-4 bg-ww-success/20 hover:bg-ww-success/30 text-ww-success rounded-lg font-medium text-sm transition">
+                                Close Position
+                            </button>
+                            <button onclick="holdPosition('${pos.symbol}')" class="py-2 px-4 bg-ww-elevated hover:bg-ww-border text-ww-text rounded-lg font-medium text-sm transition">
+                                Hold Position
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPositions() {
+            const grid = document.getElementById('positions-grid');
+            grid.innerHTML = positions.map(renderPositionCard).join('');
+        }
+
+        function closePosition(symbol) {
+            if (confirm(`Close ${symbol} position?`)) {
+                alert(`${symbol} position marked for closure`);
+            }
+        }
+
+        function holdPosition(symbol) {
+            alert(`${symbol} position marked to hold`);
+        }
+
+        // Refresh countdown
+        let countdown = 30;
+        setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                countdown = 30;
+                // Simulate data refresh
+                document.getElementById('refresh-timer').textContent = 'Updating...';
+                setTimeout(() => {
+                    document.getElementById('refresh-timer').textContent = '30s';
+                }, 1000);
+            } else {
+                document.getElementById('refresh-timer').textContent = countdown + 's';
+            }
+        }, 1000);
+
+        // Initialize
+        renderPositions();
+    </script>
+</body>
+</html>
