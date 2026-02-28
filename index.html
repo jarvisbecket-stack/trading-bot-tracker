@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="30">
-    <title>💰 Live Trading Dashboard | $1M Fund Real-Time</title>
+    <title>💰 Communal Fund Dashboard | $1M Pool</title>
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -47,12 +47,12 @@
             color: var(--text-secondary);
         }
 
-        /* Fund Summary - Large Cards */
-        .fund-summary {
+        /* Fund Overview - Large Cards */
+        .fund-overview {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         .fund-card {
             background: var(--bg-card);
@@ -64,6 +64,7 @@
         .fund-card.primary {
             border-color: var(--accent-primary);
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, var(--bg-card) 100%);
+            grid-column: span 3;
         }
         .fund-label {
             font-size: 0.875rem;
@@ -73,55 +74,56 @@
             margin-bottom: 0.5rem;
         }
         .fund-value {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
         }
-        .fund-change {
-            font-size: 1.25rem;
+        .fund-sub {
+            font-size: 1rem;
+            color: var(--text-secondary);
             margin-top: 0.5rem;
         }
 
-        /* Allocation Grid */
-        .allocation-grid {
+        /* Capital Breakdown */
+        .capital-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        .allocation-card {
+        .capital-card {
             background: var(--bg-card);
             border-radius: 12px;
-            padding: 1.25rem;
+            padding: 1.5rem;
             text-align: center;
             border: 1px solid var(--border-color);
         }
-        .allocation-value {
-            font-size: 1.75rem;
+        .capital-value {
+            font-size: 2rem;
             font-weight: 700;
         }
-        .allocation-label {
+        .capital-label {
             font-size: 0.75rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             margin-top: 0.25rem;
         }
-        .allocation-sub {
+        .capital-desc {
             font-size: 0.8rem;
             color: var(--text-secondary);
             margin-top: 0.5rem;
         }
 
-        /* Bot Leaderboard */
-        .leaderboard-container {
+        /* Positions Table */
+        .positions-container {
             background: var(--bg-card);
             border-radius: 12px;
             border: 1px solid var(--border-color);
             overflow: hidden;
             margin-bottom: 1.5rem;
         }
-        .leaderboard-header {
+        .positions-header {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 0.75fr 1fr 1fr 0.75fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
             gap: 0.5rem;
             padding: 0.75rem 1rem;
             background: var(--bg-elevated);
@@ -130,91 +132,49 @@
             color: var(--text-secondary);
             font-weight: 600;
         }
-        .bot-row {
+        .position-row {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 0.75fr 1fr 1fr 0.75fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
             gap: 0.5rem;
             padding: 0.75rem 1rem;
             border-top: 1px solid var(--border-color);
             font-size: 0.9rem;
             align-items: center;
         }
-        .bot-row:hover {
+        .position-row:hover {
             background: var(--bg-elevated);
         }
-        .bot-name {
-            font-weight: 700;
-        }
-        .bot-strategy {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        /* Position Cards */
-        .position-card {
-            background: linear-gradient(135deg, #1a1a25 0%, #12121a 100%);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            margin-bottom: 1rem;
-        }
-        .position-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        .position-title {
-            font-size: 1.25rem;
+        .position-symbol {
             font-weight: 700;
         }
         .position-meta {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
         }
-        .position-pnl {
-            text-align: right;
+
+        /* Summary Stats */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .position-pnl-value {
+        .summary-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .summary-value {
             font-size: 1.75rem;
             font-weight: 700;
         }
-
-        /* Deployment Status */
-        .deployment-bar {
-            height: 32px;
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 1rem;
-        }
-        .deployment-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-success) 0%, #34d399 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 1rem;
-            font-weight: 700;
-            font-size: 0.875rem;
-            color: #0a0a0f;
-        }
-        .deployment-markers {
-            display: flex;
-            justify-content: space-between;
+        .summary-label {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-top: 0.5rem;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
         }
 
         /* Utility */
@@ -270,15 +230,17 @@
         }
 
         @media (max-width: 1000px) {
-            .fund-summary { grid-template-columns: 1fr; }
-            .allocation-grid { grid-template-columns: repeat(2, 1fr); }
+            .fund-overview { grid-template-columns: 1fr; }
+            .fund-card.primary { grid-column: span 1; }
+            .capital-grid { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>💰 Live Trading Dashboard</h1>
-        <div class="subtitle">$1,000,000 Fund | Real-Time Performance</div>
+        <h1>💰 Communal Fund Dashboard</h1>
+        <div class="subtitle">$1,000,000 Capital Pool | Deploy to Winners</div>
     </header>
 
     <div class="container">
@@ -289,201 +251,184 @@
             <a href="enhanced-reports.html" class="nav-link">📊 Enhanced Reports</a>
         </div>
 
-        <!-- FUND SUMMARY -->
+        <!-- FUND OVERVIEW -->
         <div class="section-title">Fund Overview</div>
         
-        <div class="fund-summary">
+        <div class="fund-overview">
             <div class="fund-card primary">
                 <div class="fund-label">Total Fund Value</div>
                 <div class="fund-value">$1,026,764.60</div>
-                <div class="fund-change positive">+$26,764.60 (+2.68%)</div>
-            </div>
-            
-            <div class="fund-card">
-                <div class="fund-label">Unrealized P&L</div>
-                <div class="fund-value positive">+$26,764.60</div>
-                <div class="fund-change">From deployed capital</div>
+                <div class="fund-sub positive">+$26,764.60 Unrealized P&L (+2.68%)</div>
             </div>
         </div>
 
-        <!-- CAPITAL ALLOCATION -->
-        <div class="section-title">Capital Allocation</div>
+        <!-- CAPITAL BREAKDOWN -->
+        <div class="section-title">Capital Pool Breakdown</div>
         
-        <div class="allocation-grid">
-            <div class="allocation-card">
-                <div class="allocation-value">$500,000</div>
-                <div class="allocation-label">Deployed (50%)</div>
-                <div class="allocation-sub">5 active bots</div>
+        <div class="capital-grid">
+            <div class="capital-card">
+                <div class="capital-value">$1,000,000</div>
+                <div class="capital-label">Total Capital</div>
+                <div class="capital-desc">Communal fund pool</div>
             </div>
             
-            <div class="allocation-card">
-                <div class="allocation-value">$526,764.60</div>
-                <div class="allocation-label">Deployed Value</div>
-                <div class="allocation-sub positive">+$26,764.60 gain</div>
+            <div class="capital-card">
+                <div class="capital-value">$243,286</div>
+                <div class="capital-label">Deployed</div>
+                <div class="capital-desc">Reserved for 5 positions</div>
             </div>
             
-            <div class="allocation-card">
-                <div class="allocation-value">$500,000</div>
-                <div class="allocation-label">Cash Reserve (50%)</div>
-                <div class="allocation-sub">For 14 more bots</div>
-            </div>
-            
-            <div class="allocation-card">
-                <div class="allocation-value">$1,026,764.60</div>
-                <div class="allocation-label">Total Value</div>
-                <div class="allocation-sub positive">+$26,764.60 (+2.68%)</div>
+            <div class="capital-card">
+                <div class="capital-value positive">$756,714</div>
+                <div class="capital-label">Available</div>
+                <div class="capital-desc">For any opportunity</div>
             </div>
         </div>
 
-        <!-- DEPLOYMENT PROGRESS -->
-        <div class="section-title">Deployment Progress</div>
-        
-        <div class="deployment-bar">
-            <div class="deployment-fill" style="width: 50%;">50%</div>
-        </div>
-        
-        <div class="deployment-markers">
-            <span>$0 (0 bots)</span>
-            <span style="color: var(--accent-success);">Current: $500K (5 bots)</span>
-            <span>Target: $1M (19 bots)</span>
+        <!-- SUMMARY STATS -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-value">5</div>
+                <div class="summary-label">Active Positions</div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="summary-value">18</div>
+                <div class="summary-label">Total Trades</div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="summary-value positive">+$26,764.60</div>
+                <div class="summary-label">Unrealized P&L</div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="summary-value">24.3%</div>
+                <div class="summary-label">Deployed %</div>
+            </div>
         </div>
 
-        <!-- BOT LEADERBOARD -->
-        <div class="section-title">🏆 Active Bot Performance</div>
+        <!-- ACTIVE POSITIONS -->
+        <div class="section-title">Active Positions (Using Communal Capital)</div>
         
-        <div class="leaderboard-container">
-            <div class="leaderboard-header">
-                <div>Bot</div>
-                <div>Allocation</div>
-                <div>Trades</div>
-                <div class="text-right">P&L</div>
-                <div class="text-right">Return</div>
+        <div class="positions-container">
+            <div class="positions-header">
+                <div>Symbol</div>
+                <div>Position</div>
+                <div>Strike</div>
+                <div>Contracts</div>
+                <div>Capital Used</div>
+                <div>Premium</div>
+            </div>
+            
+            <div class="position-row">
+                <div>
+                    <div class="position-symbol">MSTR</div>
+                    <div class="position-meta">Put</div>
+                </div>
+                <div>Short</div>
+                <div>$115.55</div>
+                <div>2</div>
+                <div>$23,110</div>
+                <div class="positive">+$2,054</div>
+            </div>
+            
+            <div class="position-row">
+                <div>
+                    <div class="position-symbol">COST</div>
+                    <div class="position-meta">Put</div>
+                </div>
+                <div>Short</div>
+                <div>$950.72</div>
+                <div>1</div>
+                <div>$95,072</div>
+                <div class="positive">+$1,801</div>
+            </div>
+            
+            <div class="position-row">
+                <div>
+                    <div class="position-symbol">KO</div>
+                    <div class="position-meta">Put</div>
+                </div>
+                <div>Short</div>
+                <div>$79.08</div>
+                <div>5</div>
+                <div>$39,540</div>
+                <div class="positive">+$610</div>
+            </div>
+            
+            <div class="position-row">
+                <div>
+                    <div class="position-symbol">VZ</div>
+                    <div class="position-meta">Put</div>
+                </div>
+                <div>Short</div>
+                <div>$47.86</div>
+                <div>10</div>
+                <div>$47,860</div>
+                <div class="positive">+$600</div>
+            </div>
+            
+            <div class="position-row">
+                <div>
+                    <div class="position-symbol">BAC</div>
+                    <div class="position-meta">Put</div>
+                </div>
+                <div>Short</div>
+                <div>$47.13</div>
+                <div>8</div>
+                <div>$37,704</div>
+                <div class="positive">+$592</div>
+            </div>
+            
+            <div class="position-row" style="background: rgba(99, 102, 241, 0.1); font-weight: 700;">
+                <div>TOTAL</div>
+                <div>--</div>
+                <div>--</div>
+                <div>26</div>
+                <div>$243,286</div>
+                <div class="positive">+$5,657</div>
+            </div>
+        </div>
+
+        <!-- WATCHLIST TARGETS -->
+        <div class="section-title">Next Targets (From Watchlist)</div>
+        
+        <div class="positions-container">
+            <div class="positions-header">
+                <div>Priority</div>
+                <div>Symbol</div>
+                <div>Strategy</div>
+                <div>IV Rank</div>
+                <div>Est. Capital</div>
                 <div>Status</div>
             </div>
             
-            <!-- MSTR Bot -->
-            <div class="bot-row">
-                <div>
-                    <div class="bot-name">MSTR Bot</div>
-                    <div class="bot-strategy">0DTE Premium Capture</div>
-                </div>
-                <div>$100,000</div>
-                <div>6</div>
-                <div class="text-right positive">+$12,393.80</div>
-                <div class="text-right positive">+12.39%</div>
-                <div><span class="status-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-success);">ACTIVE</span></div>
+            <div class="position-row">
+                <div>1</div>
+                <div>UVXY</div>
+                <div>0DTE Scalp</div>
+                <div>99%</div>
+                <div>$20K-30K</div>
+                <div>👁 Watching</div>
             </div>
             
-            <!-- COST Bot -->
-            <div class="bot-row">
-                <div>
-                    <div class="bot-name">COST Bot</div>
-                    <div class="bot-strategy">1DTE Wheel</div>
-                </div>
-                <div>$100,000</div>
-                <div>6</div>
-                <div class="text-right positive">+$10,774.90</div>
-                <div class="text-right positive">+10.77%</div>
-                <div><span class="status-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-success);">ACTIVE</span></div>
-            </div>
-            
-            <!-- KO Bot -->
-            <div class="bot-row">
-                <div>
-                    <div class="bot-name">KO Bot</div>
-                    <div class="bot-strategy">1DTE Wheel</div>
-                </div>
-                <div>$100,000</div>
+            <div class="position-row">
                 <div>2</div>
-                <div class="text-right positive">+$1,216.50</div>
-                <div class="text-right positive">+1.22%</div>
-                <div><span class="status-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-success);">ACTIVE</span></div>
+                <div>COIN</div>
+                <div>0DTE Scalp</div>
+                <div>95%</div>
+                <div>$20K-30K</div>
+                <div>👁 Watching</div>
             </div>
             
-            <!-- VZ Bot -->
-            <div class="bot-row">
-                <div>
-                    <div class="bot-name">VZ Bot</div>
-                    <div class="bot-strategy">1DTE Wheel</div>
-                </div>
-                <div>$100,000</div>
-                <div>2</div>
-                <div class="text-right positive">+$1,193.00</div>
-                <div class="text-right positive">+1.19%</div>
-                <div><span class="status-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-success);">ACTIVE</span></div>
-            </div>
-            
-            <!-- BAC Bot -->
-            <div class="bot-row">
-                <div>
-                    <div class="bot-name">BAC Bot</div>
-                    <div class="bot-strategy">1DTE Wheel</div>
-                </div>
-                <div>$100,000</div>
-                <div>2</div>
-                <div class="text-right positive">+$1,186.40</div>
-                <div class="text-right positive">+1.19%</div>
-                <div><span class="status-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-success);">ACTIVE</span></div>
-            </div>
-            
-            <!-- TOTAL ROW -->
-            <div class="bot-row" style="background: rgba(99, 102, 241, 0.1); font-weight: 700;">
-                <div>ACTIVE BOTS TOTAL</div>
-                <div>$500,000</div>
-                <div>18</div>
-                <div class="text-right positive">+$26,764.60</div>
-                <div class="text-right positive">+5.35%</div>
-                <div>5 / 19</div>
-            </div>
-        </div>
-
-        <!-- PENDING DEPLOYMENT -->
-        <div class="section-title">⏳ Pending Deployment (14 Bots)</div>
-        
-        <div class="leaderboard-container">
-            <div class="leaderboard-header">
-                <div>Tier</div>
-                <div>Allocation</div>
-                <div>Stocks</div>
-                <div class="text-right">Cash Required</div>
-                <div class="text-right">Status</div>
-                <div>Action</div>
-            </div>
-            
-            <div class="bot-row">
-                <div><div class="bot-name">Tier S+</div><div class="bot-strategy">0DTE Focus</div></div>
-                <div>$440,000</div>
-                <div>UVXY, MSTR, COIN, UPST</div>
-                <div class="text-right">$330,000</div>
-                <div class="text-right"><span class="status-badge" style="background: rgba(107, 114, 128, 0.2); color: var(--text-secondary);">WAITING</span></div>
-                <div>Deploy 3 bots</div>
-            </div>
-            
-            <div class="bot-row">
-                <div><div class="bot-name">Tier A</div><div class="bot-strategy">1DTE Focus</div></div>
-                <div>$300,000</div>
-                <div>TSLA, NVDA, AMZN, PLTR, HOOD</div>
-                <div class="text-right">$240,000</div>
-                <div class="text-right"><span class="status-badge" style="background: rgba(107, 114, 128, 0.2); color: var(--text-secondary);">WAITING</span></div>
-                <div>Deploy 4 bots</div>
-            </div>
-            
-            <div class="bot-row">
-                <div><div class="bot-name">Tier B</div><div class="bot-strategy">2DTE Focus</div></div>
-                <div>$210,000</div>
-                <div>SPY, QQQ, IWM, SOXL, TQQQ, META</div>
-                <div class="text-right">$210,000</div>
-                <div class="text-right"><span class="status-badge" style="background: rgba(107, 114, 128, 0.2); color: var(--text-secondary);">WAITING</span></div>
-                <div>Deploy 6 bots</div>
-            </div>
-            
-            <div class="bot-row">
-                <div><div class="bot-name">Tier C</div><div class="bot-strategy">2DTE Spec</div></div>
-                <div>$50,000</div>
-                <div>NFLX, RIOT, SQ, SNAP</div>
-                <div class="text-right">$50,000</div>
-                <div class="text-right"><span class="status-badge" style="background: rgba(107, 114, 128, 0.2); color: var(--text-secondary);">WAITING</span></div>
-                <div>Deploy 4 bots</div>
+            <div class="position-row">
+                <div>3</div>
+                <div>TSLA</div>
+                <div>1DTE Premium</div>
+                <div>90%</div>
+                <div>$15K-20K</div>
+                <div>👁 Watching</div>
             </div>
         </div>
     </div>
