@@ -37,469 +37,426 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         .value-up { animation: valueUp 0.3s ease; }
         @keyframes valueUp { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        /* Password overlay */
+        #password-gate {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #0a0a0f;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-box {
+            background: #12121a;
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .password-input {
+            background: #1a1a25;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #e8e8f0;
+            width: 100%;
+            margin: 16px 0;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+        .password-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .password-error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .password-error.show { opacity: 1; }
+        
+        /* Loading states */
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a25 25%, #2a2a3a 50%, #1a1a25 75%);
+            background-size: 200% 100%;
+            animation: skeleton 1.5s infinite;
+            border-radius: 4px;
+        }
+        @keyframes skeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #8b8b9e;
+        }
     </style>
 </head>
 <body class="bg-ww-dark text-ww-text min-h-screen">
-    <!-- Navigation -->
-    <nav class="glass border-b border-ww-border sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">WW</span>
-                    </div>
-                    <span class="font-bold text-lg tracking-tight">White Wolf<span class="gradient-text">Clan</span></span>
-                </div>
-                <div class="hidden md:flex items-center gap-1">
-                    <a href="index.html" class="px-4 py-2 rounded-lg bg-ww-accent/20 text-ww-accent text-sm font-medium">Dashboard</a>
-                    <a href="positions.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Positions</a>
-                    <a href="watchlist.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Watchlist</a>
-                    <a href="trades.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Trades</a>
-                    <a href="performance.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Analytics</a>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2 text-xs text-ww-muted">
-                        <span class="w-2 h-2 bg-ww-success rounded-full pulse-dot"></span>
-                        LIVE
-                    </div>
-                    <div id="refresh-timer" class="text-xs text-ww-muted font-mono">30s</div>
-                </div>
+    <!-- Password Gate -->
+    <div id="password-gate">
+        <div class="password-box">
+            <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-6">
+                <span class="text-white font-bold text-2xl">WW</span>
             </div>
-        </div>
-        <!-- Mobile nav -->
-        <div class="md:hidden flex overflow-x-auto px-4 pb-3 gap-2 border-t border-ww-border pt-3">
-            <a href="index.html" class="px-3 py-1.5 rounded-lg bg-ww-accent/20 text-ww-accent text-xs font-medium whitespace-nowrap">Dashboard</a>
-            <a href="positions.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Positions</a>
-            <a href="watchlist.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Watchlist</a>
-            <a href="trades.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Trades</a>
-            <a href="performance.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Analytics</a>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Fund Header -->
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold mb-1">Trading Command Center</h1>
-            <p class="text-ww-muted text-sm">$1M Fund • Real-time P&L tracking • Auto-refresh every 30s</p>
-        </div>
-
-        <!-- Primary Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <!-- Fund Value -->
-            <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-accent/50 transition group">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">Fund Value</span>
-                    <svg class="w-4 h-4 text-ww-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <div class="text-3xl font-bold tracking-tight" id="fund-value">$1,026,764.60</div>
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="text-ww-success text-sm font-medium flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                        +$26,764.60
-                    </span>
-                    <span class="text-ww-success text-xs bg-ww-success/10 px-2 py-0.5 rounded">+2.68%</span>
-                </div>
-            </div>
-
-            <!-- Buying Power -->
-            <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-success/50 transition group">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">Buying Power</span>
-                    <svg class="w-4 h-4 text-ww-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <div class="text-3xl font-bold tracking-tight text-ww-success" id="buying-power">$756,714.00</div>
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="text-ww-muted text-xs">Cash Available</span>
-                    <span class="text-ww-success text-xs font-medium" id="buying-pct">75.7%</span>
-                </div>
-            </div>
-
-            <!-- P&L Today -->
-            <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-success/50 transition group">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">P&L Today</span>
-                    <svg class="w-4 h-4 text-ww-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                </div>
-                <div class="text-3xl font-bold tracking-tight text-ww-success" id="pnl-today">+$1,245.80</div>
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="text-ww-muted text-xs">5 positions</span>
-                    <span class="text-ww-success text-xs bg-ww-success/10 px-2 py-0.5 rounded">+$0.12%</span>
-                </div>
-            </div>
-
-            <!-- Commissions -->
-            <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-warning/50 transition group">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">Commissions</span>
-                    <svg class="w-4 h-4 text-ww-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                </div>
-                <div class="text-3xl font-bold tracking-tight" id="commissions">$245.00</div>
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="text-ww-muted text-xs">700 contracts @ $0.35</span>
-                    <span class="text-ww-warning text-xs bg-ww-warning/10 px-2 py-0.5 rounded">0.02% drag</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Secondary Metrics Row -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-            <div class="bg-ww-elevated rounded-lg p-3 text-center">
-                <div class="text-xs text-ww-muted uppercase">Deployed</div>
-                <div class="text-lg font-bold text-ww-accent" id="deployed">$243,286</div>
-                <div class="text-xs text-ww-muted">24.3%</div>
-            </div>
-            <div class="bg-ww-elevated rounded-lg p-3 text-center">
-                <div class="text-xs text-ww-muted uppercase">Open Positions</div>
-                <div class="text-lg font-bold" id="open-positions">5</div>
-                <div class="text-xs text-ww-muted">26 contracts</div>
-            </div>
-            <div class="bg-ww-elevated rounded-lg p-3 text-center">
-                <div class="text-xs text-ww-muted uppercase">Win Rate</div>
-                <div class="text-lg font-bold text-ww-success" id="win-rate">78.5%</div>
-                <div class="text-xs text-ww-muted">YTD</div>
-            </div>
-            <div class="bg-ww-elevated rounded-lg p-3 text-center">
-                <div class="text-xs text-ww-muted uppercase">Profit Factor</div>
-                <div class="text-lg font-bold text-ww-success">2.34</div>
-                <div class="text-xs text-ww-muted">YTD</div>
-            </div>
-            <div class="bg-ww-elevated rounded-lg p-3 text-center">
-                <div class="text-xs text-ww-muted uppercase">ROI Target</div>
-                <div class="text-lg font-bold text-ww-warning">100%</div>
-                <div class="text-xs text-ww-muted">Annual</div>
-            </div>
-        </div>
-
-        <!-- Main Dashboard Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Open Positions Table -->
-            <div class="lg:col-span-2 bg-ww-card border border-ww-border rounded-xl overflow-hidden">
-                <div class="px-5 py-4 border-b border-ww-border flex items-center justify-between">
-                    <h2 class="font-semibold flex items-center gap-2">
-                        <svg class="w-5 h-5 text-ww-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                        </svg>
-                        Open Positions
-                    </h2>
-                    <a href="positions.html" class="text-xs text-ww-accent hover:underline">View All →</a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead class="bg-ww-elevated text-ww-muted text-xs uppercase">
-                            <tr>
-                                <th class="px-4 py-3 text-left">Symbol</th>
-                                <th class="px-4 py-3 text-left">Position</th>
-                                <th class="px-4 py-3 text-right">Contracts</th>
-                                <th class="px-4 py-3 text-right">Capital</th>
-                                <th class="px-4 py-3 text-right">P&L</th>
-                                <th class="px-4 py-3 text-center">DTE</th>
-                            </tr>
-                        </thead>
-                        <tbody id="positions-table" class="divide-y divide-ww-border">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Right Column -->
-            <div class="space-y-6">
-                <!-- Recent Activity -->
-                <div class="bg-ww-card border border-ww-border rounded-xl overflow-hidden">
-                    <div class="px-5 py-4 border-b border-ww-border">
-                        <h2 class="font-semibold flex items-center gap-2">
-                            <svg class="w-5 h-5 text-ww-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            Recent Activity
-                        </h2>
-                    </div>
-                    <div id="activity-feed" class="divide-y divide-ww-border max-h-64 overflow-y-auto">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
-
-                <!-- Mini P&L Chart -->
-                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
-                    <h2 class="font-semibold mb-4 text-sm">Today's P&L Curve</h2>
-                    <svg id="pnl-mini-chart" class="w-full h-32" viewBox="0 0 300 100" preserveAspectRatio="none">
-                        <!-- Generated by JS -->
-                    </svg>
-                    <div class="flex justify-between text-xs text-ww-muted mt-2">
-                        <span>9:30 AM</span>
-                        <span>Now</span>
-                    </div>
-                </div>
-
-                <!-- Quick Stats -->
-                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
-                    <h2 class="font-semibold mb-4 text-sm">Session Stats</h2>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-ww-muted">Best Trade</span>
-                            <span class="text-sm font-medium text-ww-success">+$2,054 (MSTR)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-ww-muted">Worst Trade</span>
-                            <span class="text-sm font-medium text-ww-danger">-$156 (UVXY)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-ww-muted">Avg Winner</span>
-                            <span class="text-sm font-medium text-ww-success">+$892</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-ww-muted">Avg Loser</span>
-                            <span class="text-sm font-medium text-ww-danger">-$89</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ROI Progress Bar -->
-        <div class="mt-6 bg-ww-card border border-ww-border rounded-xl p-5">
-            <div class="flex items-center justify-between mb-3">
-                <div>
-                    <h3 class="font-semibold text-sm">Annual ROI Progress</h3>
-                    <p class="text-xs text-ww-muted">Target: 100% ($1M → $2M)</p>
-                </div>
-                <div class="text-right">
-                    <div class="text-2xl font-bold text-ww-success">+2.68%</div>
-                    <div class="text-xs text-ww-muted">YTD</div>
-                </div>
-            </div>
-            <div class="relative h-4 bg-ww-elevated rounded-full overflow-hidden">
-                <div id="roi-progress" class="absolute h-full bg-gradient-to-r from-ww-success to-emerald-400 rounded-full transition-all duration-500" style="width: 2.68%"></div>
-                <div class="absolute h-full w-0.5 bg-white/30" style="left: 8.33%"></div>
-                <div class="absolute h-full w-0.5 bg-white/30" style="left: 16.67%"></div>
-                <div class="absolute h-full w-0.5 bg-white/30" style="left: 25%"></div>
-                <div class="absolute h-full w-0.5 bg-white/30" style="left: 50%"></div>
-                <div class="absolute h-full w-0.5 bg-white/30" style="left: 75%"></div>
-                <div class="absolute h-full w-0.5 bg-white/50" style="left: 100%"></div>
-            </div>
-            <div class="flex justify-between text-xs text-ww-muted mt-2">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Jun</span>
-                <span>Sep</span>
-                <span class="text-ww-success font-medium">Dec</span>
-            </div>
-        </div>
-    </main>
-
-    <!-- Update Toast -->
-    <div id="update-toast" class="fixed bottom-4 right-4 bg-ww-card border border-ww-border rounded-lg px-4 py-3 shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300">
-        <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-ww-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-            </svg>
-            <div>
-                <div class="text-sm font-medium">Data Refreshed</div>
-                <div class="text-xs text-ww-muted" id="last-update">Just now</div>
-            </div>
+            <h2 class="text-xl font-bold mb-2">White Wolf Clan</h2>
+            <p class="text-ww-muted text-sm mb-6">Restricted Access • Authorized Personnel Only</p>
+            <input type="password" id="password-input" class="password-input" placeholder="••••••••" maxlength="20">
+            <button onclick="checkPassword()" class="w-full bg-ww-accent hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition">
+                Enter Command Center
+            </button>
+            <p id="password-error" class="password-error">Invalid password. Access denied.</p>
         </div>
     </div>
 
-    <script>
-        // State Management
-        const State = {
-            positions: [],
-            activities: [],
-            pnlHistory: [],
-            lastUpdate: new Date(),
-            refreshInterval: null,
-            countdown: 30
-        };
-
-        // Sample Position Data
-        const samplePositions = [
-            { symbol: 'MSTR', type: 'Put', strike: 115.55, contracts: 2, capital: 23110, pnl: 2054, dte: 12, entry: 10.25, current: 5.98, side: 'Short' },
-            { symbol: 'COST', type: 'Put', strike: 950.72, contracts: 1, capital: 95072, pnl: 1801, dte: 18, entry: 25.50, current: 17.25, side: 'Short' },
-            { symbol: 'KO', type: 'Put', strike: 79.08, contracts: 5, capital: 39540, pnl: 610, dte: 21, entry: 1.85, current: 1.25, side: 'Short' },
-            { symbol: 'VZ', type: 'Put', strike: 47.86, contracts: 10, capital: 47860, pnl: 600, dte: 8, entry: 1.20, current: 0.65, side: 'Short' },
-            { symbol: 'BAC', type: 'Put', strike: 47.13, contracts: 8, capital: 37704, pnl: 592, dte: 15, entry: 1.45, current: 0.88, side: 'Short' }
-        ];
-
-        const sampleActivities = [
-            { time: '09:45 AM', action: 'Opened', symbol: 'UVXY', details: 'Sold 5 puts @ $2.15', pnl: null },
-            { time: '10:12 AM', action: 'Closed', symbol: 'TSLA', details: 'Bought 3 puts @ $1.85', pnl: 420 },
-            { time: '11:30 AM', action: 'Rolled', symbol: 'MSTR', details: 'Extended DTE to Mar 15', pnl: null },
-            { time: '01:15 PM', action: 'Collected', symbol: 'COST', details: '50% profit taken', pnl: 900 },
-            { time: '02:45 PM', action: 'Dividend', symbol: 'VZ', details: 'Q4 dividend received', pnl: 280 }
-        ];
-
-        // Generate P&L curve data
-        function generatePnlCurve() {
-            const points = [];
-            let value = 0;
-            for (let i = 0; i < 24; i++) {
-                value += (Math.random() - 0.3) * 200;
-                points.push(value);
-            }
-            return points;
-        }
-
-        // Format currency
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-        }
-
-        // Render Positions Table
-        function renderPositions() {
-            const tbody = document.getElementById('positions-table');
-            tbody.innerHTML = State.positions.map(pos => `
-                <tr class="hover:bg-ww-elevated/50 transition">
-                    <td class="px-4 py-3">
-                        <div class="font-semibold">${pos.symbol}</div>
-                        <div class="text-xs text-ww-muted">${pos.type} $${pos.strike.toFixed(2)}</div>
-                    </td>
-                    <td class="px-4 py-3">
-                        <span class="text-xs px-2 py-1 rounded bg-ww-accent/20 text-ww-accent">${pos.side}</span>
-                    </td>
-                    <td class="px-4 py-3 text-right">${pos.contracts}</td>
-                    <td class="px-4 py-3 text-right font-mono">${formatCurrency(pos.capital)}</td>
-                    <td class="px-4 py-3 text-right">
-                        <span class="text-ww-success font-medium">+${formatCurrency(pos.pnl)}</span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                        <span class="text-xs px-2 py-1 rounded ${pos.dte < 10 ? 'bg-ww-danger/20 text-ww-danger' : 'bg-ww-elevated text-ww-muted'}">${pos.dte}</span>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Render Activity Feed
-        function renderActivities() {
-            const feed = document.getElementById('activity-feed');
-            feed.innerHTML = State.activities.map(act => `
-                <div class="px-4 py-3 flex items-center justify-between hover:bg-ww-elevated/30 transition">
+    <!-- Main Content (Hidden until auth) -->
+    <div id="main-content" style="display: none;">
+        <!-- Navigation -->
+        <nav class="glass border-b border-ww-border sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full ${act.action === 'Closed' || act.action === 'Collected' ? 'bg-ww-success/20' : 'bg-ww-accent/20'} flex items-center justify-center">
-                            <span class="text-xs ${act.action === 'Closed' || act.action === 'Collected' ? 'text-ww-success' : 'text-ww-accent'}">${act.action[0]}</span>
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">WW</span>
                         </div>
-                        <div>
-                            <div class="text-sm font-medium">${act.action} <span class="text-ww-accent">${act.symbol}</span></div>
-                            <div class="text-xs text-ww-muted">${act.details}</div>
-                        </div>
+                        <span class="font-bold text-lg tracking-tight">White Wolf<span class="gradient-text">Clan</span></span>
                     </div>
-                    <div class="text-right">
-                        <div class="text-xs text-ww-muted">${act.time}</div>
-                        ${act.pnl !== null ? `<div class="text-xs ${act.pnl >= 0 ? 'text-ww-success' : 'text-ww-danger'}">${act.pnl >= 0 ? '+' : ''}${formatCurrency(act.pnl)}</div>` : ''}
+                    <div class="hidden md:flex items-center gap-1">
+                        <a href="index.html" class="px-4 py-2 rounded-lg bg-ww-accent/20 text-ww-accent text-sm font-medium">Dashboard</a>
+                        <a href="positions.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Positions</a>
+                        <a href="watchlist.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Watchlist</a>
+                        <a href="trades.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Trades</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div id="data-status" class="flex items-center gap-2 text-xs text-ww-muted">
+                            <span class="w-2 h-2 bg-ww-muted rounded-full"></span>
+                            LOADING
+                        </div>
+                        <div id="refresh-timer" class="text-xs text-ww-muted font-mono">30s</div>
                     </div>
                 </div>
-            `).join('');
-        }
+            </div>
+        </nav>
 
-        // Render Mini P&L Chart (SVG)
-        function renderMiniChart() {
-            const svg = document.getElementById('pnl-mini-chart');
-            const data = State.pnlHistory;
-            const min = Math.min(...data, 0);
-            const max = Math.max(...data, 0);
-            const range = max - min || 1;
-            
-            const width = 300;
-            const height = 100;
-            const padding = 5;
-            
-            const points = data.map((val, i) => {
-                const x = (i / (data.length - 1)) * width;
-                const y = height - padding - ((val - min) / range) * (height - 2 * padding);
-                return `${x},${y}`;
-            }).join(' ');
-            
-            const zeroY = height - padding - ((0 - min) / range) * (height - 2 * padding);
-            
-            svg.innerHTML = `
-                <line x1="0" y1="${zeroY}" x2="${width}" y2="${zeroY}" stroke="#2a2a3a" stroke-width="1"/>
-                <polyline points="${points}" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="${width}" cy="${height - padding - ((data[data.length - 1] - min) / range) * (height - 2 * padding)}" r="4" fill="#10b981"/>
-            `;
-        }
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Fund Header -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold mb-1">Trading Command Center</h1>
+                <p class="text-ww-muted text-sm">$1M Fund • Real-time P&L • Data: <span id="last-update">--:--:--</span> CST</p>
+            </div>
 
-        // Update Metrics with slight randomization
-        function updateMetrics() {
-            // Randomize P&L slightly
-            const pnlBase = 1245.80;
-            const pnlVariation = (Math.random() - 0.5) * 50;
-            const pnlToday = pnlBase + pnlVariation;
-            
-            document.getElementById('pnl-today').textContent = (pnlToday >= 0 ? '+' : '') + formatCurrency(pnlToday).replace('$', '$');
-            document.getElementById('pnl-today').className = `text-3xl font-bold tracking-tight ${pnlToday >= 0 ? 'text-ww-success' : 'text-ww-danger'}`;
-            
-            // Update fund value
-            const fundBase = 1026764.60;
-            const fundValue = fundBase + pnlVariation;
-            document.getElementById('fund-value').textContent = formatCurrency(fundValue);
-            
-            // Update P&L curve
-            State.pnlHistory = generatePnlCurve();
-            renderMiniChart();
-            
-            // Show update toast
-            showUpdateToast();
-        }
+            <!-- Primary Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- Fund Value -->
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-accent/50 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">Fund Value</span>
+                        <svg class="w-4 h-4 text-ww-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold tracking-tight" id="fund-value">--</div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-ww-muted text-sm" id="fund-change">Awaiting data...</span>
+                    </div>
+                </div>
 
-        function showUpdateToast() {
-            const toast = document.getElementById('update-toast');
-            const lastUpdate = document.getElementById('last-update');
-            lastUpdate.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago' }) + ' CST';
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
+                <!-- P&L Today -->
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-accent/50 transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">P&L Today</span>
+                        <svg class="w-4 h-4 text-ww-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold tracking-tight text-ww-muted" id="pnl-today">--</div>
+                    <div class="text-sm text-ww-muted mt-2" id="pnl-today-pct">--</div>
+                </div>
 
-        // Refresh countdown
+                <!-- Committed Capital -->
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-accent/50 transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">Committed Capital</span>
+                        <svg class="w-4 h-4 text-ww-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold tracking-tight" id="committed-capital">--</div>
+                    <div class="w-full bg-ww-elevated rounded-full h-2 mt-3">
+                        <div class="bg-ww-accent h-2 rounded-full transition-all duration-500" id="commitment-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="text-xs text-ww-muted mt-1" id="commitment-text">--% deployed</div>
+                </div>
+
+                <!-- Cash Available -->
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5 hover:border-ww-accent/50 transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-ww-muted text-xs uppercase tracking-wider font-medium">Cash Available</span>
+                        <svg class="w-4 h-4 text-ww-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold tracking-tight" id="cash-available">--</div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-xs px-2 py-1 rounded-full bg-ww-elevated text-ww-muted" id="buying-power">BP: --</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Tables Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- P&L Chart -->
+                <div class="lg:col-span-2 bg-ww-card border border-ww-border rounded-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold">P&L History</h3>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 rounded-lg bg-ww-elevated text-xs text-ww-muted">1D</button>
+                            <button class="px-3 py-1 rounded-lg bg-ww-accent text-xs text-white">1W</button>
+                            <button class="px-3 py-1 rounded-lg bg-ww-elevated text-xs text-ww-muted">1M</button>
+                        </div>
+                    </div>
+                    <div class="h-64 flex items-center justify-center bg-ww-elevated/30 rounded-lg">
+                        <div class="empty-state">
+                            <svg class="w-12 h-12 mx-auto mb-3 text-ww-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                            </svg>
+                            <p class="text-sm">P&L data loading...</p>
+                            <p class="text-xs text-ww-muted mt-1">Connect to Scoreboard Scout</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Positions Summary -->
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
+                    <h3 class="font-semibold mb-4">Open Positions</h3>
+                    <div id="positions-container">
+                        <div class="empty-state">
+                            <svg class="w-10 h-10 mx-auto mb-2 text-ww-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                            <p class="text-sm">No open positions</p>
+                            <p class="text-xs text-ww-muted mt-1">Gate opens 9:15 AM CST</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fortress Status -->
+            <div class="bg-ww-card border border-ww-border rounded-xl p-5 mb-6">
+                <h3 class="font-semibold mb-4">🛡️ Fortress Status</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-center gap-3 p-3 bg-ww-elevated rounded-lg">
+                        <div class="w-10 h-10 rounded-full bg-ww-elevated flex items-center justify-center">
+                            🦊
+                        </div>
+                        <div>
+                            <div class="font-medium text-sm">Fox Trap Sentinel</div>
+                            <div class="text-xs text-ww-muted" id="sentinel-status">Checking...</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-ww-elevated rounded-lg">
+                        <div class="w-10 h-10 rounded-full bg-ww-elevated flex items-center justify-center">
+                            🛡️
+                        </div>
+                        <div>
+                            <div class="font-medium text-sm">Scout Health</div>
+                            <div class="text-xs text-ww-muted" id="health-status">Checking...</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-ww-elevated rounded-lg">
+                        <div class="w-10 h-10 rounded-full bg-ww-elevated flex items-center justify-center">
+                            ❄️
+                        </div>
+                        <div>
+                            <div class="font-medium text-sm">First Snow</div>
+                            <div class="text-xs text-ww-muted">Review at 3:30 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-ww-card border border-ww-border rounded-xl overflow-hidden">
+                <div class="px-5 py-4 border-b border-ww-border flex items-center justify-between">
+                    <h3 class="font-semibold">Recent Activity</h3>
+                    <span class="text-xs text-ww-muted">Live feed</span>
+                </div>
+                <div id="activity-feed">
+                    <div class="empty-state">
+                        <p class="text-sm">No activity recorded</p>
+                        <p class="text-xs text-ww-muted mt-1">Trading begins Monday 9:15 AM</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Password Protection
+        const CORRECT_PASSWORD = 'jarvisb';
+        
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            const error = document.getElementById('password-error');
+            
+            if (input === CORRECT_PASSWORD) {
+                sessionStorage.setItem('ww-authenticated', 'true');
+                document.getElementById('password-gate').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                initDashboard();
+            } else {
+                error.classList.add('show');
+                setTimeout(() => error.classList.remove('show'), 3000);
+            }
+        }
+        
+        // Allow Enter key
+        document.getElementById('password-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+        
+        // Check if already authenticated
+        if (sessionStorage.getItem('ww-authenticated') === 'true') {
+            document.getElementById('password-gate').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+        
+        // Dashboard State
+        const State = {
+            countdown: 30,
+            lastData: null,
+            refreshInterval: null
+        };
+        
+        // Format currency
+        function formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '$--';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(value);
+        }
+        
+        // Fetch real data from scoreboard
+        async function fetchData() {
+            try {
+                // Try to fetch from scoreboard API
+                const response = await fetch('data/scoreboard.json', { 
+                    cache: 'no-store',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Scoreboard not available');
+                }
+                
+                const data = await response.json();
+                State.lastData = data;
+                updateDashboard(data);
+                updateDataStatus('live');
+                
+            } catch (error) {
+                console.log('Scoreboard fetch failed:', error);
+                // No mock data - show empty state
+                updateDataStatus('offline');
+                showEmptyState();
+            }
+        }
+        
+        function updateDashboard(data) {
+            // Fund Value
+            const fundValue = data?.account?.total_equity || data?.fund_value;
+            if (fundValue) {
+                document.getElementById('fund-value').textContent = formatCurrency(fundValue);
+                document.getElementById('fund-value').classList.add('value-up');
+                setTimeout(() => document.getElementById('fund-value').classList.remove('value-up'), 300);
+            }
+            
+            // P&L
+            const pnl = data?.pnl?.total_pnl;
+            const pnlPct = data?.pnl?.total_pnl_pct;
+            if (pnl !== undefined) {
+                const pnlEl = document.getElementById('pnl-today');
+                pnlEl.textContent = (pnl >= 0 ? '+' : '') + formatCurrency(pnl).replace('$', '$');
+                pnlEl.className = `text-3xl font-bold tracking-tight ${pnl >= 0 ? 'text-ww-success' : 'text-ww-danger'}`;
+                
+                if (pnlPct !== undefined) {
+                    document.getElementById('pnl-today-pct').textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
+                    document.getElementById('pnl-today-pct').className = `text-sm mt-2 ${pnlPct >= 0 ? 'text-ww-success' : 'text-ww-danger'}`;
+                }
+            }
+            
+            // Committed Capital
+            const committed = data?.committed_capital || 0;
+            const cash = data?.account?.cash_available;
+            if (cash !== undefined) {
+                document.getElementById('cash-available').textContent = formatCurrency(cash);
+            }
+            if (committed !== undefined && fundValue) {
+                document.getElementById('committed-capital').textContent = formatCurrency(committed);
+                const pct = Math.min(100, (committed / fundValue) * 100);
+                document.getElementById('commitment-bar').style.width = pct + '%';
+                document.getElementById('commitment-text').textContent = pct.toFixed(1) + '% deployed';
+            }
+            
+            // Buying Power
+            const bp = data?.account?.buying_power;
+            if (bp !== undefined) {
+                document.getElementById('buying-power').textContent = 'BP: ' + formatCurrency(bp).replace('$', '');
+            }
+            
+            // Update timestamp
+            const timestamp = data?.timestamp || new Date().toISOString();
+            document.getElementById('last-update').textContent = new Date(timestamp).toLocaleTimeString('en-US', { 
+                timeZone: 'America/Chicago',
+                hour12: false 
+            });
+        }
+        
+        function updateDataStatus(status) {
+            const statusEl = document.getElementById('data-status');
+            if (status === 'live') {
+                statusEl.innerHTML = '<span class="w-2 h-2 bg-ww-success rounded-full pulse-dot"></span>LIVE';
+            } else if (status === 'offline') {
+                statusEl.innerHTML = '<span class="w-2 h-2 bg-ww-muted rounded-full"></span>OFFLINE';
+            } else {
+                statusEl.innerHTML = '<span class="w-2 h-2 bg-ww-warning rounded-full"></span>CONNECTING';
+            }
+        }
+        
+        function showEmptyState() {
+            // Dashboard shows -- or loading states already
+        }
+        
         function updateCountdown() {
             State.countdown--;
             if (State.countdown <= 0) {
                 State.countdown = 30;
-                updateMetrics();
+                fetchData();
             }
             document.getElementById('refresh-timer').textContent = State.countdown + 's';
         }
-
-        // Initialize
-        function init() {
-            // Load from localStorage or use sample data
-            const savedPositions = localStorage.getItem('ww-positions');
-            State.positions = savedPositions ? JSON.parse(savedPositions) : samplePositions;
-            
-            const savedActivities = localStorage.getItem('ww-activities');
-            State.activities = savedActivities ? JSON.parse(savedActivities) : sampleActivities;
-            
-            State.pnlHistory = generatePnlCurve();
-            
-            renderPositions();
-            renderActivities();
-            renderMiniChart();
-            
-            // Start refresh timer
+        
+        function initDashboard() {
+            fetchData();
             State.refreshInterval = setInterval(updateCountdown, 1000);
-            
-            // Initial update
-            updateMetrics();
         }
-
-        // Save data to localStorage (for demo purposes)
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem('ww-positions', JSON.stringify(State.positions));
-            localStorage.setItem('ww-activities', JSON.stringify(State.activities));
-        });
-
-        // Start
-        init();
+        
+        // Check auth on load
+        if (sessionStorage.getItem('ww-authenticated') === 'true') {
+            initDashboard();
+        }
     </script>
 </body>
 </html>
