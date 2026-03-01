@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance - White Wolf Clan Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta http-equiv="refresh" content="0;url=enhanced-reports.html">
+    <style>
+        .password-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .password-box {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #4a5568;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Password Protection -->
+    <div id="passwordOverlay" class="password-overlay">
+        <div class="password-box">
+            <h2 class="text-2xl font-bold mb-4">🔒 White Wolf Clan Command Center</h2>
+            <p class="text-gray-400 mb-4">Enter access code:</p>
+            <input type="password" id="passwordInput" class="px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white mb-4" placeholder="Access code...">
+            <button onclick="checkPassword()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded font-semibold">Enter</button>
+            <p id="errorMsg" class="text-red-500 mt-2 hidden">Incorrect code</p>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === 'jarvisb') {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                window.location.href = 'enhanced-reports.html';
+            } else {
+                document.getElementById('errorMsg').classList.remove('hidden');
+            }
+        }
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+    </script>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-4">Performance Metrics</h1>
+        <p class="text-gray-400">Redirecting to Enhanced Reports...</p>
+        <a href="enhanced-reports.html" class="text-blue-400 hover:text-blue-300">Click here if not redirected</a>
+    </div>
+</body>
+</html>
