@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-03-02T16:35:32.580131",
+  "timestamp": "2026-03-02T16:37:04.069890",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
   "account": {
-    "total_equity": 1003214.0,
-    "cash_available": 600917.0,
+    "total_equity": 1005331.0,
+    "cash_available": 71072.0,
     "buying_power": 1000000.0,
     "starting_capital": 1000000.0
   },
   "pnl": {
-    "total_pnl": 3214.0,
-    "total_pnl_pct": 0.32,
+    "total_pnl": 5331.0,
+    "total_pnl_pct": 0.53,
     "ytd_pnl": 2644.0,
     "ytd_pnl_pct": 0.26
   },
@@ -91,10 +91,10 @@
     },
     {
       "date": "2026-03-02",
-      "value": 1003214.0
+      "value": 1005331.0
     }
   ],
-  "committed_capital": 399083.0,
+  "committed_capital": 928928.0,
   "positions": [
     {
       "symbol": "MSTR",
@@ -156,6 +156,48 @@
       "iv": 22.0,
       "premium": 570.0,
       "buyback_cost": 570.0,
+      "data_source": "TRADIER_LIVE",
+      "trade_type": "REAL_PAPER_TRADE"
+    },
+    {
+      "symbol": "VZ",
+      "type": "Short Put",
+      "strike": 47.51,
+      "contracts": 31,
+      "entry": 0.19,
+      "current": 50.02,
+      "option_price": 0.19,
+      "expiry": "Mar 7, 2026",
+      "dte": 5,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.15,
+      "theta": 0.06,
+      "otm": 5.0,
+      "iv": 20.5,
+      "premium": 589.0,
+      "buyback_cost": 589.0,
+      "data_source": "TRADIER_LIVE",
+      "trade_type": "REAL_PAPER_TRADE"
+    },
+    {
+      "symbol": "COST",
+      "type": "Short Put",
+      "strike": 956.41,
+      "contracts": 4,
+      "entry": 3.82,
+      "current": 1006.75,
+      "option_price": 3.82,
+      "expiry": "Mar 7, 2026",
+      "dte": 5,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.2,
+      "theta": 0.85,
+      "otm": 5.0,
+      "iv": 25.0,
+      "premium": 1528.0,
+      "buyback_cost": 1528.0,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     }
