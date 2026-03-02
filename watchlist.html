@@ -3,381 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watchlist | White Wolf Clan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'ww-dark': '#0a0a0f',
-                        'ww-card': '#12121a',
-                        'ww-elevated': '#1a1a25',
-                        'ww-border': '#2a2a3a',
-                        'ww-text': '#e8e8f0',
-                        'ww-muted': '#8b8b9e',
-                        'ww-accent': '#6366f1',
-                        'ww-success': '#10b981',
-                        'ww-danger': '#ef4444',
-                        'ww-warning': '#f59e0b'
-                    }
-                }
-            }
-        }
-    </script>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>White Wolf Clan | Watchlist</title>
     <style>
-        * { scrollbar-width: thin; scrollbar-color: #2a2a3a #0a0a0f; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0f; }
-        ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
-        body { font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
-        .glass { background: rgba(18, 18, 26, 0.8); backdrop-filter: blur(12px); }
-        .gradient-text { background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .pulse-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-        .watchlist-row { transition: all 0.2s; }
-        .watchlist-row:hover { background: rgba(99, 102, 241, 0.05); }
-        .sortable { cursor: pointer; user-select: none; }
-        .sortable:hover { color: #6366f1; }
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --elevated: #1a1a25;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --muted: #8b8b9e;
+            --accent: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        #gate {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .gate-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+        }
+        .gate-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .gate-input {
+            width: 100%;
+            background: var(--elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text);
+            font-size: 16px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        .gate-input:focus { outline: none; border-color: var(--accent); }
+        .gate-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .gate-error { color: var(--danger); margin-top: 12px; font-size: 14px; display: none; }
+        
+        #app { display: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        
+        nav {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+        }
+        
+        .page-header {
+            margin-bottom: 24px;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .page-header p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+        
+        /* Watchlist Table */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            background: var(--elevated);
+        }
+        tr:hover { background: rgba(99, 102, 241, 0.03); }
+        .symbol {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .price {
+            font-family: 'SF Mono', monospace;
+            font-weight: 500;
+        }
+        .change.positive { color: var(--success); }
+        .change.negative { color: var(--danger); }
+        .allocation {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .strategy {
+            font-size: 12px;
+            color: var(--muted);
+        }
+        .iv-high { color: var(--danger); }
+        .iv-med { color: var(--warning); }
+        .iv-low { color: var(--success); }
+        
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+        .empty svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
     </style>
 </head>
-<body class="bg-ww-dark text-ww-text min-h-screen">
-    <!-- Navigation -->
-    <nav class="glass border-b border-ww-border sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">WW</span>
-                    </div>
-                    <span class="font-bold text-lg tracking-tight">White Wolf<span class="gradient-text">Clan</span></span>
-                </div>
-                <div class="hidden md:flex items-center gap-1">
-                    <a href="index.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Dashboard</a>
-                    <a href="positions.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Positions</a>
-                    <a href="watchlist.html" class="px-4 py-2 rounded-lg bg-ww-accent/20 text-ww-accent text-sm font-medium">Watchlist</a>
-                    <a href="trades.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Trades</a>
-                    <a href="performance.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Analytics</a>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2 text-xs text-ww-muted">
-                        <span class="w-2 h-2 bg-ww-success rounded-full pulse-dot"></span>
-                        LIVE
-                    </div>
-                    <div id="refresh-timer" class="text-xs text-ww-muted font-mono">30s</div>
-                </div>
-            </div>
+<body>
+    <div id="gate">
+        <div class="gate-box">
+            <div class="gate-logo">WW</div>
+            <h2>White Wolf Clan</h2>
+            <p style="color: var(--muted); font-size: 14px; margin: 8px 0 24px;">Watchlist • Restricted Access</p>
+            <input type="password" id="pwd" class="gate-input" placeholder="Enter password">
+            <button onclick="auth()" class="gate-btn">Access Watchlist</button>
+            <p id="err" class="gate-error">Invalid password</p>
         </div>
-        <div class="md:hidden flex overflow-x-auto px-4 pb-3 gap-2 border-t border-ww-border pt-3">
-            <a href="index.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Dashboard</a>
-            <a href="positions.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Positions</a>
-            <a href="watchlist.html" class="px-3 py-1.5 rounded-lg bg-ww-accent/20 text-ww-accent text-xs font-medium whitespace-nowrap">Watchlist</a>
-            <a href="trades.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Trades</a>
-            <a href="performance.html" class="px-3 py-1.5 rounded-lg hover:bg-ww-elevated text-ww-muted text-xs font-medium whitespace-nowrap">Analytics</a>
-        </div>
-    </nav>
+    </div>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Header -->
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold mb-1">Strategic Watchlist</h1>
-            <p class="text-ww-muted text-sm">19 Target Stocks • Allocation Strategy • DTE Targets</p>
-        </div>
+    <div id="app">
+        <nav>
+            <div class="nav-inner">
+                <div class="brand">
+                    <div class="brand-icon">WW</div>
+                    White Wolf Clan
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Dashboard</a>
+                    <a href="positions.html">Positions</a>
+                    <a href="watchlist.html" class="active">Watchlist</a>
+                    <a href="trades.html">Trades</a>
+                </div>
+            </div>
+        </nav>
 
-        <!-- Strategy Overview Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <div class="text-xs text-ww-muted uppercase mb-1">Total Targets</div>
-                <div class="text-2xl font-bold">19</div>
-                <div class="text-xs text-ww-muted">Stocks</div>
+        <div class="container">
+            <div class="page-header">
+                <h1>Watchlist</h1>
+                <p>19 targets • Allocation strategy • DTE planning</p>
             </div>
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <div class="text-xs text-ww-muted uppercase mb-1">Avg DTE</div>
-                <div class="text-2xl font-bold text-ww-accent">24.5</div>
-                <div class="text-xs text-ww-muted">Days</div>
-            </div>
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <div class="text-xs text-ww-muted uppercase mb-1">Avg OTM</div>
-                <div class="text-2xl font-bold text-ww-success">6.8%</div>
-                <div class="text-xs text-ww-muted">OTM Strikes</div>
-            </div>
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <div class="text-xs text-ww-muted uppercase mb-1">Avg IV Rank</div>
-                <div class="text-2xl font-bold text-ww-warning">62.4%</div>
-                <div class="text-xs text-ww-muted">Percentile</div>
-            </div>
-        </div>
 
-        <!-- Filters -->
-        <div class="bg-ww-card border border-ww-border rounded-xl p-4 mb-6">
-            <div class="flex flex-wrap items-center gap-3">
-                <span class="text-sm text-ww-muted">Filter by:</span>
-                <button onclick="filterWatchlist('all')" class="filter-btn px-3 py-1.5 rounded-lg bg-ww-accent text-white text-sm font-medium transition" data-filter="all">All</button>
-                <button onclick="filterWatchlist('active')" class="filter-btn px-3 py-1.5 rounded-lg bg-ww-elevated text-ww-muted text-sm font-medium transition hover:bg-ww-border" data-filter="active">Active Targets</button>
-                <button onclick="filterWatchlist('high-iv')" class="filter-btn px-3 py-1.5 rounded-lg bg-ww-elevated text-ww-muted text-sm font-medium transition hover:bg-ww-border" data-filter="high-iv">High IV (>50%)</button>
-                <button onclick="filterWatchlist('low-dte')" class="filter-btn px-3 py-1.5 rounded-lg bg-ww-elevated text-ww-muted text-sm font-medium transition hover:bg-ww-border" data-filter="low-dte">0DTE/Weeklies</button>
-                <button onclick="filterWatchlist('monthlies')" class="filter-btn px-3 py-1.5 rounded-lg bg-ww-elevated text-ww-muted text-sm font-medium transition hover:bg-ww-border" data-filter="monthlies">Monthlies (20-30 DTE)</button>
-                <div class="ml-auto">
-                    <input type="text" id="search-watchlist" placeholder="Search symbol..." 
-                           class="bg-ww-elevated border border-ww-border rounded-lg px-3 py-1.5 text-sm text-ww-text placeholder-ww-muted focus:outline-none focus:border-ww-accent"
-                           onkeyup="searchWatchlist()">
+            <div class="card">
+                <div class="table-wrap">
+                    <table id="watchlist-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Price</th>
+                                <th>Change</th>
+                                <th>IV</th>
+                                <th>Allocation</th>
+                                <th>Strategy</th>
+                                <th>DTE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="watchlist-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-        <!-- Watchlist Table -->
-        <div class="bg-ww-card border border-ww-border rounded-xl overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-ww-elevated text-ww-muted text-xs uppercase">
-                        <tr>
-                            <th class="px-4 py-3 text-left sortable" onclick="sortWatchlist('symbol')">Symbol ↕</th>
-                            <th class="px-4 py-3 text-right sortable" onclick="sortWatchlist('price')">Price ↕</th>
-                            <th class="px-4 py-3 text-right sortable" onclick="sortWatchlist('change')">Change ↕</th>
-                            <th class="px-4 py-3 text-right sortable" onclick="sortWatchlist('iv')">IV Rank ↕</th>
-                            <th class="px-4 py-3 text-center sortable" onclick="sortWatchlist('dte')">Target DTE ↕</th>
-                            <th class="px-4 py-3 text-center sortable" onclick="sortWatchlist('otm')">OTM % ↕</th>
-                            <th class="px-4 py-3 text-right">Allocation</th>
-                            <th class="px-4 py-3 text-center">Status</th>
-                            <th class="px-4 py-3 text-right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="watchlist-body" class="divide-y divide-ww-border">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Strategy Legend -->
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-ww-danger rounded-full"></span>
-                    0DTE Scalps
-                </h3>
-                <ul class="text-sm text-ww-muted space-y-1">
-                    <li>• UVXY, COIN, TSLA</li>
-                    <li>• High volatility plays</li>
-                    <li>• Quick in-and-out</li>
-                    <li>• Risk: $15K-30K per trade</li>
-                </ul>
-            </div>
-            
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-ww-warning rounded-full"></span>
-                    1-2 Week Premium
-                </h3>
-                <ul class="text-sm text-ww-muted space-y-1">
-                    <li>• MSTR, NVDA, AMD</li>
-                    <li>• Weekly options</li>
-                    <li>• 10-15% OTM strikes</li>
-                    <li>• Risk: $20K-40K per trade</li>
-                </ul>
-            </div>
-
-            <div class="bg-ww-card border border-ww-border rounded-xl p-4">
-                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-ww-success rounded-full"></span>
-                    Monthly Income
-                </h3>
-                <ul class="text-sm text-ww-muted space-y-1">
-                    <li>• COST, KO, VZ, BAC, JNJ</li>
-                    <li>• 20-30 DTE</li>
-                    <li>• 3-7% OTM strikes</li>
-                    <li>• Risk: $30K-95K per trade</li>
-                </ul>
-            </div>
-        </div>
-    </main>
+    </div>
 
     <script>
-        // 19-Stock Watchlist with DTE Strategy
-        const watchlist = [
-            // 0DTE Scalps (High Volatility)
-            { symbol: 'UVXY', name: 'ProShares VIX Short-Term', price: 12.45, change: 3.25, iv: 95.2, dte: 0, otm: 15, allocation: '5%', allocationMin: 20000, allocationMax: 30000, category: '0dte', status: 'watching' },
-            { symbol: 'COIN', name: 'Coinbase Global', price: 245.80, change: 5.12, iv: 88.5, dte: 0, otm: 12, allocation: '5%', allocationMin: 20000, allocationMax: 30000, category: '0dte', status: 'active' },
-            { symbol: 'TSLA', name: 'Tesla Inc', price: 342.15, change: -2.34, iv: 78.3, dte: 1, otm: 10, allocation: '5%', allocationMin: 20000, allocationMax: 30000, category: '0dte', status: 'watching' },
-            
-            // 1-2 Week Premium (High Growth)
-            { symbol: 'MSTR', name: 'MicroStrategy', price: 128.45, change: 4.56, iv: 78.5, dte: 12, otm: 10, allocation: '5%', allocationMin: 20000, allocationMax: 35000, category: 'weekly', status: 'active' },
-            { symbol: 'NVDA', name: 'NVIDIA Corp', price: 142.80, change: 1.23, iv: 68.2, dte: 14, otm: 12, allocation: '7%', allocationMin: 30000, allocationMax: 50000, category: 'weekly', status: 'watching' },
-            { symbol: 'AMD', name: 'AMD Inc', price: 118.95, change: 0.89, iv: 62.4, dte: 14, otm: 12, allocation: '5%', allocationMin: 20000, allocationMax: 35000, category: 'weekly', status: 'watching' },
-            { symbol: 'PLTR', name: 'Palantir Tech', price: 85.40, change: 2.45, iv: 71.8, dte: 14, otm: 15, allocation: '4%', allocationMin: 15000, allocationMax: 25000, category: 'weekly', status: 'watching' },
-            { symbol: 'META', name: 'Meta Platforms', price: 735.20, change: -0.56, iv: 42.3, dte: 14, otm: 8, allocation: '5%', allocationMin: 25000, allocationMax: 40000, category: 'weekly', status: 'watching' },
-            
-            // Monthly Income (Blue Chip)
-            { symbol: 'COST', name: 'Costco Wholesale', price: 995.30, change: 0.34, iv: 35.2, dte: 21, otm: 5, allocation: '10%', allocationMin: 80000, allocationMax: 100000, category: 'monthly', status: 'active' },
-            { symbol: 'KO', name: 'Coca-Cola', price: 81.45, change: 0.12, iv: 22.8, dte: 25, otm: 3, allocation: '5%', allocationMin: 35000, allocationMax: 45000, category: 'monthly', status: 'active' },
-            { symbol: 'VZ', name: 'Verizon', price: 50.12, change: 0.23, iv: 28.4, dte: 21, otm: 5, allocation: '5%', allocationMin: 40000, allocationMax: 50000, category: 'monthly', status: 'active' },
-            { symbol: 'BAC', name: 'Bank of America', price: 49.85, change: -0.45, iv: 32.1, dte: 21, otm: 5, allocation: '5%', allocationMin: 35000, allocationMax: 45000, category: 'monthly', status: 'active' },
-            { symbol: 'JNJ', name: 'Johnson & Johnson', price: 158.40, change: 0.18, iv: 24.5, dte: 30, otm: 5, allocation: '5%', allocationMin: 30000, allocationMax: 40000, category: 'monthly', status: 'watching' },
-            { symbol: 'PG', name: 'Procter & Gamble', price: 168.25, change: 0.42, iv: 21.3, dte: 30, otm: 4, allocation: '5%', allocationMin: 30000, allocationMax: 40000, category: 'monthly', status: 'watching' },
-            { symbol: 'WMT', name: 'Walmart', price: 94.85, change: 0.67, iv: 26.7, dte: 28, otm: 4, allocation: '5%', allocationMin: 35000, allocationMax: 45000, category: 'monthly', status: 'watching' },
-            { symbol: 'XOM', name: 'Exxon Mobil', price: 112.45, change: -0.89, iv: 31.2, dte: 30, otm: 5, allocation: '5%', allocationMin: 35000, allocationMax: 45000, category: 'monthly', status: 'watching' },
-            { symbol: 'CVX', name: 'Chevron', price: 156.80, change: -1.23, iv: 29.8, dte: 30, otm: 5, allocation: '5%', allocationMin: 35000, allocationMax: 45000, category: 'monthly', status: 'watching' },
-            { symbol: 'PFE', name: 'Pfizer', price: 28.45, change: -0.12, iv: 38.5, dte: 28, otm: 7, allocation: '3%', allocationMin: 20000, allocationMax: 30000, category: 'monthly', status: 'watching' },
-            { symbol: 'MRK', name: 'Merck', price: 98.75, change: 0.34, iv: 25.6, dte: 30, otm: 5, allocation: '4%', allocationMin: 25000, allocationMax: 35000, category: 'monthly', status: 'watching' }
+        const PWD = 'jarvisb';
+        function auth() {
+            const input = document.getElementById('pwd').value;
+            if (input === PWD) {
+                sessionStorage.setItem('auth', '1');
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                load();
+            } else {
+                document.getElementById('err').style.display = 'block';
+            }
+        }
+        document.getElementById('pwd').addEventListener('keypress', e => {
+            if (e.key === 'Enter') auth();
+        });
+        if (sessionStorage.getItem('auth') === '1') {
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+        }
+        
+        // Default watchlist data
+        const DEFAULT_WATCHLIST = [
+            { symbol: 'SPY', price: 595.42, change: 0.85, iv: 18.5, allocation: '10%', strategy: 'ORB Fade', dte: '0-7' },
+            { symbol: 'QQQ', price: 512.18, change: 1.12, iv: 22.3, allocation: '8%', strategy: 'Liquidity Grab', dte: '0-7' },
+            { symbol: 'AAPL', price: 229.87, change: -0.42, iv: 25.1, allocation: '6%', strategy: 'Wheel', dte: '7-14' },
+            { symbol: 'TSLA', price: 248.50, change: 2.15, iv: 68.4, allocation: '5%', strategy: 'Momentum', dte: '0-3' },
+            { symbol: 'NVDA', price: 138.25, change: 1.85, iv: 52.7, allocation: '6%', strategy: 'Scalp', dte: '0-3' },
+            { symbol: 'AMD', price: 118.42, change: -0.95, iv: 45.2, allocation: '5%', strategy: 'Scalp', dte: '0-3' },
+            { symbol: 'COIN', price: 245.80, change: 3.25, iv: 78.5, allocation: '4%', strategy: 'Crypto Play', dte: '0-3' },
+            { symbol: 'MSTR', price: 342.15, change: 5.42, iv: 85.2, allocation: '3%', strategy: 'BTC Proxy', dte: '0-3' },
+            { symbol: 'META', price: 582.35, change: 0.65, iv: 28.4, allocation: '5%', strategy: 'Wheel', dte: '7-14' },
+            { symbol: 'AMZN', price: 198.42, change: -0.28, iv: 32.1, allocation: '5%', strategy: 'Wheel', dte: '7-14' },
+            { symbol: 'MSFT', price: 425.18, change: 0.42, iv: 20.5, allocation: '6%', strategy: 'Conservative', dte: '14-21' },
+            { symbol: 'GOOGL', price: 176.25, change: 0.18, iv: 24.8, allocation: '5%', strategy: 'Wheel', dte: '7-14' },
+            { symbol: 'NFLX', price: 885.42, change: 1.95, iv: 38.5, allocation: '4%', strategy: 'Momentum', dte: '0-7' },
+            { symbol: 'CRM', price: 312.85, change: -0.65, iv: 35.2, allocation: '4%', strategy: 'Swing', dte: '7-14' },
+            { symbol: 'BAC', price: 46.82, change: 0.12, iv: 28.5, allocation: '5%', strategy: 'Wheel', dte: '14-30' },
+            { symbol: 'KO', price: 63.45, change: 0.05, iv: 16.2, allocation: '7%', strategy: 'Income', dte: '21-35' },
+            { symbol: 'VZ', price: 42.18, change: -0.08, iv: 18.5, allocation: '6%', strategy: 'Income', dte: '21-35' },
+            { symbol: 'XLE', price: 95.42, change: 0.95, iv: 25.8, allocation: '5%', strategy: 'Safe Haven', dte: '7-14' },
+            { symbol: 'GLD', price: 242.18, change: 0.45, iv: 15.2, allocation: '4%', strategy: 'Hedge', dte: '14-30' }
         ];
-
-        let currentFilter = 'all';
-        let currentSort = { field: 'symbol', direction: 'asc' };
-        let filteredData = [...watchlist];
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-        }
-
-        function getStatusBadge(status) {
-            const badges = {
-                active: '<span class="px-2 py-1 rounded-full bg-ww-success/20 text-ww-success text-xs font-medium">🎯 Active</span>',
-                watching: '<span class="px-2 py-1 rounded-full bg-ww-elevated text-ww-muted text-xs font-medium">👁 Watching</span>',
-                paused: '<span class="px-2 py-1 rounded-full bg-ww-warning/20 text-ww-warning text-xs font-medium">⏸ Paused</span>'
-            };
-            return badges[status] || badges.watching;
-        }
-
-        function getCategoryLabel(category) {
-            const labels = {
-                '0dte': '<span class="text-ww-danger">0DTE</span>',
-                'weekly': '<span class="text-ww-warning">Weekly</span>',
-                'monthly': '<span class="text-ww-success">Monthly</span>'
-            };
-            return labels[category] || category;
-        }
-
-        function getIVColor(iv) {
-            if (iv >= 70) return 'text-ww-danger';
-            if (iv >= 50) return 'text-ww-warning';
-            return 'text-ww-success';
-        }
-
-        function renderWatchlist() {
+        
+        function renderWatchlist(data) {
             const tbody = document.getElementById('watchlist-body');
-            
-            // Apply sort
-            filteredData.sort((a, b) => {
-                let aVal = a[currentSort.field];
-                let bVal = b[currentSort.field];
+            tbody.innerHTML = data.map(stock => {
+                const changeClass = stock.change >= 0 ? 'positive' : 'negative';
+                const changeSign = stock.change >= 0 ? '+' : '';
+                const ivClass = stock.iv > 50 ? 'iv-high' : stock.iv > 30 ? 'iv-med' : 'iv-low';
                 
-                if (currentSort.field === 'symbol') {
-                    aVal = aVal.toLowerCase();
-                    bVal = bVal.toLowerCase();
-                }
-                
-                if (currentSort.direction === 'asc') {
-                    return aVal > bVal ? 1 : -1;
+                return `
+                    <tr>
+                        <td><span class="symbol">${stock.symbol}</span></td>
+                        <td class="price">$${stock.price.toFixed(2)}</td>
+                        <td class="change ${changeClass}">${changeSign}${stock.change.toFixed(2)}%</td>
+                        <td class="${ivClass}">${stock.iv.toFixed(1)}%</td>
+                        <td><span class="allocation">${stock.allocation}</span></td>
+                        <td class="strategy">${stock.strategy}</td>
+                        <td>${stock.dte}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        async function load() {
+            try {
+                const r = await fetch('data/watchlist.json?_=' + Date.now(), {cache: 'no-store'});
+                if (r.ok) {
+                    const data = await r.json();
+                    renderWatchlist(data);
                 } else {
-                    return aVal < bVal ? 1 : -1;
+                    throw new Error('Using default');
                 }
-            });
-            
-            tbody.innerHTML = filteredData.map(stock => `
-                <tr class="watchlist-row">
-                    <td class="px-4 py-3">
-                        <div class="flex items-center gap-2">
-                            <span class="font-semibold text-ww-accent">${stock.symbol}</span>
-                            <span class="text-xs text-ww-muted hidden sm:inline">${stock.name}</span>
-                        </div>
-                    </td>
-                    <td class="px-4 py-3 text-right font-mono">${formatCurrency(stock.price)}</td>
-                    <td class="px-4 py-3 text-right">
-                        <span class="${stock.change >= 0 ? 'text-ww-success' : 'text-ww-danger'}">
-                            ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-right font-mono ${getIVColor(stock.iv)}">${stock.iv.toFixed(1)}%</td>
-                    <td class="px-4 py-3 text-center">${getCategoryLabel(stock.category)} (${stock.dte})</td>
-                    <td class="px-4 py-3 text-center font-mono">${stock.otm}%</td>
-                    <td class="px-4 py-3 text-right">
-                        <div class="font-medium">${stock.allocation}</div>
-                        <div class="text-xs text-ww-muted">$${(stock.allocationMin/1000).toFixed(0)}K-${(stock.allocationMax/1000).toFixed(0)}K</div>
-                    </td>
-                    <td class="px-4 py-3 text-center">${getStatusBadge(stock.status)}</td>
-                    <td class="px-4 py-3 text-right">
-                        <button onclick="addToTrade('${stock.symbol}')" class="px-3 py-1 bg-ww-accent/20 hover:bg-ww-accent/30 text-ww-accent rounded text-xs font-medium transition">
-                            Trade
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function filterWatchlist(filter) {
-            currentFilter = filter;
-            
-            // Update button states
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (btn.dataset.filter === filter) {
-                    btn.className = 'filter-btn px-3 py-1.5 rounded-lg bg-ww-accent text-white text-sm font-medium transition';
-                } else {
-                    btn.className = 'filter-btn px-3 py-1.5 rounded-lg bg-ww-elevated text-ww-muted text-sm font-medium transition hover:bg-ww-border';
-                }
-            });
-            
-            // Apply filter
-            if (filter === 'all') {
-                filteredData = [...watchlist];
-            } else if (filter === 'active') {
-                filteredData = watchlist.filter(s => s.status === 'active');
-            } else if (filter === 'high-iv') {
-                filteredData = watchlist.filter(s => s.iv >= 50);
-            } else if (filter === 'low-dte') {
-                filteredData = watchlist.filter(s => s.category === '0dte' || s.category === 'weekly');
-            } else if (filter === 'monthlies') {
-                filteredData = watchlist.filter(s => s.category === 'monthly');
+            } catch (e) {
+                renderWatchlist(DEFAULT_WATCHLIST);
             }
-            
-            renderWatchlist();
         }
-
-        function searchWatchlist() {
-            const query = document.getElementById('search-watchlist').value.toLowerCase();
-            if (query === '') {
-                filterWatchlist(currentFilter);
-                return;
-            }
-            filteredData = watchlist.filter(s => 
-                s.symbol.toLowerCase().includes(query) || 
-                s.name.toLowerCase().includes(query)
-            );
-            renderWatchlist();
+        
+        if (sessionStorage.getItem('auth') === '1') {
+            load();
         }
-
-        function sortWatchlist(field) {
-            if (currentSort.field === field) {
-                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
-            } else {
-                currentSort.field = field;
-                currentSort.direction = 'asc';
-            }
-            renderWatchlist();
-        }
-
-        function addToTrade(symbol) {
-            const stock = watchlist.find(s => s.symbol === symbol);
-            alert(`Initiating trade setup for ${symbol}\nStrategy: ${stock.dte} DTE, ${stock.otm}% OTM\nAllocation: ${stock.allocation}`);
-        }
-
-        // Refresh countdown
-        let countdown = 30;
-        setInterval(() => {
-            countdown--;
-            if (countdown <= 0) {
-                countdown = 30;
-                document.getElementById('refresh-timer').textContent = 'Updating...';
-                setTimeout(() => {
-                    document.getElementById('refresh-timer').textContent = '30s';
-                }, 1000);
-            } else {
-                document.getElementById('refresh-timer').textContent = countdown + 's';
-            }
-        }, 1000);
-
-        // Initialize
-        renderWatchlist();
     </script>
 </body>
 </html>
