@@ -119,17 +119,27 @@ container.innerHTML='<div class="section"><div class="empty"><p>No open position
 let html='';
 positions.forEach(p=>{
 const pnl=p.pnl||0;
+const premium = p.premium || 0;
+
 html+='<div class="poscard">';
+
+// Header with Symbol and Premium Badge
 html+='<div class="posheader">';
 html+='<div class="possymbol">';
 html+='<span class="symbadge">'+(p.symbol||'--')+'</span>';
 html+='<div class="posdetails"><div>'+(p.type||'Short Put')+' $'+(p.strike||'--')+'</div><div>'+(p.contracts||'--')+' contracts • Exp '+(p.expiry||'--')+'</div></div>';
 html+='</div>';
-html+='<div class="pospnl"><div class="main '+(pnl>=0?'green':'red')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</div><div class="sub">'+(p.pnl_pct||0)+'% unrealized</div></div>';
+
+// Premium collected badge in header
+html+='<div style="text-align:right;">';
+html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;margin-bottom:4px;">Premium Collected</div>';
+html+='<div style="font-size:24px;font-weight:bold;color:#10b981;font-family:monospace;">+'+fmt(premium)+'</div>';
+html+='<div style="font-size:12px;color:#64748b;">'+(p.pnl_pct||0)+'% unrealized P&L</div>';
 html+='</div>';
 
-// Premium & Buy-to-Close Box
-const premium = p.premium || 0;
+html+='</div>';
+
+// Buy-to-Close Analysis Box
 const optionPrice = p.option_price || (p.premium / p.contracts / 100) || 2.50;
 const contracts = p.contracts || 1;
 const buybackCost = optionPrice * contracts * 100;
@@ -139,10 +149,9 @@ const target50 = premium * 0.50;
 
 html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin:16px 0;">';
 html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Buy-to-Close Analysis</div>';
-html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#8b8b9e;font-size:14px;">Premium Collected</span><span style="color:#10b981;font-weight:600;">+'+fmt(premium)+'</span></div>';
-html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#8b8b9e;font-size:14px;">Buyback ('+fmt(optionPrice)+' x '+contracts+')</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
-html+='<div style="border-top:1px solid #2a2a3a;margin:8px 0;padding-top:8px;display:flex;justify-content:space-between;"><span style="color:#e8e8f0;font-size:14px;font-weight:600;">Net Profit if Closed</span><span style="color:'+(netProfit>=0?'#10b981':'#ef4444')+';font-weight:600;">'+(netProfit>=0?'+':'')+fmt(netProfit)+'</span></div>';
-html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;"><span style="color:#8b8b9e;">Profit: '+profitPct.toFixed(1)+'%</span><span style="color:#6366f1;">50% Target: '+fmt(target50)+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cost to Close ('+fmt(optionPrice)+' × '+contracts+')</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
+html+='<div style="border-top:1px solid #2a2a3a;margin:8px 0;padding-top:8px;display:flex;justify-content:space-between;"><span style="color:#e8e8f0;font-size:14px;font-weight:600;">Net if Closed Now</span><span style="color:'+(netProfit>=0?'#10b981':'#ef4444')+';font-weight:600;">'+(netProfit>=0?'+':'')+fmt(netProfit)+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;"><span style="color:#64748b;">Profit: '+profitPct.toFixed(1)+'%</span><span style="color:#6366f1;">50% Target: '+fmt(target50)+'</span></div>';
 html+='</div>';
 
 html+='<div class="metrics">';
