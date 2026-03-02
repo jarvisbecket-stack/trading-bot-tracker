@@ -165,6 +165,60 @@ html+='</div>';
 html+='</div>';
 });
 container.innerHTML=html;
+
+// Load recently closed positions
+loadClosedTrades();
+}
+
+async function loadClosedTrades(){
+try{
+const r=await fetch('data/trade_chronicle.jsonl?_='+Date.now(),{cache:'no-store'});
+if(!r.ok)return;
+const text=await r.text();
+const lines=text.trim().split('\n').filter(l=>l.trim());
+const trades=lines.map(line=>{try{return JSON.parse(line);}catch(e){return null;}}).filter(t=>t!==null);
+
+// Find closed trades (have exit_time or exit_reason)
+const closed=trades.filter(t=>t.exit_time||t.result?.exit_reason).sort((a,b)=>new Date(b.exit_time||b.timestamp)-new Date(a.exit_time||a.timestamp)).slice(0,3);
+
+if(closed.length>0){
+let html='<div class="section" style="margin-top:24px;">';
+html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">';
+html+='<h2 style="font-size:18px;font-weight:600;">Recently Closed</h2>';
+html+='<span style="font-size:12px;color:#64748b;">Last 3 trades</span>';
+html+='</div>';
+
+closed.forEach(t=>{
+const pnl=t.result?.pnl||0;
+const pnlPct=t.result?.pnl_pct||0;
+const reason=t.result?.exit_reason||'closed';
+const date=new Date(t.exit_time||t.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const holding=t.result?.holding_minutes||0;
+const holdingHrs=Math.floor(holding/60);
+const holdingMin=holding%60;
+
+html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+html+='<div style="display:flex;justify-content:space-between;align-items:center;">';
+html+='<div>';
+html+='<span style="font-weight:600;font-size:16px;">'+t.symbol+'</span>';
+html+='<span style="color:#64748b;font-size:13px;margin-left:8px;">'+t.type+' $'+t.strike+'</span>';
+html+='</div>';
+html+='<div style="text-align:right;">';
+html+='<div style="color:'+(pnl>=0?'#10b981':'#ef4444')+';font-weight:600;font-size:18px;font-family:monospace;">'+(pnl>=0?'+':'')+fmt(pnl)+'</div>';
+html+='<div style="color:'+(pnlPct>=0?'#10b981':'#ef4444')+';font-size:12px;">'+pnlPct.toFixed(1)+'% realized</div>';
+html+='</div>';
+html+='</div>';
+html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#64748b;">';
+html+='<span>'+date+' • '+reason+'</span>';
+html+='<span>Held: '+(holdingHrs>0?holdingHrs+'h ':'')+holdingMin+'m</span>';
+html+='</div>';
+html+='</div>';
+});
+
+html+='</div>';
+document.getElementById('positions-list').insertAdjacentHTML('beforeend',html);
+}
+}catch(e){console.error('Closed trades load error:',e);}
 }
 
 document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
