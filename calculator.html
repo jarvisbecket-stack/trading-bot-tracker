@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Wolf Clan | Professional Options Calculator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
+#gate{position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999}
+.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:40px;width:90%;max-width:380px;text-align:center}
+.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
+.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;cursor:pointer}
+#app{display:none}
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
+.navinner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:12px;font-weight:bold;font-size:18px}
+.navlinks{display:flex;gap:8px}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px}
+.navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
+.container{max-width:1400px;margin:0 auto;padding:24px}
+
+/* Bloomberg-style Grid */
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:20px;margin-top:20px}
+
+/* Terminal Panel */
+.panel{background:#12121a;border:1px solid #2a2a3a;border-radius:8px;overflow:hidden}
+.panel-header{background:#1a1a25;padding:12px 16px;border-bottom:1px solid #2a2a3a;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#8b8b9e}
+.panel-body{padding:16px}
+
+/* Input Fields - Bloomberg Style */
+.input-row{display:flex;align-items:center;margin-bottom:12px;gap:12px}
+.input-label{flex:0 0 140px;font-size:13px;color:#8b8b9e;text-transform:uppercase}
+.input-field{flex:1;background:#0a0a0f;border:1px solid #2a2a3a;border-radius:4px;padding:8px 12px;color:#e8e8f0;font-family:monospace;font-size:14px}
+.input-field:focus{outline:none;border-color:#6366f1}
+
+/* Results Display */
+.result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #2a2a3a}
+.result-row:last-child{border-bottom:none}
+.result-label{font-size:13px;color:#8b8b9e}
+.result-value{font-family:monospace;font-size:15px;font-weight:600}
+.result-value.positive{color:#10b981}
+.result-value.negative{color:#ef4444}
+.result-value.highlight{color:#6366f1}
+
+/* Greeks Grid */
+.greeks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.greek-box{background:#0a0a0f;border:1px solid #2a2a3a;border-radius:4px;padding:12px;text-align:center}
+.greek-label{font-size:11px;color:#64748b;text-transform:uppercase;margin-bottom:4px}
+.greek-value{font-family:monospace;font-size:20px;font-weight:600}
+.greek-value.positive{color:#10b981}
+.greek-value.negative{color:#ef4444}
+
+/* P&L Matrix */
+.pl-matrix{width:100%;border-collapse:collapse;font-family:monospace;font-size:12px}
+.pl-matrix th,.pl-matrix td{padding:8px;text-align:center;border:1px solid #2a2a3a}
+.pl-matrix th{background:#1a1a25;color:#8b8b9e;font-weight:600}
+.pl-matrix .price-col{background:#1a1a25;color:#8b8b9e;font-weight:600}
+.pl-matrix .pl-positive{background:rgba(16,185,129,.15);color:#10b981}
+.pl-matrix .pl-negative{background:rgba(239,68,68,.15);color:#ef4444}
+.pl-matrix .pl-zero{background:rgba(99,102,241,.15);color:#6366f1}
+
+/* Scenario Builder */
+.scenario-card{background:#0a0a0f;border:1px solid #2a2a3a;border-radius:4px;padding:12px;margin-bottom:8px}
+.scenario-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.scenario-name{font-weight:600;font-size:14px}
+.scenario-pl{font-family:monospace;font-size:16px;font-weight:600}
+.scenario-pl.positive{color:#10b981}
+.scenario-pl.negative{color:#ef4444}
+.scenario-details{font-size:12px;color:#64748b}
+
+/* Calculate Button */
+.btn-calc{width:100%;background:#10b981;color:#0a0a0f;border:none;border-radius:4px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px}
+.btn-calc:hover{background:#059669}
+
+/* Risk Metrics */
+.risk-bar{height:8px;background:#0a0a0f;border-radius:4px;margin-top:4px;overflow:hidden}
+.risk-fill{height:100%;border-radius:4px;transition:width 0.3s}
+.risk-fill.low{background:#10b981}
+.risk-fill.medium{background:#f59e0b}
+.risk-fill.high{background:#ef4444}
+
+/* Real-time ticker */
+.ticker{display:flex;gap:24px;padding:12px 24px;background:#0f0f16;border-bottom:1px solid #2a2a3a;overflow-x:auto}
+.ticker-item{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ticker-symbol{font-weight:600;font-size:13px}
+.ticker-price{font-family:monospace;font-size:13px}
+.ticker-change{font-family:monospace;font-size:12px}
+.ticker-change.up{color:#10b981}
+.ticker-change.down{color:#ef4444}
+</style>
+</head>
+<body>
+<div id="gate">
+<div class="gatebox">
+<h2>White Wolf Clan</h2>
+<p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Professional Calculator</p>
+<input type="password" id="pwd" placeholder="Enter password">
+<button onclick="auth()">Access</button>
+</div>
+</div>
+
+<div id="app">
+<nav>
+<div class="navinner">
+<div class="brand">White Wolf Clan</div>
+<div class="navlinks">
+<a href="index.html">Dashboard</a>
+<a href="positions.html">Positions</a>
+<a href="trades.html">Trades</a>
+<a href="calculator.html" class="active">Calculator</a>
+</div>
+</div>
+</nav>
+
+<div class="ticker" id="ticker">
+<span class="ticker-item"><span class="ticker-symbol">SPY</span><span class="ticker-price">$512.45</span><span class="ticker-change up">+1.2%</span></span>
+<span class="ticker-item"><span class="ticker-symbol">VIX</span><span class="ticker-price">$18.52</span><span class="ticker-change down">-2.1%</span></span>
+<span class="ticker-item"><span class="ticker-symbol">MSTR</span><span class="ticker-price">$128.45</span><span class="ticker-change up">+5.4%</span></span>
+<span class="ticker-item"><span class="ticker-symbol">COST</span><span class="ticker-price">$960.50</span><span class="ticker-change up">+0.8%</span></span>
+</div>
+
+<div class="container">
+<h1 style="font-size:24px;margin-bottom:8px">Professional Options Calculator</h1>
+<p style="color:#64748b;font-size:14px;margin-bottom:20px">Bloomberg-grade analytics for the White Wolf Clan</p>
+
+<div class="calc-grid">
+<!-- Black-Scholes Calculator -->
+<div class="panel">
+<div class="panel-header">Black-Scholes Model</div>
+<div class="panel-body">
+<div class="input-row">
+<span class="input-label">Underlying</span>
+<input type="number" class="input-field" id="bs-spot" value="128.45" step="0.01">
+</div>
+<div class="input-row">
+<span class="input-label">Strike</span>
+<input type="number" class="input-field" id="bs-strike" value="115.55" step="0.01">
+</div>
+<div class="input-row">
+<span class="input-label">Days to Exp</span>
+<input type="number" class="input-field" id="bs-dte" value="12" step="1">
+</div>
+<div class="input-row">
+<span class="input-label">IV (%)</span>
+<input type="number" class="input-field" id="bs-iv" value="85.2" step="0.1">
+</div>
+<div class="input-row">
+<span class="input-label">Risk-Free Rate</span>
+<input type="number" class="input-field" id="bs-rate" value="4.5" step="0.1">
+</div>
+<button class="btn-calc" onclick="calculateBS()">Calculate Theoretical Price</button>
+
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #2a2a3a">
+<div class="result-row">
+<span class="result-label">Call Price</span>
+<span class="result-value highlight" id="bs-call">$13.82</span>
+</div>
+<div class="result-row">
+<span class="result-label">Put Price</span>
+<span class="result-value highlight" id="bs-put">$0.92</span>
+</div>
+<div class="result-row">
+<span class="result-label">Intrinsic Value</span>
+<span class="result-value" id="bs-intrinsic">$0.00</span>
+</div>
+<div class="result-row">
+<span class="result-label">Time Value</span>
+<span class="result-value positive" id="bs-time">$0.92</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Greeks Calculator -->
+<div class="panel">
+<div class="panel-header">Greeks Analysis</div>
+<div class="panel-body">
+<div class="greeks-grid">
+<div class="greek-box">
+<div class="greek-label">Delta (Δ)</div>
+<div class="greek-value positive" id="greek-delta">+0.30</div>
+</div>
+<div class="greek-box">
+<div class="greek-label">Gamma (Γ)</div>
+<div class="greek-value" id="greek-gamma">0.025</div>
+</div>
+<div class="greek-box">
+<div class="greek-label">Theta (Θ)</div>
+<div class="greek-value positive" id="greek-theta">+8.50</div>
+</div>
+<div class="greek-box">
+<div class="greek-label">Vega (V)</div>
+<div class="greek-value" id="greek-vega">0.12</div>
+</div>
+<div class="greek-box">
+<div class="greek-label">Rho (ρ)</div>
+<div class="greek-value" id="greek-rho">0.02</div>
+</div>
+<div class="greek-box">
+<div class="greek-label">IV Rank</div>
+<div class="greek-value highlight" id="greek-ivrank">72%</div>
+</div>
+</div>
+
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #2a2a3a">
+<div class="result-row">
+<span class="result-label">Delta $ Risk</span>
+<span class="result-value" id="risk-delta">$60.00/contract</span>
+</div>
+<div class="result-row">
+<span class="result-label">Theta Daily</span>
+<span class="result-value positive" id="risk-theta">+$8.50/day</span>
+</div>
+<div class="result-row">
+<span class="result-label">Breakeven</span>
+<span class="result-value highlight" id="risk-breakeven">$114.63</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- P&L Scenario Matrix -->
+<div class="panel" style="grid-column:span 2">
+<div class="panel-header">P&L Scenario Matrix (Short Put)</div>
+<div class="panel-body">
+<table class="pl-matrix" id="pl-matrix">
+<thead>
+<tr>
+<th>Price →<br>Days ↓</th>
+<th>-10%</th>
+<th>-5%</th>
+<th>-2%</th>
+<th>Current</th>
+<th>+2%</th>
+<th>+5%</th>
+<th>+10%</th>
+</tr>
+</thead>
+<tbody id="pl-tbody">
+<!-- Generated by JS -->
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Position Builder -->
+<div class="panel">
+<div class="panel-header">Position Builder</div>
+<div class="panel-body">
+<div class="input-row">
+<span class="input-label">Strategy</span>
+<select class="input-field" id="pb-strategy" onchange="updateBuilder()">
+<option value="short_put">Short Put</option>
+<option value="cash_secured_put">Cash Secured Put</option>
+<option value="credit_spread">Put Credit Spread</option>
+<option value="iron_condor">Iron Condor</option>
+</select>
+</div>
+<div class="input-row">
+<span class="input-label">Contracts</span>
+<input type="number" class="input-field" id="pb-contracts" value="2" onchange="updateBuilder()">
+</div>
+<div class="input-row">
+<span class="input-label">Premium</span>
+<input type="number" class="input-field" id="pb-premium" value="2054" onchange="updateBuilder()">
+</div>
+<div class="input-row">
+<span class="input-label">Strike</span>
+<input type="number" class="input-field" id="pb-strike" value="115.55" step="0.01" onchange="updateBuilder()">
+</div>
+
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #2a2a3a">
+<div class="result-row">
+<span class="result-label">Max Profit</span>
+<span class="result-value positive" id="pb-maxprofit">+$2,054</span>
+</div>
+<div class="result-row">
+<span class="result-label">Max Loss</span>
+<span class="result-value negative" id="pb-maxloss">-$21,056</span>
+</div>
+<div class="result-row">
+<span class="result-label">Breakeven</span>
+<span class="result-value highlight" id="pb-be">$114.63</span>
+</div>
+<div class="result-row">
+<span class="result-label">Return on Risk</span>
+<span class="result-value" id="pb-ror">9.8%</span>
+</div>
+<div class="result-row">
+<span class="result-label">Annualized ROI</span>
+<span class="result-value positive" id="pb-roi">298%</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Risk Analysis -->
+<div class="panel">
+<div class="panel-header">Risk Metrics</div>
+<div class="panel-body">
+<div style="margin-bottom:16px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+<span class="result-label">Position Delta</span>
+<span class="result-value" id="rm-delta">+60</span>
+</div>
+<div class="risk-bar"><div class="risk-fill low" style="width:30%"></div></div>
+</div>
+
+<div style="margin-bottom:16px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+<span class="result-label">Theta Decay</span>
+<span class="result-value positive" id="rm-theta">+$17/day</span>
+</div>
+<div class="risk-bar"><div class="risk-fill low" style="width:20%"></div></div>
+</div>
+
+<div style="margin-bottom:16px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+<span class="result-label">Vega Exposure</span>
+<span class="result-value" id="rm-vega">-$240/IV pt</span>
+</div>
+<div class="risk-bar"><div class="risk-fill medium" style="width:55%"></div></div>
+</div>
+
+<div style="margin-bottom:16px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+<span class="result-label">Gamma Risk</span>
+<span class="result-value" id="rm-gamma">High (0DTE)</span>
+</div>
+<div class="risk-bar"><div class="risk-fill high" style="width:85%"></div></div>
+</div>
+
+<div style="padding-top:16px;border-top:1px solid #2a2a3a">
+<div class="result-row">
+<span class="result-label">Probability of Profit</span>
+<span class="result-value positive" id="rm-pop">72%</span>
+</div>
+<div class="result-row">
+<span class="result-label">Expected Return</span>
+<span class="result-value positive" id="rm-er">+$420</span>
+</div>
+<div class="result-row">
+<span class="result-label">Sharpe Ratio</span>
+<span class="result-value" id="rm-sharpe">1.45</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const PWD='jarvisb';
+function auth(){
+const input=document.getElementById('pwd').value;
+if(input===PWD){
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+initCalculator();
+}
+}
+document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
+
+function initCalculator(){
+calculateBS();
+generatePLMatrix();
+updateBuilder();
+}
+
+// Black-Scholes Calculation
+function calculateBS(){
+const S=parseFloat(document.getElementById('bs-spot').value);
+const K=parseFloat(document.getElementById('bs-strike').value);
+const dte=parseInt(document.getElementById('bs-dte').value);
+const iv=parseFloat(document.getElementById('bs-iv').value)/100;
+const r=parseFloat(document.getElementById('bs-rate').value)/100;
+const T=dte/365;
+
+// Simplified BS for display (actual implementation would use full formula)
+const d1=(Math.log(S/K)+(r+iv*iv/2)*T)/(iv*Math.sqrt(T));
+const d2=d1-iv*Math.sqrt(T);
+const Nd1=0.5*(1+Math.erf(d1/Math.sqrt(2)));
+const Nd2=0.5*(1+Math.erf(d2/Math.sqrt(2)));
+
+const callPrice=S*Nd1-K*Math.exp(-r*T)*Nd2;
+const putPrice=callPrice-S+K*Math.exp(-r*T);
+const intrinsic=Math.max(0,K-S);
+const timeValue=putPrice-intrinsic;
+
+document.getElementById('bs-call').textContent='$'+callPrice.toFixed(2);
+document.getElementById('bs-put').textContent='$'+putPrice.toFixed(2);
+document.getElementById('bs-intrinsic').textContent='$'+intrinsic.toFixed(2);
+document.getElementById('bs-time').textContent='$'+timeValue.toFixed(2);
+}
+
+// Generate P&L Matrix
+function generatePLMatrix(){
+const tbody=document.getElementById('pl-tbody');
+const currentPrice=128.45;
+const strike=115.55;
+const premium=10.27;
+const days=[12,8,4,2,1,0];
+const priceMoves=[-0.10,-0.05,-0.02,0,0.02,0.05,0.10];
+
+let html='';
+days.forEach(day=>{
+html+='<tr>';
+html+='<td class="price-col">'+day+'d</td>';
+priceMoves.forEach(move=>{
+const price=currentPrice*(1+move);
+const intrinsic=Math.max(0,strike-price);
+const timeValue=premium*Math.sqrt(day/12)*0.7; // Simplified decay
+const optionPrice=intrinsic+timeValue;
+const pl=(premium-optionPrice)*100*2; // 2 contracts
+const plClass=pl>500?'pl-positive':pl<-500?'pl-negative':'pl-zero';
+html+='<td class="'+plClass+'">'+pl.toFixed(0)+'</td>';
+});
+html+='</tr>';
+});
+tbody.innerHTML=html;
+}
+
+// Position Builder
+function updateBuilder(){
+const contracts=parseInt(document.getElementById('pb-contracts').value);
+const premium=parseFloat(document.getElementById('pb-premium').value);
+const strike=parseFloat(document.getElementById('pb-strike').value);
+const spot=128.45;
+
+const maxProfit=premium;
+const maxLoss=(strike*100*contracts)-premium;
+const breakeven=strike-(premium/contracts/100);
+const ror=(maxProfit/maxLoss)*100;
+const dte=12;
+const roi=(ror/(dte/365));
+
+document.getElementById('pb-maxprofit').textContent='+$'+maxProfit.toLocaleString();
+document.getElementById('pb-maxloss').textContent='-$'+maxLoss.toLocaleString();
+document.getElementById('pb-be').textContent='$'+breakeven.toFixed(2);
+document.getElementById('pb-ror').textContent=ror.toFixed(1)+'%';
+document.getElementById('pb-roi').textContent=roi.toFixed(0)+'%';
+}
+</script>
+</body>
+</html>
