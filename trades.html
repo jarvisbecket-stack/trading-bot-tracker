@@ -167,10 +167,16 @@ filtered=filtered.filter(t=>(t.result?.pnl||0)>0);
 filtered=filtered.filter(t=>(t.result?.pnl||0)<=0);
 }
 
-// Update stats
+// Update stats - use premium for open positions, result.pnl for closed
 const total=allTrades.length;
 const wins=allTrades.filter(t=>(t.result?.pnl||0)>0).length;
-const totalPnl=allTrades.reduce((sum,t)=>sum+(t.result?.pnl||0),0);
+const totalPnl=allTrades.reduce((sum,t)=>{
+  if (t.exit_price) {
+    return sum+(t.result?.pnl||0);  // Closed trade: use realized P&L
+  } else {
+    return sum+(t.premium||0);  // Open trade: show premium collected
+  }
+},0);
 const avg=total>0?totalPnl/total:0;
 
 document.getElementById('total-trades').textContent=total;
@@ -189,8 +195,9 @@ return;
 let html='<table><thead><tr><th>Time (CST)</th><th>Symbol</th><th>Type</th><th>Contracts</th><th>Entry</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
 
 filtered.slice().reverse().forEach(t=>{
-const pnl=t.result?.pnl||0;
+// For open positions, show premium collected; for closed, show realized P&L
 const isOpen=!t.exit_price;
+const pnl=isOpen?(t.premium||0):(t.result?.pnl||0);
 const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
 html+='<tr>';
 html+='<td>'+time+'</td>';
