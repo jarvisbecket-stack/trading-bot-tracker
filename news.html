@@ -46,18 +46,11 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 .source-status{font-size:12px;padding:4px 10px;border-radius:4px;font-weight:600}
 .source-status.live{background:rgba(16,185,129,.15);color:#10b981}
 .source-status.offline{background:rgba(239,68,68,.15);color:#ef4444}
-.source-status.pending{background:rgba(245,158,11,.15);color:#f59e0b}
 .source-desc{font-size:13px;color:#8b8b9e;margin-bottom:12px}
 .source-data{font-family:monospace;font-size:14px;color:#e8e8f0}
 
-/* Placeholder Section */
-.placeholder-section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:40px;text-align:center}
-.placeholder-icon{font-size:48px;margin-bottom:16px}
-.placeholder-title{font-size:20px;font-weight:600;margin-bottom:8px}
-.placeholder-text{font-size:14px;color:#8b8b9e;max-width:500px;margin:0 auto;line-height:1.6}
-
 /* Live Market Data */
-.market-data{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
+.market-data{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px;margin-bottom:24px}
 .market-header{font-size:18px;font-weight:600;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #2a2a3a}
 .market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
 .market-item{background:#0a0a0f;border:1px solid #2a2a3a;border-radius:8px;padding:16px}
@@ -66,6 +59,20 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 .market-change{font-family:monospace;font-size:13px;margin-top:4px}
 .market-change.up{color:#10b981}
 .market-change.down{color:#ef4444}
+
+/* News Section */
+.news-section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px;margin-top:24px}
+.news-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #2a2a3a}
+.news-title{font-size:18px;font-weight:600}
+.news-subtitle{font-size:12px;color:#64748b}
+.news-item{padding:16px 0;border-bottom:1px solid #2a2a3a}
+.news-item:last-child{border-bottom:none}
+.news-item-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.news-item-title{font-size:15px;font-weight:600;color:#e8e8f0;text-decoration:none}
+.news-item-title:hover{color:#6366f1}
+.news-item-source{font-size:12px;color:#64748b}
+.news-item-time{font-size:12px;color:#64748b}
+.news-item-summary{font-size:13px;color:#8b8b9e;line-height:1.5;margin-top:6px}
 
 #statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 24px;font-size:12px;display:flex;justify-content:space-between}
 .statusgood{color:#10b981}
@@ -108,14 +115,9 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 <span class="status-value" style="color:#10b981">Connected</span>
 </div>
 <div class="status-item">
-<div class="status-indicator offline"></div>
-<span class="status-label">News API</span>
-<span class="status-value" style="color:#ef4444">Not Connected</span>
-</div>
-<div class="status-item">
-<div class="status-indicator offline"></div>
-<span class="status-label">Earnings Calendar</span>
-<span class="status-value" style="color:#ef4444">Not Connected</span>
+<div class="status-indicator live"></div>
+<span class="status-label">Finnhub News</span>
+<span class="status-value" style="color:#10b981">Connected</span>
 </div>
 </div>
 
@@ -129,13 +131,13 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 <div class="source-data" id="market-status">Loading...</div>
 </div>
 
-<div class="source-card offline">
+<div class="source-card live">
 <div class="source-header">
 <span class="source-name">📰 News Feed</span>
-<span class="source-status offline">OFFLINE</span>
+<span class="source-status live">LIVE</span>
 </div>
-<div class="source-desc">Real news API integration pending</div>
-<div class="source-data">No data source configured</div>
+<div class="source-desc">Real financial news from Finnhub</div>
+<div class="source-data" id="news-status">Loading...</div>
 </div>
 
 <div class="source-card offline">
@@ -178,6 +180,19 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 </div>
 </div>
 </div>
+
+<div class="news-section">
+<div class="news-header">
+<div>
+<div class="news-title">Latest News</div>
+<div class="news-subtitle">Real-time from Finnhub</div>
+</div>
+<span style="font-size:12px;color:#64748b">Auto-refresh: 60s</span>
+</div>
+<div id="news-feed">
+<div style="text-align:center;padding:40px;color:#8b8b9e;">Loading news...</div>
+</div>
+</div>
 </div>
 
 <div id="statusbar">
@@ -195,7 +210,7 @@ sessionStorage.setItem('ww-auth','1');
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 loadData();
-setInterval(loadData,30000);
+setInterval(loadData,60000);
 }else{
 document.getElementById('err').style.display='block';
 }
@@ -208,6 +223,7 @@ document.getElementById('app').style.display='block';
 
 async function loadData(){
 try{
+// Load market data
 const response=await fetch('data/scoreboard.json?_='+Date.now(),{cache:'no-store'});
 if(!response.ok)throw new Error('HTTP '+response.status);
 const data=await response.json();
@@ -228,11 +244,52 @@ changeEl.className='market-change '+(change>=0?'up':'down');
 // Update market status
 document.getElementById('market-status').textContent=Object.keys(marketData).length+' symbols active';
 
+// Load news
+await loadNews();
+
 // Update timestamp
 document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
 }catch(e){
 console.error('Load error:',e);
 document.getElementById('market-status').textContent='Error loading data';
+}
+}
+
+async function loadNews(){
+try{
+const response=await fetch('data/news.json?_='+Date.now(),{cache:'no-store'});
+if(!response.ok){
+document.getElementById('news-status').textContent='No data';
+document.getElementById('news-feed').innerHTML='<div style="text-align:center;padding:40px;color:#8b8b9e;">No news available</div>';
+return;
+}
+const data=await response.json();
+const articles=data?.articles||[];
+
+document.getElementById('news-status').textContent=articles.length+' articles';
+
+if(articles.length===0){
+document.getElementById('news-feed').innerHTML='<div style="text-align:center;padding:40px;color:#8b8b9e;">No news available</div>';
+return;
+}
+
+let html='';
+articles.forEach(article=>{
+const time=new Date(article.datetime*1000).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+html+='<div class="news-item">';
+html+='<div class="news-item-header">';
+html+='<a href="'+article.url+'" target="_blank" class="news-item-title">'+article.headline+'</a>';
+html+='<span class="news-item-time">'+time+'</span>';
+html+='</div>';
+html+='<div class="news-item-source">'+article.source+' | '+article.symbol+'</div>';
+html+='<div class="news-item-summary">'+article.summary+'</div>';
+html+='</div>';
+});
+document.getElementById('news-feed').innerHTML=html;
+}catch(e){
+console.error('News load error:',e);
+document.getElementById('news-status').textContent='Error';
+document.getElementById('news-feed').innerHTML='<div style="text-align:center;padding:40px;color:#8b8b9e;">Error loading news</div>';
 }
 }
 
