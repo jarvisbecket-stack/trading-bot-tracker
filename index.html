@@ -243,6 +243,7 @@ let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contr
 positions.forEach(p=>{
 const pnl=p.pnl||0;
 const pnlClass=pnl>=0?'positive':'negative';
+const deltaDisplay = p.delta > 0 ? '+'+p.delta : p.delta; // Short puts have positive delta
 html+='<tr>';
 html+='<td><strong>'+(p.symbol||'--')+'</strong></td>';
 html+='<td>'+(p.type||'--')+'</td>';
@@ -250,7 +251,7 @@ html+='<td>$'+(p.strike||'--')+'</td>';
 html+='<td>'+(p.contracts||'--')+'</td>';
 html+='<td>$'+(p.entry||'--')+'</td>';
 html+='<td class="'+pnlClass+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
-html+='<td>'+(p.delta||'--')+'</td>';
+html+='<td style="color:#10b981;">+'+Math.abs(p.delta||0.25)+'</td>';
 html+='<td>'+(p.dte||'--')+'</td>';
 html+='<td><button class="btn btn-close">Close</button><button class="btn btn-hold">Hold</button></td>';
 html+='</tr>';
