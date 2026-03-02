@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-03-02T12:30:00.000000",
+  "timestamp": "2026-03-02T12:36:29.303076",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY - NO PAPER POSITIONS ACTIVE",
   "account": {
-    "total_equity": 1000000.00,
-    "cash_available": 1000000.00,
-    "buying_power": 1000000.00,
-    "starting_capital": 1000000.00
+    "total_equity": 1000000.0,
+    "cash_available": 870000.0,
+    "buying_power": 1000000.0,
+    "starting_capital": 1000000.0
   },
   "pnl": {
-    "total_pnl": 0.00,
-    "total_pnl_pct": 0.00,
-    "ytd_pnl": 0.00,
-    "ytd_pnl_pct": 0.00
+    "total_pnl": 0.0,
+    "total_pnl_pct": 0.0,
+    "ytd_pnl": 0.0,
+    "ytd_pnl_pct": 0.0
   },
   "market_data": {
     "MSTR": {
@@ -73,12 +73,48 @@
     }
   },
   "history": [
-    {"date": "2026-01-02", "value": 1000000.00},
-    {"date": "2026-01-15", "value": 1000000.00},
-    {"date": "2026-02-01", "value": 1000000.00},
-    {"date": "2026-02-15", "value": 1000000.00},
-    {"date": "2026-03-02", "value": 1000000.00}
+    {
+      "date": "2026-01-02",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-01-15",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-02-01",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-02-15",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-03-02",
+      "value": 1000000.0
+    }
   ],
-  "committed_capital": 0.00,
-  "positions": []
+  "committed_capital": 130000.0,
+  "positions": [
+    {
+      "symbol": "MSTR",
+      "type": "Short Put",
+      "strike": 130.0,
+      "contracts": 10,
+      "entry": 2.15,
+      "current": 136.69,
+      "option_price": 2.15,
+      "expiry": "Mar 7, 2026",
+      "dte": 5,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.25,
+      "theta": 0.45,
+      "otm": 4.9,
+      "iv": 65.0,
+      "premium": 2150.0,
+      "data_source": "TRADIER_LIVE",
+      "trade_type": "REAL_PAPER_TRADE"
+    }
+  ]
 }
