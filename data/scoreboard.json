@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-03-02T12:40:00.000000",
+  "timestamp": "2026-03-02T16:02:30.916039",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
   "account": {
-    "total_equity": 1002150.00,
-    "cash_available": 870000.00,
-    "buying_power": 1000000.00,
-    "starting_capital": 1000000.00
+    "total_equity": 1002644.0,
+    "cash_available": 746058.0,
+    "buying_power": 1000000.0,
+    "starting_capital": 1000000.0
   },
   "pnl": {
-    "total_pnl": 2150.00,
-    "total_pnl_pct": 0.22,
-    "ytd_pnl": 2150.00,
+    "total_pnl": 2644.0,
+    "total_pnl_pct": 0.26,
+    "ytd_pnl": 2150.0,
     "ytd_pnl_pct": 0.22
   },
   "market_data": {
@@ -73,31 +73,66 @@
     }
   },
   "history": [
-    {"date": "2026-01-02", "value": 1000000.00},
-    {"date": "2026-01-15", "value": 1000000.00},
-    {"date": "2026-02-01", "value": 1000000.00},
-    {"date": "2026-02-15", "value": 1000000.00},
-    {"date": "2026-03-02", "value": 1002150.00}
+    {
+      "date": "2026-01-02",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-01-15",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-02-01",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-02-15",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-03-02",
+      "value": 1002644.0
+    }
   ],
-  "committed_capital": 130000.00,
+  "committed_capital": 253942.0,
   "positions": [
     {
       "symbol": "MSTR",
       "type": "Short Put",
-      "strike": 130.00,
+      "strike": 130.0,
       "contracts": 10,
       "entry": 2.15,
       "current": 136.69,
       "option_price": 2.15,
       "expiry": "Mar 7, 2026",
       "dte": 5,
-      "pnl": 2150.00,
-      "pnl_pct": 100.00,
+      "pnl": 2150.0,
+      "pnl_pct": 100.0,
       "delta": 0.25,
       "theta": 0.45,
       "otm": 4.9,
-      "iv": 65.00,
-      "premium": 2150.00,
+      "iv": 65.0,
+      "premium": 2150.0,
+      "data_source": "TRADIER_LIVE",
+      "trade_type": "REAL_PAPER_TRADE"
+    },
+    {
+      "symbol": "BAC",
+      "type": "Short Put",
+      "strike": 47.67,
+      "contracts": 26,
+      "entry": 0.19,
+      "current": 50.17,
+      "option_price": 0.19,
+      "expiry": "Mar 7, 2026",
+      "dte": 5,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.15,
+      "theta": 0.08,
+      "otm": 5.0,
+      "iv": 28.5,
+      "premium": 494.0,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     }
