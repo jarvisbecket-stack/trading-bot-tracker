@@ -99,6 +99,11 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="statsub" id="pnl-sub">--</div>
 </div>
 <div class="stat">
+<div class="statlabel">P&L YTD</div>
+<div class="statvalue" id="ytd">$--</div>
+<div class="statsub" id="ytd-sub">--</div>
+</div>
+<div class="stat">
 <div class="statlabel">Committed</div>
 <div class="statvalue" id="committed">$--</div>
 <div class="statsub" id="committed-sub">--% deployed</div>
@@ -107,6 +112,25 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="statlabel">Cash Available</div>
 <div class="statvalue" id="cash">$--</div>
 <div class="statsub" id="bp">BP: $--</div>
+</div>
+</div>
+
+<div class="section">
+<div class="sectionheader">
+<div>
+<div class="sectiontitle">Fund Growth</div>
+<div class="sectionsubtitle">Daily portfolio value</div>
+</div>
+</div>
+<div id="chart-container" style="width:100%;height:300px;background:#0a0a0f;border-radius:8px;padding:20px;">
+<svg id="fund-chart" width="100%" height="100%" viewBox="0 0 800 250" preserveAspectRatio="none">
+<defs>
+<linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.3" />
+<stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
+</linearGradient>
+</defs>
+</svg>
 </div>
 </div>
 
@@ -216,6 +240,19 @@ if(bp!==undefined){
 document.getElementById('bp').textContent='BP: '+fmt(bp);
 }
 
+// Update YTD P&L
+const ytdPnl=data?.pnl?.ytd_pnl;
+const ytdPct=data?.pnl?.ytd_pnl_pct;
+if(ytdPnl!==undefined){
+document.getElementById('ytd').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
+document.getElementById('ytd').className='statvalue '+(ytdPnl>=0?'green':'red');
+document.getElementById('ytd-sub').textContent=fmtPct(ytdPct);
+document.getElementById('ytd-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
+}
+
+// Render fund growth chart
+renderFundChart(data?.history||[]);
+
 // Update positions
 renderPositions(data?.positions||[]);
 
@@ -239,7 +276,7 @@ container.innerHTML='<div class="empty"><p>No open positions</p><p style="font-s
 return;
 }
 
-let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Entry $</th><th>P&L</th><th>Delta</th><th>DTE</th><th>Actions</th></tr></thead><tbody>';
+let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Entry $</th><th>P&L</th><th>Delta</th><th>DTE</th></tr></thead><tbody>';
 positions.forEach(p=>{
 const pnl=p.pnl||0;
 const pnlClass=pnl>=0?'positive':'negative';
@@ -260,7 +297,6 @@ html+='<td>$'+optionPrice.toFixed(2)+'</td>';
 html+='<td class="'+pnlClass+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
 html+='<td style="color:'+deltaColor+';">'+deltaDisplay+'</td>';
 html+='<td>'+(p.dte||'--')+'</td>';
-html+='<td><button class="btn btn-close">Close</button><button class="btn btn-hold">Hold</button></td>';
 html+='</tr>';
 });
 html+='</tbody></table>';
@@ -317,6 +353,93 @@ container.innerHTML=html;
 }catch(err){
 document.getElementById('trades-content').innerHTML='<div class="empty"><p>No trades recorded yet</p></div>';
 }
+}
+
+function renderFundChart(history) {
+const svg = document.getElementById('fund-chart');
+if (!svg || history.length === 0) return;
+
+const width = 800;
+const height = 250;
+const padding = { top: 20, right: 40, bottom: 40, left: 80 };
+
+// Find min/max for scaling
+const values = history.map(h => h.value);
+const minValue = Math.min(...values);
+const maxValue = Math.max(...values);
+const valueRange = maxValue - minValue || 1;
+
+// Create points for the line
+const chartWidth = width - padding.left - padding.right;
+const chartHeight = height - padding.top - padding.bottom;
+
+let pathData = '';
+let areaData = '';
+
+history.forEach((point, i) => {
+const x = padding.left + (i / (history.length - 1)) * chartWidth;
+const y = padding.top + chartHeight - ((point.value - minValue) / valueRange) * chartHeight;
+
+if (i === 0) {
+pathData = `M ${x} ${y}`;
+areaData = `M ${x} ${padding.top + chartHeight} L ${x} ${y}`;
+} else {
+pathData += ` L ${x} ${y}`;
+areaData += ` L ${x} ${y}`;
+}
+});
+
+// Close the area
+areaData += ` L ${padding.left + chartWidth} ${padding.top + chartHeight} Z`;
+
+// Generate SVG content
+const startValue = values[0];
+const endValue = values[values.length - 1];
+const isPositive = endValue >= startValue;
+const lineColor = isPositive ? '#10b981' : '#ef4444';
+
+let svgContent = '';
+
+// Grid lines
+for (let i = 0; i <= 4; i++) {
+const y = padding.top + (i / 4) * chartHeight;
+svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>`;
+}
+
+// Area fill
+svgContent += `<path d="${areaData}" fill="url(#chartGradient)" opacity="0.3"/>`;
+
+// Line
+svgContent += `<path d="${pathData}" fill="none" stroke="${lineColor}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+// End point dot
+const lastX = padding.left + chartWidth;
+const lastY = padding.top + chartHeight - ((endValue - minValue) / valueRange) * chartHeight;
+svgContent += `<circle cx="${lastX}" cy="${lastY}" r="6" fill="${lineColor}"/>`;
+svgContent += `<circle cx="${lastX}" cy="${lastY}" r="10" fill="${lineColor}" opacity="0.3"/>`;
+
+// Y-axis labels
+for (let i = 0; i <= 4; i++) {
+const value = minValue + (valueRange * (1 - i / 4));
+const y = padding.top + (i / 4) * chartHeight;
+svgContent += `<text x="${padding.left - 10}" y="${y + 4}" fill="#8b8b9e" font-size="11" text-anchor="end" font-family="monospace">$${(value/1000).toFixed(0)}k</text>`;
+}
+
+// X-axis labels (dates)
+history.forEach((point, i) => {
+if (i % Math.ceil(history.length / 5) === 0 || i === history.length - 1) {
+const x = padding.left + (i / (history.length - 1)) * chartWidth;
+const date = new Date(point.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+svgContent += `<text x="${x}" y="${height - 10}" fill="#8b8b9e" font-size="10" text-anchor="middle">${date}</text>`;
+}
+});
+
+// Current value label
+const labelY = lastY > height / 2 ? lastY - 15 : lastY + 25;
+svgContent += `<rect x="${lastX - 60}" y="${labelY - 12}" width="120" height="20" rx="4" fill="#12121a" stroke="${lineColor}" stroke-width="1"/>`;
+svgContent += `<text x="${lastX}" y="${labelY + 2}" fill="${lineColor}" font-size="12" text-anchor="middle" font-weight="600" font-family="monospace">${fmt(endValue)}</text>`;
+
+svg.innerHTML = svg.innerHTML.split('</defs>')[0] + '</defs>' + svgContent;
 }
 
 function init(){
