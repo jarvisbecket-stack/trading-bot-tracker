@@ -1,427 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>White Wolf Clan | Positions</title>
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --card: #12121a;
-            --elevated: #1a1a25;
-            --border: #2a2a3a;
-            --text: #e8e8f0;
-            --muted: #8b8b9e;
-            --accent: #6366f1;
-            --success: #10b981;
-            --danger: #ef4444;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-        
-        /* Password Gate */
-        #gate {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        .gate-box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px;
-            width: 90%;
-            max-width: 380px;
-            text-align: center;
-        }
-        .gate-logo {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .gate-input {
-            width: 100%;
-            background: var(--elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--text);
-            font-size: 16px;
-            text-align: center;
-            margin: 16px 0;
-        }
-        .gate-input:focus { outline: none; border-color: var(--accent); }
-        .gate-btn {
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .gate-btn:hover { background: #5558e0; }
-        .gate-error { color: var(--danger); margin-top: 12px; font-size: 14px; display: none; }
-        
-        #app { display: none; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-        
-        /* Nav */
-        nav {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .brand-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-        .nav-links { display: flex; gap: 8px; }
-        .nav-links a {
-            color: var(--muted);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--accent);
-        }
-        
-        .page-header {
-            margin-bottom: 24px;
-        }
-        .page-header h1 {
-            font-size: 28px;
-            margin-bottom: 4px;
-        }
-        .page-header p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-        
-        /* Position Cards */
-        .positions-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .position-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-        }
-        .position-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-        .position-symbol {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .symbol-badge {
-            background: var(--accent);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .position-details {
-            font-size: 14px;
-            color: var(--muted);
-        }
-        .position-pnl {
-            text-align: right;
-        }
-        .pnl-main {
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'SF Mono', monospace;
-        }
-        .pnl-sub {
-            font-size: 13px;
-            color: var(--muted);
-        }
-        .pnl-main.positive { color: var(--success); }
-        .pnl-main.negative { color: var(--danger); }
-        
-        /* Metrics Grid */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin: 16px 0;
-            padding: 16px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-        .metric {
-            text-align: center;
-        }
-        .metric-label {
-            font-size: 11px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .metric-value {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 4px;
-            font-family: 'SF Mono', monospace;
-        }
-        
-        /* Actions */
-        .position-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .btn:hover { opacity: 0.9; }
-        .btn-close {
-            background: var(--success);
-            color: #0a0a0f;
-        }
-        .btn-hold {
-            background: var(--elevated);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-        
-        /* Empty */
-        .empty {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--muted);
-        }
-        .empty svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 16px;
-            opacity: 0.4;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>White Wolf Clan | Positions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
+#gate{position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999}
+.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:40px;width:90%;max-width:380px;text-align:center}
+.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
+.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
+.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;font-weight:500;cursor:pointer}
+.gatebox .err{color:#ef4444;margin-top:12px;font-size:14px;display:none}
+#app{display:none}
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
+.navinner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:12px;font-weight:bold;font-size:18px}
+.brandicon{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.navlinks{display:flex;gap:8px}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px}
+.navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+.header{margin-bottom:24px}
+.header h1{font-size:28px;margin-bottom:4px}
+.header p{color:#8b8b9e;font-size:14px}
+.section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
+.poscard{background:#1a1a25;border:1px solid #2a2a3a;border-radius:12px;padding:20px;margin-bottom:16px}
+.posheader{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.possymbol{display:flex;align-items:center;gap:12px}
+.symbadge{background:#6366f1;padding:6px 14px;border-radius:8px;font-weight:bold;font-size:14px}
+.posdetails{font-size:14px;color:#8b8b9e;margin-top:4px}
+.pospnl{text-align:right}
+.pospnl .main{font-size:24px;font-weight:bold;font-family:monospace}
+.pospnl .sub{font-size:13px;color:#8b8b9e}
+.green{color:#10b981}
+.red{color:#ef4444}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:12px;margin:16px 0;padding:16px 0;border-top:1px solid #2a2a3a;border-bottom:1px solid #2a2a3a}
+.metric{text-align:center}
+.metric .label{font-size:11px;color:#8b8b9e;text-transform:uppercase}
+.metric .value{font-size:16px;font-weight:600;margin-top:4px;font-family:monospace}
+.actions{display:flex;gap:12px}
+.btn{padding:10px 20px;border-radius:8px;border:none;font-size:14px;font-weight:500;cursor:pointer;flex:1}
+.btn-close{background:#10b981;color:#0a0a0f}
+.btn-hold{background:#2a2a3a;color:#e8e8f0}
+.empty{text-align:center;padding:60px 20px;color:#8b8b9e}
+#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 24px;font-size:12px;display:flex;justify-content:space-between}
+.statusgood{color:#10b981}
+</style>
 </head>
 <body>
-    <div id="gate">
-        <div class="gate-box">
-            <div class="gate-logo">WW</div>
-            <h2>White Wolf Clan</h2>
-            <p style="color: var(--muted); font-size: 14px; margin: 8px 0 24px;">Positions • Restricted Access</p>
-            <input type="password" id="pwd" class="gate-input" placeholder="Enter password">
-            <button onclick="auth()" class="gate-btn">Access Positions</button>
-            <p id="err" class="gate-error">Invalid password</p>
-        </div>
-    </div>
+<div id="gate">
+<div class="gatebox">
+<div class="gatelogo">WW</div>
+<h2>White Wolf Clan</h2>
+<p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Positions</p>
+<input type="password" id="pwd" placeholder="Enter password">
+<button onclick="auth()">Access</button>
+<p class="err" id="err">Invalid password</p>
+</div>
+</div>
 
-    <div id="app">
-        <nav>
-            <div class="nav-inner">
-                <div class="brand">
-                    <div class="brand-icon">WW</div>
-                    White Wolf Clan
-                </div>
-                <div class="nav-links">
-                    <a href="index.html">Dashboard</a>
-                    <a href="positions.html" class="active">Positions</a>
-                    <a href="watchlist.html">Watchlist</a>
-                    <a href="trades.html">Trades</a>
-                </div>
-            </div>
-        </nav>
+<div id="app">
+<nav><div class="navinner">
+<div class="brand"><div class="brandicon">WW</div>White Wolf Clan</div>
+<div class="navlinks">
+<a href="index.html">Dashboard</a>
+<a href="positions.html" class="active">Positions</a>
+<a href="trades.html">Trades</a>
+</div>
+</div></nav>
 
-        <div class="container">
-            <div class="page-header">
-                <h1>Open Positions</h1>
-                <p>Active trades • Manage or close positions</p>
-            </div>
+<div class="container">
+<div class="header"><h1>Open Positions</h1><p>Active trades • Manage or close</p></div>
 
-            <div id="positions-container">
-                <div class="empty">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="3" y="3" width="18" height="18" rx="2"/>
-                        <line x1="9" y1="9" x2="15" y2="9"/>
-                        <line x1="9" y1="15" x2="15" y2="15"/>
-                    </svg>
-                    <p>No open positions</p>
-                    <p style="font-size: 13px; margin-top: 8px;">Trading begins Monday 9:15 AM CST</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="positions-list">
+<div class="section"><div class="empty">Loading positions...</div></div>
+</div>
+</div>
 
-    <script>
-        const PWD = 'jarvisb';
-        function auth() {
-            const input = document.getElementById('pwd').value;
-            if (input === PWD) {
-                sessionStorage.setItem('auth', '1');
-                document.getElementById('gate').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-                load();
-            } else {
-                document.getElementById('err').style.display = 'block';
-            }
-        }
-        document.getElementById('pwd').addEventListener('keypress', e => {
-            if (e.key === 'Enter') auth();
-        });
-        if (sessionStorage.getItem('auth') === '1') {
-            document.getElementById('gate').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
-        }
-        
-        function fmt$(n) {
-            if (n == null) return '$--';
-            return '$' + n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        }
-        
-        async function load() {
-            try {
-                const r = await fetch('data/scoreboard.json?_=' + Date.now(), {cache: 'no-store'});
-                if (!r.ok) throw new Error('No data');
-                const d = await r.json();
-                
-                const positions = d?.positions || [];
-                const container = document.getElementById('positions-container');
-                
-                if (positions.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <line x1="9" y1="9" x2="15" y2="9"/>
-                                <line x1="9" y1="15" x2="15" y2="15"/>
-                            </svg>
-                            <p>No open positions</p>
-                            <p style="font-size: 13px; margin-top: 8px;">Trading begins Monday 9:15 AM CST</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                container.innerHTML = '<div class="positions-list">' + positions.map(p => {
-                    const pnl = p?.pnl || 0;
-                    const isPos = pnl >= 0;
-                    return `
-                        <div class="position-card">
-                            <div class="position-header">
-                                <div class="position-symbol">
-                                    <span class="symbol-badge">${p.symbol || '---'}</span>
-                                    <div class="position-details">
-                                        <div>${p.type || 'Short Put'} $${p.strike || '--'} (${p.dte || '--'} DTE)</div>
-                                        <div>${p.contracts || '--'} contracts • Exp ${p.expiry || '--'}</div>
-                                    </div>
-                                </div>
-                                <div class="position-pnl">
-                                    <div class="pnl-main ${isPos ? 'positive' : 'negative'}">${isPos ? '+' : ''}${fmt$(pnl)}</div>
-                                    <div class="pnl-sub">${p.pnl_pct || '--'}% unrealized</div>
-                                </div>
-                            </div>
-                            
-                            <div class="metrics-grid">
-                                <div class="metric">
-                                    <div class="metric-label">Entry</div>
-                                    <div class="metric-value">$${p.entry || '--'}</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-label">Current</div>
-                                    <div class="metric-value">$${p.current || '--'}</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-label">Delta</div>
-                                    <div class="metric-value">${p.delta || '--'}</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-label">Theta</div>
-                                    <div class="metric-value">+${p.theta || '--'}</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-label">OTM %</div>
-                                    <div class="metric-value">${p.otm || '--'}%</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-label">IV</div>
-                                    <div class="metric-value">${p.iv || '--'}%</div>
-                                </div>
-                            </div>
-                            
-                            <div class="position-actions">
-                                <button class="btn btn-close">Close Position</button>
-                                <button class="btn btn-hold">Hold</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('') + '</div>';
-                
-            } catch (e) {
-                console.log('No positions data');
-            }
-        }
-        
-        if (sessionStorage.getItem('auth') === '1') {
-            load();
-            setInterval(load, 30000);
-        }
-    </script>
+<div id="statusbar">
+<span id="last-update">--</span>
+<span id="conn-status" class="statusgood">● Live</span>
+</div>
+</div>
+
+<script>
+const PWD='jarvisb';
+function auth(){
+const input=document.getElementById('pwd').value;
+if(input===PWD){
+sessionStorage.setItem('ww-auth','1');
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+load();
+}else{document.getElementById('err').style.display='block';}
+}
+document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
+if(sessionStorage.getItem('ww-auth')==='1'){
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+}
+
+function fmt(n){if(n==null||isNaN(n))return'$--';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+async function load(){
+try{
+const r=await fetch('data/scoreboard.json?_='+Date.now(),{cache:'no-store'});
+if(!r.ok)throw new Error('HTTP '+r.status);
+const d=await r.json();
+const positions=d?.positions||[];
+const container=document.getElementById('positions-list');
+
+if(positions.length===0){
+container.innerHTML='<div class="section"><div class="empty"><p>No open positions</p><p style="font-size:13px;margin-top:8px">Market hours: 8:30 AM - 3:30 PM CST</p></div></div>';
+}else{
+let html='';
+positions.forEach(p=>{
+const pnl=p.pnl||0;
+html+='<div class="poscard">';
+html+='<div class="posheader">';
+html+='<div class="possymbol">';
+html+='<span class="symbadge">'+(p.symbol||'--')+'</span>';
+html+='<div class="posdetails"><div>'+(p.type||'Short Put')+' $'+(p.strike||'--')+'</div><div>'+(p.contracts||'--')+' contracts • Exp '+(p.expiry||'--')+'</div></div>';
+html+='</div>';
+html+='<div class="pospnl"><div class="main '+(pnl>=0?'green':'red')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</div><div class="sub">'+(p.pnl_pct||0)+'% unrealized</div></div>';
+html+='</div>';
+html+='<div class="metrics">';
+html+='<div class="metric"><div class="label">Entry</div><div class="value">$'+(p.entry||'--')+'</div></div>';
+html+='<div class="metric"><div class="label">Current</div><div class="value">$'+(p.current||'--')+'</div></div>';
+html+='<div class="metric"><div class="label">Delta</div><div class="value">'+(p.delta||'--')+'</div></div>';
+html+='<div class="metric"><div class="label">Theta</div><div class="value">+'+(p.theta||'--')+'</div></div>';
+html+='<div class="metric"><div class="label">OTM%</div><div class="value">'+(p.otm||'--')+'%</div></div>';
+html+='<div class="metric"><div class="label">DTE</div><div class="value">'+(p.dte||'--')+'</div></div>';
+html+='</div>';
+html+='<div class="actions"><button class="btn btn-close">Close Position</button><button class="btn btn-hold">Hold</button></div>';
+html+='</div>';
+});
+container.innerHTML=html;
+}
+
+document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
+}catch(e){
+document.getElementById('positions-list').innerHTML='<div class="section"><div class="empty">Error loading positions: '+e.message+'</div></div>';
+}
+}
+
+if(sessionStorage.getItem('ww-auth')==='1'){load();setInterval(load,10000);}
+</script>
 </body>
 </html>
