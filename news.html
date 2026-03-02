@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>White Wolf Clan | News & Alerts</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
+#gate{position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999}
+.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:40px;width:90%;max-width:380px;text-align:center}
+.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
+.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;font-weight:500;cursor:pointer}
+.gatebox .err{color:#ef4444;margin-top:12px;font-size:14px;display:none}
+#app{display:none}
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
+.navinner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:12px;font-weight:bold;font-size:18px}
+.brandicon{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.navlinks{display:flex;gap:8px}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px}
+.navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+.header{margin-bottom:24px}
+.header h1{font-size:28px;margin-bottom:4px}
+.header p{color:#8b8b9e;font-size:14px}
+
+/* Ticker Bar */
+.ticker-wrap{background:#0f0f16;border-bottom:1px solid #2a2a3a;overflow:hidden;padding:12px 0}
+.ticker{display:flex;gap:32px;animation:ticker 30s linear infinite;white-space:nowrap}
+.ticker-item{display:flex;align-items:center;gap:8px}
+.ticker-symbol{font-weight:600;font-size:13px;color:#6366f1}
+.ticker-price{font-family:monospace;font-size:13px}
+.ticker-change{font-family:monospace;font-size:12px}
+.ticker-change.up{color:#10b981}
+.ticker-change.down{color:#ef4444}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* Alert Cards */
+.alert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:16px;margin-bottom:24px}
+.alert-card{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:16px;position:relative;overflow:hidden}
+.alert-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.alert-card.critical::before{background:#ef4444}
+.alert-card.warning::before{background:#f59e0b}
+.alert-card.info::before{background:#6366f1}
+.alert-card.success::before{background:#10b981}
+.alert-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.alert-type{font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.alert-type.critical{color:#ef4444}
+.alert-type.warning{color:#f59e0b}
+.alert-type.info{color:#6366f1}
+.alert-type.success{color:#10b981}
+.alert-time{font-size:12px;color:#64748b}
+.alert-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.alert-message{font-size:13px;color:#8b8b9e;line-height:1.5}
+.alert-meta{display:flex;gap:16px;margin-top:12px;font-size:12px;color:#64748b}
+
+/* News Feed */
+.news-section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
+.news-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #2a2a3a}
+.news-title{font-size:18px;font-weight:600}
+.news-subtitle{font-size:12px;color:#64748b}
+.news-item{padding:16px 0;border-bottom:1px solid #2a2a3a}
+.news-item:last-child{border-bottom:none}
+.news-item-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.news-item-title{font-size:15px;font-weight:600;color:#e8e8f0;text-decoration:none}
+.news-item-title:hover{color:#6366f1}
+.news-item-source{font-size:12px;color:#64748b}
+.news-item-time{font-size:12px;color:#64748b}
+.news-item-summary{font-size:13px;color:#8b8b9e;line-height:1.5;margin-top:6px}
+.news-item-tags{display:flex;gap:8px;margin-top:10px}
+.tag{font-size:11px;padding:4px 10px;border-radius:4px;background:#0a0a0f;color:#8b8b9e}
+.tag.earnings{background:rgba(245,158,11,.15);color:#f59e0b}
+.tag.economic{background:rgba(99,102,241,.15);color:#6366f1}
+.tag.geopolitical{background:rgba(239,68,68,.15);color:#ef4444}
+
+/* Market Status */
+.status-bar{display:flex;gap:24px;padding:16px;background:#0f0f16;border-radius:8px;margin-bottom:24px;overflow-x:auto}
+.status-item{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.status-indicator{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}
+.status-indicator.open{background:#10b981}
+.status-indicator.closed{background:#ef4444}
+.status-indicator.pre{background:#f59e0b}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.status-label{font-size:13px;color:#8b8b9e}
+.status-value{font-size:13px;font-weight:600}
+
+/* Refresh indicator */
+#refresh-indicator{position:fixed;bottom:80px;right:24px;background:#12121a;border:1px solid #2a2a3a;border-radius:8px;padding:12px 16px;font-size:12px;color:#8b8b9e;z-index:100}
+#refresh-indicator.updating{color:#6366f1}
+#refresh-indicator .dot{display:inline-block;width:6px;height:6px;background:#10b981;border-radius:50%;margin-right:8px;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 24px;font-size:12px;display:flex;justify-content:space-between}
+.statusgood{color:#10b981}
+</style>
+</head>
+<body>
+<div id="gate">
+<div class="gatebox">
+<div style="font-size:48px;margin-bottom:16px">📰</div>
+<h2>News & Alerts</h2>
+<p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Real-time intelligence</p>
+<input type="password" id="pwd" placeholder="Enter password">
+<button onclick="auth()">Access</button>
+<p class="err" id="err">Invalid password</p>
+</div>
+</div>
+
+<div id="app">
+<nav><div class="navinner">
+<div class="brand"><div class="brandicon">WW</div>White Wolf Clan</div>
+<div class="navlinks">
+<a href="index.html">Dashboard</a>
+<a href="positions.html">Positions</a>
+<a href="trades.html">Trades</a>
+<a href="news.html" class="active">News & Alerts</a>
+<a href="calculator.html">Calculator</a>
+</div>
+</div></nav>
+
+<div class="ticker-wrap">
+<div class="ticker" id="market-ticker">
+<!-- Populated by JS -->
+</div>
+</div>
+
+<div class="container">
+<div class="header">
+<h1>News & Alerts</h1>
+<p>Real-time market intelligence for the White Wolf Clan</p>
+</div>
+
+<div class="status-bar" id="market-status">
+<!-- Populated by JS -->
+</div>
+
+<div class="alert-grid" id="alerts-container">
+<!-- Populated by JS -->
+</div>
+
+<div class="news-section">
+<div class="news-header">
+<div>
+<div class="news-title">Market News</div>
+<div class="news-subtitle">Latest updates affecting your positions</div>
+</div>
+<span style="font-size:12px;color:#64748b">Auto-refresh: 30s</span>
+</div>
+<div id="news-feed">
+<!-- Populated by JS -->
+</div>
+</div>
+</div>
+
+<div id="refresh-indicator">
+<span class="dot"></span>Live updates every 30s
+</div>
+
+<div id="statusbar">
+<span id="last-update">--</span>
+<span id="conn-status" class="statusgood">● Live</span>
+</div>
+</div>
+
+<script>
+const PWD='jarvisb';
+function auth(){
+const input=document.getElementById('pwd').value;
+if(input===PWD){
+sessionStorage.setItem('ww-auth','1');
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+init();
+}else{
+document.getElementById('err').style.display='block';
+}
+}
+document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
+if(sessionStorage.getItem('ww-auth')==='1'){
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+}
+
+// Market data
+const marketData=[
+{symbol:'SPY',price:512.45,change:1.2},
+{symbol:'QQQ',price:445.82,change:0.8},
+{symbol:'VIX',price:18.52,change:-2.1},
+{symbol:'MSTR',price:128.45,change:5.4},
+{symbol:'COST',price:960.50,change:0.8},
+{symbol:'NVDA',price:875.20,change:3.2},
+{symbol:'TSLA',price:255.30,change:-1.5},
+{symbol:'COIN',price:195.80,change:8.4},
+{symbol:'BTC',price:68500,change:2.1},
+{symbol:'ETH',price:3520,change:1.8}
+];
+
+function renderTicker(){
+const ticker=document.getElementById('market-ticker');
+let html='';
+// Duplicate for seamless loop
+[...marketData,...marketData].forEach(m=>{
+const changeClass=m.change>=0?'up':'down';
+const changeSign=m.change>=0?'+':'';
+html+=`<div class="ticker-item">
+<span class="ticker-symbol">${m.symbol}</span>
+<span class="ticker-price">$${m.price.toLocaleString()}</span>
+<span class="ticker-change ${changeClass}">${changeSign}${m.change}%</span>
+</div>`;
+});
+ticker.innerHTML=html;
+}
+
+function renderMarketStatus(){
+const now=new Date();
+const hour=now.getHours();
+const min=now.getMinutes();
+const cstTime=hour+':'+min;
+
+// Simplified market hours check (CST)
+const isPreMarket=hour<8||(hour===8&&min<30);
+const isMarketOpen=(hour===8&&min>=30)||(hour>8&&hour<15)||(hour===15&&min<=30);
+const isAfterHours=hour>15||(hour===15&&min>30);
+
+let marketStatus='closed';
+let marketText='Market Closed';
+if(isPreMarket){marketStatus='pre';marketText='Pre-Market';}
+else if(isMarketOpen){marketStatus='open';marketText='Market Open';}
+else if(isAfterHours){marketStatus='closed';marketText='After Hours';}
+
+const container=document.getElementById('market-status');
+container.innerHTML=`
+<div class="status-item"><div class="status-indicator ${marketStatus}"></div><span class="status-label">US Equities</span><span class="status-value">${marketText}</span></div>
+<div class="status-item"><span class="status-label">Time (CST)</span><span class="status-value">${cstTime}</span></div>
+<div class="status-item"><span class="status-label">Next Event</span><span class="status-value">FOMC Minutes (Wed)</span></div>
+<div class="status-item"><span class="status-label">VIX Level</span><span class="status-value" style="color:${marketData[2].price<20?'#10b981':'#f59e0b'}">${marketData[2].price} (${marketData[2].price<20?'Low':'Elevated'})</span></div>
+`;
+}
+
+// Alerts data
+const alerts=[
+{type:'critical',title:'MSTR Volatility Spike',message:'Implied volatility increased 15% in last hour. Position delta exposure now +60.',time:'2 min ago',meta:['IV: 92%','Delta: +0.30']},
+{type:'warning',title:'COST Earnings Tomorrow',message:'Earnings announcement before market open. Consider closing position today.',time:'15 min ago',meta:['EPS Est: $3.52','DTE: 4']},
+{type:'info',title:'VIX Break Below 20',message:'Market volatility compressing. Good environment for premium selling.',time:'1 hour ago',meta:['VIX: 18.5','Term: 1DTE']},
+{type:'success',title:'NVDA Position Closed',message:'Bought to close at 50% profit. Realized +$1,200.',time:'3 hours ago',meta:['Profit: +$1,200','ROI: 96%']}
+];
+
+function renderAlerts(){
+const container=document.getElementById('alerts-container');
+let html='';
+alerts.forEach(a=>{
+html+=`<div class="alert-card ${a.type}">
+<div class="alert-header">
+<span class="alert-type ${a.type}">${a.type}</span>
+<span class="alert-time">${a.time}</span>
+</div>
+<div class="alert-title">${a.title}</div>
+<div class="alert-message">${a.message}</div>
+<div class="alert-meta">${a.meta.map(m=>`<span>${m}</span>`).join('')}</div>
+</div>`;
+});
+container.innerHTML=html;
+}
+
+// News feed
+const news=[
+{title:'Fed Chair Powell Signals Rate Cuts Later This Year',source:'Bloomberg',time:'10 min ago',summary:'Federal Reserve Chair Jerome Powell indicated that interest rate cuts could begin later this year if inflation continues to cool.',tags:['economic']},
+{title:'NVIDIA Earnings Beat Expectations, Guidance Strong',source:'Reuters',time:'45 min ago',summary:'NVDA reported Q4 revenue of $22.1B vs $20.4B expected. Data center revenue up 409% YoY.',tags:['earnings']},
+{title:'Bitcoin ETFs See Record Inflows for Third Consecutive Day',source:'CoinDesk',time:'1 hour ago',summary:'Spot Bitcoin ETFs attracted over $800M in net inflows today, bringing weekly total to $2.4B.',tags:['crypto']},
+{title:'Middle East Tensions Escalate, Oil Prices Rise',source:'Financial Times',time:'2 hours ago',summary:'Geopolitical concerns in the Middle East pushed WTI crude above $80/barrel.',tags:['geopolitical']}
+];
+
+function renderNews(){
+const container=document.getElementById('news-feed');
+let html='';
+news.forEach(n=>{
+html+=`<div class="news-item">
+<div class="news-item-header">
+<a href="#" class="news-item-title">${n.title}</a>
+<span class="news-item-time">${n.time}</span>
+</div>
+<div class="news-item-source">${n.source}</div>
+<div class="news-item-summary">${n.summary}</div>
+<div class="news-item-tags">${n.tags.map(t=>`<span class="tag ${t}">${t}</span>`).join('')}</div>
+</div>`;
+});
+container.innerHTML=html;
+}
+
+function updateTimestamp(){
+document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
+}
+
+function refreshData(){
+const indicator=document.getElementById('refresh-indicator');
+indicator.classList.add('updating');
+indicator.innerHTML='<span class="dot"></span>Updating...';
+
+setTimeout(()=>{
+renderAlerts();
+renderNews();
+renderMarketStatus();
+updateTimestamp();
+indicator.classList.remove('updating');
+indicator.innerHTML='<span class="dot"></span>Live updates every 30s';
+},800);
+}
+
+function init(){
+renderTicker();
+renderMarketStatus();
+renderAlerts();
+renderNews();
+updateTimestamp();
+
+// Auto-refresh every 30 seconds
+setInterval(refreshData,30000);
+setInterval(renderMarketStatus,1000);
+}
+
+if(sessionStorage.getItem('ww-auth')==='1'){init();}
+</script>
+</body>
+</html>
