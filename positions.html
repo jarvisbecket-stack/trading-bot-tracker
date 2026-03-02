@@ -124,8 +124,10 @@ const pnl=p.pnl||0;
 const premium = p.premium || 0;
 const contracts = p.contracts || 1;
 
-// Calculate correct option price from premium (per contract)
-const optionPrice = premium > 0 && contracts > 0 ? premium / contracts / 100 : (p.option_price || 0);
+// Calculate correct option price from premium (per contract) - this is ENTRY price
+const entryPrice = premium > 0 && contracts > 0 ? premium / contracts / 100 : (p.entry || 0);
+// Get CURRENT option price from API
+const currentOptionPrice = p.option_price || entryPrice;
 
 html+='<div class="poscard">';
 
@@ -140,30 +142,29 @@ html+='</div>';
 html+='<div style="text-align:right;">';
 html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;margin-bottom:4px;">Premium Collected</div>';
 html+='<div style="font-size:24px;font-weight:bold;color:#10b981;font-family:monospace;">+'+fmt(premium)+'</div>';
-const calcPnLPct = optionPrice > 0 && p.option_price ? ((optionPrice - p.option_price) / optionPrice * 100) : 0;
+const calcPnLPct = entryPrice > 0 && currentOptionPrice < entryPrice ? ((entryPrice - currentOptionPrice) / entryPrice * 100) : 0;
 html+='<div style="font-size:12px;color:'+(calcPnLPct>=0?'#10b981':'#ef4444')+';">'+(calcPnLPct>=0?'+':'')+calcPnLPct.toFixed(1)+'% unrealized P&L</div>';
 html+='</div>';
 
 html+='</div>';
 
-// Buy-to-Close Analysis Box
-const buybackCost = optionPrice * contracts * 100;
+// Buy-to-Close Analysis Box - USE CURRENT OPTION PRICE
+const buybackCost = currentOptionPrice * contracts * 100;
 const netProfit = premium - buybackCost;
 const profitPct = premium > 0 ? (netProfit / premium) * 100 : 0;
 const target50 = premium * 0.50;
 
 html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin:16px 0;">';
 html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Buy-to-Close Analysis</div>';
-html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cost to Close ('+optionPrice.toFixed(2)+' × '+contracts+' × 100)</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cost to Close ('+currentOptionPrice.toFixed(2)+' × '+contracts+' × 100)</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
 html+='<div style="border-top:1px solid #2a2a3a;margin:8px 0;padding-top:8px;display:flex;justify-content:space-between;"><span style="color:#e8e8f0;font-size:14px;font-weight:600;">Net if Closed Now</span><span style="color:'+(netProfit>=0?'#10b981':'#ef4444')+';font-weight:600;">'+(netProfit>=0?'+':'')+fmt(netProfit)+'</span></div>';
 html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;"><span style="color:#64748b;">Profit: '+profitPct.toFixed(1)+'%</span><span style="color:#6366f1;">50% Target: '+fmt(target50)+'</span></div>';
 html+='</div>';
 
 html+='<div class="metrics">';
 html+='<div class="metric"><div class="label">Strike</div><div class="value">$'+(p.strike||'--')+'</div></div>';
-html+='<div class="metric"><div class="label">Entry Price</div><div class="value">$'+optionPrice.toFixed(2)+'</div></div>';
-const currentOptionPrice = p.option_price || optionPrice;
-html+='<div class="metric"><div class="label">Current Price</div><div class="value" style="color:'+(currentOptionPrice<optionPrice?'#10b981':'#ef4444')+';">$'+currentOptionPrice.toFixed(2)+'</div></div>';
+html+='<div class="metric"><div class="label">Entry Price</div><div class="value">$'+entryPrice.toFixed(2)+'</div></div>';
+html+='<div class="metric"><div class="label">Current Price</div><div class="value" style="color:'+(currentOptionPrice<entryPrice?'#10b981':'#ef4444')+';">$'+currentOptionPrice.toFixed(2)+'</div></div>';
 const deltaVal = p.delta !== undefined ? p.delta : 0.25;
 const deltaColor = deltaVal > 0 ? '#10b981' : (deltaVal < 0 ? '#ef4444' : '#6366f1');
 html+='<div class="metric"><div class="label">Delta</div><div class="value" style="color:'+deltaColor+';">'+(deltaVal>0?'+':'')+deltaVal.toFixed(2)+'</div></div>';
