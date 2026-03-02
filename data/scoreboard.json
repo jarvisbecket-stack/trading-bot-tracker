@@ -1,23 +1,40 @@
 {
-  "timestamp": "2026-03-02T11:25:00.000000",
+  "timestamp": "2026-03-02T11:30:00.000000",
   "account": {
     "total_equity": 1026764.60,
-    "cash_available": 630764.60,
+    "cash_available": 756714.60,
     "buying_power": 1026764.60
   },
   "pnl": {
-    "total_pnl": 1250.00,
-    "total_pnl_pct": 0.12
+    "total_pnl": 5657.00,
+    "total_pnl_pct": 0.57
   },
-  "committed_capital": 396000.00,
+  "committed_capital": 243286.00,
   "positions": [
+    {
+      "symbol": "MSTR",
+      "type": "Short Put",
+      "strike": 115.55,
+      "contracts": 2,
+      "entry": 115.55,
+      "current": 115.55,
+      "expiry": "Mar 15, 2026",
+      "dte": 12,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.30,
+      "theta": 8.50,
+      "otm": 10.0,
+      "iv": 85.2,
+      "premium": 2054.00
+    },
     {
       "symbol": "COST",
       "type": "Short Put",
-      "strike": 990.00,
-      "contracts": 4,
-      "entry": 985.50,
-      "current": 985.50,
+      "strike": 950.72,
+      "contracts": 1,
+      "entry": 950.72,
+      "current": 950.72,
       "expiry": "Mar 7, 2026",
       "dte": 5,
       "pnl": 0,
@@ -26,7 +43,58 @@
       "theta": 12.50,
       "otm": 1.0,
       "iv": 28.5,
-      "premium": 1250.00
+      "premium": 1801.00
+    },
+    {
+      "symbol": "KO",
+      "type": "Short Put",
+      "strike": 79.08,
+      "contracts": 5,
+      "entry": 79.08,
+      "current": 79.08,
+      "expiry": "Mar 20, 2026",
+      "dte": 18,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.20,
+      "theta": 4.20,
+      "otm": 3.0,
+      "iv": 16.2,
+      "premium": 610.00
+    },
+    {
+      "symbol": "VZ",
+      "type": "Short Put",
+      "strike": 47.86,
+      "contracts": 10,
+      "entry": 47.86,
+      "current": 47.86,
+      "expiry": "Mar 20, 2026",
+      "dte": 18,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.22,
+      "theta": 3.80,
+      "otm": 2.5,
+      "iv": 18.5,
+      "premium": 600.00
+    },
+    {
+      "symbol": "BAC",
+      "type": "Short Put",
+      "strike": 47.13,
+      "contracts": 8,
+      "entry": 47.13,
+      "current": 47.13,
+      "expiry": "Mar 20, 2026",
+      "dte": 18,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": 0.24,
+      "theta": 4.50,
+      "otm": 2.8,
+      "iv": 28.5,
+      "premium": 592.00
     }
   ]
 }
