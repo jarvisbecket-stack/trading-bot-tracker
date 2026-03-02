@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Position Card Redesign</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e8e8f0;
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        /* === ORIGINAL CARD (Problems) === */
+        .card-original {
+            width: 380px;
+            background: #12121a;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #2a2a3a;
+        }
+        .original-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .original-symbol {
+            background: #6366f1;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .original-pnl {
+            color: #10b981;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .original-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        .original-greeks {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .original-greek {
+            background: #1a1a25;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .original-greek-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .original-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .original-btn {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-close {
+            background: #10b981;
+            color: #0a0a0f;
+        }
+        .btn-hold {
+            background: #2a2a3a;
+            color: #e8e8f0;
+        }
+        
+        /* === REDESIGNED CARD (Solutions) === */
+        .card-redesign {
+            width: 420px;
+            background: #12121a;
+            border-radius: 16px;
+            border: 1px solid #2a2a3a;
+            overflow: hidden;
+        }
+        .redesign-header {
+            background: linear-gradient(135deg, #1a1a25 0%, #12121a 100%);
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        .redesign-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .redesign-symbol-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .redesign-badge {
+            background: #6366f1;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .redesign-contracts {
+            color: #8b8b9e;
+            font-size: 14px;
+        }
+        .redesign-pnl-section {
+            text-align: right;
+        }
+        .redesign-pnl-main {
+            color: #10b981;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .redesign-pnl-sub {
+            color: #8b8b9e;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .redesign-position-info {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+        }
+        .redesign-info-item {
+            color: #8b8b9e;
+        }
+        .redesign-info-value {
+            color: #e8e8f0;
+            font-weight: 500;
+        }
+        
+        /* Profit Breakdown Section */
+        .redesign-breakdown {
+            padding: 20px;
+            background: #0f0f16;
+        }
+        .breakdown-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #8b8b9e;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+        .breakdown-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .breakdown-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot-credit { background: #10b981; }
+        .dot-current { background: #6366f1; }
+        .dot-profit { background: #f59e0b; }
+        .breakdown-value {
+            font-weight: 500;
+            font-family: 'SF Mono', monospace;
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            padding: 0 20px 20px;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .progress-label { color: #8b8b9e; }
+        .progress-value { color: #10b981; font-weight: 500; }
+        .progress-bar-bg {
+            height: 8px;
+            background: #2a2a3a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .progress-target {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #8b8b9e;
+            margin-top: 8px;
+        }
+        
+        /* Greeks - Simplified */
+        .greeks-section {
+            padding: 20px;
+            border-top: 1px solid #2a2a3a;
+        }
+        .greeks-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .greek-item {
+            text-align: center;
+            padding: 12px;
+            background: #1a1a25;
+            border-radius: 8px;
+        }
+        .greek-label {
+            font-size: 11px;
+            color: #8b8b9e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .greek-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 4px;
+            font-family: 'SF Mono', monospace;
+        }
+        .greek-help {
+            font-size: 10px;
+            color: #8b8b9e;
+            margin-top: 2px;
+        }
+        
+        /* Market Data */
+        .market-section {
+            padding: 20px;
+            border-top: 1px solid #2a2a3a;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .market-label { color: #8b8b9e; }
+        .market-value { font-weight: 500; }
+        
+        /* Action Buttons */
+        .action-section {
+            padding: 20px;
+            border-top: 1px solid #2a2a3a;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+        }
+        .btn-primary {
+            background: #10b981;
+            color: #0a0a0f;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-secondary {
+            background: #2a2a3a;
+            color: #e8e8f0;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .btn-primary:hover { background: #0ea372; }
+        .btn-secondary:hover { background: #3a3a4a; }
+        
+        /* Labels */
+        .section-label {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #12121a;
+            padding: 0 8px;
+            font-size: 11px;
+            color: #8b8b9e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .section-wrapper {
+            position: relative;
+        }
+        
+        /* Comparison Label */
+        .comparison-label {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .label-problem { color: #ef4444; }
+        .label-solution { color: #10b981; }
+    </style>
+</head>
+<body>
+    <!-- ORIGINAL CARD (With Problems) -->
+    <div style="position: relative;">
+        <div class="comparison-label label-problem">❌ Original (Confusing)</div>
+        <div class="card-original" style="margin-top: 30px;">
+            <div class="original-header">
+                <div>
+                    <span class="original-symbol">MSTR</span>
+                    <span style="margin-left: 12px; font-weight: 500;">Put $115.55</span>
+                    <div style="color: #8b8b9e; font-size: 13px; margin-top: 4px;">Exp: 2026-03-15 (12 DTE)</div>
+                </div>
+                <div style="text-align: right;">
+                    <div class="original-pnl">+$2,054.00</div>
+                    <div style="color: #10b981; font-size: 14px;">+41.7%</div>
+                </div>
+            </div>
+            
+            <div class="original-metric">
+                <span style="color: #8b8b9e;">BUY-TO-CLOSE COST</span>
+                <span style="font-weight: 500;">$598.00/contract</span>
+            </div>
+            <div class="original-metric">
+                <span style="color: #8b8b9e;">Net Profit</span>
+                <span style="color: #10b981; font-weight: 500;">$4,108.00</span>
+            </div>
+            <div class="original-metric">
+                <span style="color: #8b8b9e;">50% Target</span>
+                <span>41.7%</span>
+            </div>
+            <div style="height: 8px; background: #2a2a3a; border-radius: 4px; margin-top: 8px;">
+                <div style="width: 83.4%; height: 100%; background: #6366f1; border-radius: 4px;"></div>
+            </div>
+            
+            <div class="original-greeks">
+                <div class="original-greek">
+                    <div style="font-size: 12px; color: #8b8b9e;">Delta</div>
+                    <div class="original-greek-value" style="color: #ef4444;">-0.180</div>
+                </div>
+                <div class="original-greek">
+                    <div style="font-size: 12px; color: #8b8b9e;">Gamma</div>
+                    <div class="original-greek-value">0.012</div>
+                </div>
+                <div class="original-greek">
+                    <div style="font-size: 12px; color: #8b8b9e;">Theta</div>
+                    <div class="original-greek-value" style="color: #10b981;">+$2.15</div>
+                </div>
+                <div class="original-greek">
+                    <div style="font-size: 12px; color: #8b8b9e;">Vega</div>
+                    <div class="original-greek-value" style="color: #f59e0b;">-$0.08</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 16px; font-size: 14px; color: #8b8b9e;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Underlying</span><span style="color: #e8e8f0;">$128.45</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>OTM %</span><span style="color: #10b981;">10.0%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Bid/Ask</span><span>5.85 / 6.10</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>IV</span><span>78.5%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Volume</span><span>2,450</span>
+                </div>
+            </div>
+            
+            <div class="original-buttons">
+                <button class="original-btn btn-close">Close Position</button>
+                <button class="original-btn btn-hold">Hold Position</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REDESIGNED CARD (Fixed) -->
+    <div style="position: relative;">
+        <div class="comparison-label label-solution">✅ Redesigned (Clear)</div>
+        <div class="card-redesign" style="margin-top: 30px;">
+            <!-- Header -->
+            <div class="redesign-header">
+                <div class="redesign-header-top">
+                    <div class="redesign-symbol-section">
+                        <div class="redesign-badge">MSTR</div>
+                        <div>
+                            <div style="font-weight: 600;">Short Put $115.55</div>
+                            <div class="redesign-contracts">10 contracts • 12 DTE</div>
+                        </div>
+                    </div>
+                    <div class="redesign-pnl-section">
+                        <div class="redesign-pnl-main">+$2,054</div>
+                        <div class="redesign-pnl-sub">Unrealized P&L (+41.7%)</div>
+                    </div>
+                </div>
+                <div class="redesign-position-info">
+                    <div class="redesign-info-item">
+                        Exp: <span class="redesign-info-value">Mar 15, 2026</span>
+                    </div>
+                    <div class="redesign-info-item">
+                        Type: <span class="redesign-info-value">Cash-Secured Put</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profit Breakdown -->
+            <div class="redesign-breakdown">
+                <div class="breakdown-title">Profit Breakdown</div>
+                <div class="breakdown-row">
+                    <div class="breakdown-label">
+                        <div class="breakdown-dot dot-credit"></div>
+                        Original Credit (10 contracts)
+                    </div>
+                    <div class="breakdown-value" style="color: #10b981;">+$6,162</div>
+                </div>
+                <div class="breakdown-row">
+                    <div class="breakdown-label">
+                        <div class="breakdown-dot dot-current"></div>
+                        Current Buyback Cost
+                    </div>
+                    <div class="breakdown-value" style="color: #6366f1;">-$5,980</div>
+                </div>
+                <div class="breakdown-row">
+                    <div class="breakdown-label">
+                        <div class="breakdown-dot dot-profit"></div>
+                        Net Profit if Closed
+                    </div>
+                    <div class="breakdown-value" style="color: #f59e0b; font-weight: bold;">+$4,108</div>
+                </div>
+            </div>
+            
+            <!-- Progress to 50% Target -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-label">Progress to 50% Profit Target</span>
+                    <span class="progress-value">83.4% complete</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 83.4%;"></div>
+                </div>
+                <div class="progress-target">
+                    <span>0%</span>
+                    <span style="color: #10b981;">Current: 41.7% of max profit</span>
+                    <span>50%</span>
+                </div>
+            </div>
+            
+            <!-- Greeks -->
+            <div class="greeks-section">
+                <div class="greeks-grid">
+                    <div class="greek-item">
+                        <div class="greek-label">Delta</div>
+                        <div class="greek-value" style="color: #ef4444;">-0.180</div>
+                        <div class="greek-help">Short put = negative</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">Gamma</div>
+                        <div class="greek-value">0.012</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">Theta</div>
+                        <div class="greek-value" style="color: #10b981;">+$2.15</div>
+                        <div class="greek-help">Daily time decay</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">IV</div>
+                        <div class="greek-value" style="color: #f59e0b;">78.5%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Market Data -->
+            <div class="market-section">
+                <div class="market-item">
+                    <span class="market-label">Underlying</span>
+                    <span class="market-value">$128.45</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">OTM Buffer</span>
+                    <span class="market-value" style="color: #10b981;">10.0%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">Bid/Ask</span>
+                    <span class="market-value">5.85 / 6.10</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">Volume</span>
+                    <span class="market-value">2,450</span>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="action-section">
+                <button class="btn-primary">
+                    Close Position
+                    <span style="font-size: 12px; opacity: 0.8;">(Realize $4,108 profit)</span>
+                </button>
+                <button class="btn-secondary">Hold</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
