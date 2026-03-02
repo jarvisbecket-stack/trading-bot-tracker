@@ -99,10 +99,15 @@ document.getElementById('app').style.display='block';
 }
 function fmt(n){if(n==null)return'$--';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 async function load(){
+console.log('Loading data...');
 try{
-const r=await fetch('data/scoreboard.json?_'+Date.now(),{cache:'no-store'});
-if(!r.ok)throw new Error('No data');
+const url='data/scoreboard.json?_'+Date.now();
+console.log('Fetching:',url);
+const r=await fetch(url,{cache:'no-store'});
+console.log('Response status:',r.status);
+if(!r.ok)throw new Error('HTTP '+r.status);
 const d=await r.json();
+console.log('Data received:',d);
 const fund=d?.account?.total_equity;
 const pnl=d?.pnl?.total_pnl;
 const committed=d?.committed_capital;
@@ -113,7 +118,7 @@ if(pnl!=null){const el=document.getElementById('pnl');el.textContent=(pnl>=0?'+'
 if(committed){document.getElementById('committed').textContent=fmt(committed);const pct=fund?(committed/fund*100).toFixed(1):0;document.getElementById('deployed').textContent=pct+'% deployed';}
 if(cash){document.getElementById('cash').textContent=fmt(cash);}
 if(bp){document.getElementById('bp').textContent='BP: '+fmt(bp);}
-}catch(e){console.log('No data');}
+}catch(e){console.error('Load error:',e);document.getElementById('fundsub').textContent='Error: '+e.message;}
 document.getElementById('time').textContent=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
 }
 if(sessionStorage.getItem('auth')==='1'){load();setInterval(load,30000);}
