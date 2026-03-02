@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-03-02T12:27:22.751538",
+  "timestamp": "2026-03-02T12:30:00.000000",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
-  "disclaimer": "REAL MARKET DATA - NO MOCK DATA",
+  "disclaimer": "REAL MARKET DATA ONLY - NO PAPER POSITIONS ACTIVE",
   "account": {
-    "total_equity": 1026764.60,
-    "cash_available": 756714.60,
-    "buying_power": 1026764.60,
+    "total_equity": 1000000.00,
+    "cash_available": 1000000.00,
+    "buying_power": 1000000.00,
     "starting_capital": 1000000.00
   },
   "pnl": {
-    "total_pnl": 5657.00,
-    "total_pnl_pct": 0.57,
-    "ytd_pnl": 26764.60,
-    "ytd_pnl_pct": 2.68
+    "total_pnl": 0.00,
+    "total_pnl_pct": 0.00,
+    "ytd_pnl": 0.00,
+    "ytd_pnl_pct": 0.00
   },
   "market_data": {
     "MSTR": {
@@ -74,107 +74,11 @@
   },
   "history": [
     {"date": "2026-01-02", "value": 1000000.00},
-    {"date": "2026-01-15", "value": 1008500.00},
-    {"date": "2026-02-01", "value": 1012000.00},
-    {"date": "2026-02-15", "value": 1021000.00},
-    {"date": "2026-03-02", "value": 1026764.60}
+    {"date": "2026-01-15", "value": 1000000.00},
+    {"date": "2026-02-01", "value": 1000000.00},
+    {"date": "2026-02-15", "value": 1000000.00},
+    {"date": "2026-03-02", "value": 1000000.00}
   ],
-  "committed_capital": 243286.00,
-  "positions": [
-    {
-      "symbol": "MSTR",
-      "type": "Short Put",
-      "strike": 115.55,
-      "contracts": 2,
-      "entry": 10.27,
-      "current": 136.69,
-      "option_price": 0.50,
-      "expiry": "Mar 15, 2026",
-      "dte": 12,
-      "pnl": 1954.00,
-      "pnl_pct": 95.2,
-      "delta": 0.05,
-      "theta": 0.25,
-      "otm": 18.2,
-      "iv": 65.2,
-      "premium": 2054.00,
-      "data_source": "paper_trading"
-    },
-    {
-      "symbol": "COST",
-      "type": "Short Put",
-      "strike": 950.72,
-      "contracts": 1,
-      "entry": 18.01,
-      "current": 1006.745,
-      "option_price": 0.15,
-      "expiry": "Mar 7, 2026",
-      "dte": 5,
-      "pnl": 1786.00,
-      "pnl_pct": 99.2,
-      "delta": 0.02,
-      "theta": 0.50,
-      "otm": 5.9,
-      "iv": 25.5,
-      "premium": 1801.00,
-      "data_source": "paper_trading"
-    },
-    {
-      "symbol": "KO",
-      "type": "Short Put",
-      "strike": 79.08,
-      "contracts": 5,
-      "entry": 1.22,
-      "current": 80.41,
-      "option_price": 0.05,
-      "expiry": "Mar 20, 2026",
-      "dte": 18,
-      "pnl": 585.00,
-      "pnl_pct": 95.9,
-      "delta": 0.08,
-      "theta": 0.15,
-      "otm": 1.6,
-      "iv": 18.2,
-      "premium": 610.00,
-      "data_source": "paper_trading"
-    },
-    {
-      "symbol": "VZ",
-      "type": "Short Put",
-      "strike": 47.86,
-      "contracts": 10,
-      "entry": 0.60,
-      "current": 50.015,
-      "option_price": 0.02,
-      "expiry": "Mar 20, 2026",
-      "dte": 18,
-      "pnl": 580.00,
-      "pnl_pct": 96.7,
-      "delta": 0.03,
-      "theta": 0.08,
-      "otm": 4.5,
-      "iv": 20.5,
-      "premium": 600.00,
-      "data_source": "paper_trading"
-    },
-    {
-      "symbol": "BAC",
-      "type": "Short Put",
-      "strike": 47.13,
-      "contracts": 8,
-      "entry": 0.74,
-      "current": 50.175,
-      "option_price": 0.03,
-      "expiry": "Mar 20, 2026",
-      "dte": 18,
-      "pnl": 568.00,
-      "pnl_pct": 95.9,
-      "delta": 0.04,
-      "theta": 0.10,
-      "otm": 6.4,
-      "iv": 28.5,
-      "premium": 592.00,
-      "data_source": "paper_trading"
-    }
-  ]
+  "committed_capital": 0.00,
+  "positions": []
 }
