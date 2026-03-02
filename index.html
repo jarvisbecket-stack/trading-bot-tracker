@@ -235,12 +235,6 @@ document.getElementById('committed').textContent=fmt(committed);
 const pct=fund?(committed/fund*100).toFixed(1):0;
 document.getElementById('committed-sub').textContent=pct+'% deployed';
 }
-if(cash!==undefined){
-document.getElementById('cash').textContent=fmt(cash);
-}
-if(bp!==undefined){
-document.getElementById('bp').textContent='BP: '+fmt(bp);
-}
 
 // Update data source indicator
 const dataSource = data?.data_source || 'UNKNOWN';
