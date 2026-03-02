@@ -192,19 +192,23 @@ container.innerHTML='<div class="empty"><p>No trades match filter</p></div>';
 return;
 }
 
-let html='<table><thead><tr><th>Time (CST)</th><th>Symbol</th><th>Type</th><th>Contracts</th><th>Entry</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
+let html='<table><thead><tr><th>Time (CST)</th><th>Symbol</th><th>Type</th><th>Contracts</th><th>Strike</th><th>Entry</th><th>Premium</th><th>Cash Committed</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
 
 filtered.slice().reverse().forEach(t=>{
 // For open positions, show premium collected; for closed, show realized P&L
 const isOpen=!t.exit_price;
 const pnl=isOpen?(t.premium||0):(t.result?.pnl||0);
 const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
+const cashCommitted=(t.strike||0)*(t.contracts||0)*100;
 html+='<tr>';
 html+='<td>'+time+'</td>';
 html+='<td><span class="symbol">'+(t.symbol||'--')+'</span></td>';
 html+='<td>'+(t.type||'--')+'</td>';
 html+='<td>'+(t.contracts||'--')+'</td>';
+html+='<td>$'+(t.strike||'--')+'</td>';
 html+='<td>$'+(t.entry_price||'--')+'</td>';
+html+='<td>+'+fmt(t.premium||0)+'</td>';
+html+='<td style="color:#f59e0b;">'+fmt(cashCommitted)+'</td>';
 html+='<td class="'+(pnl>=0?'positive':'negative')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
 html+='<td><span class="badge '+(isOpen?'badge-open':'badge-closed')+'">'+(isOpen?'OPEN':'CLOSED')+'</span></td>';
 html+='</tr>';

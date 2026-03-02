@@ -284,12 +284,13 @@ container.innerHTML='<div class="empty"><p>No open positions</p><p style="font-s
 return;
 }
 
-let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Entry $</th><th>P&L</th><th>Delta</th><th>DTE</th></tr></thead><tbody>';
+let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Cash Committed</th><th>P&L</th><th>Delta</th><th>DTE</th></tr></thead><tbody>';
 positions.forEach(p=>{
 const pnl=p.pnl||0;
 const pnlClass=pnl>=0?'positive':'negative';
 const contracts = p.contracts || 1;
 const premium = p.premium || 0;
+const cashCommitted = (p.strike || 0) * contracts * 100;
 // Calculate correct option price from premium
 const optionPrice = premium > 0 && contracts > 0 ? premium / contracts / 100 : (p.option_price || 0);
 // Short puts have positive delta - display with + sign
@@ -301,7 +302,7 @@ html+='<td><strong>'+(p.symbol||'--')+'</strong></td>';
 html+='<td>'+(p.type||'--')+'</td>';
 html+='<td>$'+(p.strike||'--')+'</td>';
 html+='<td>'+contracts+'</td>';
-html+='<td>$'+optionPrice.toFixed(2)+'</td>';
+html+='<td style="color:#f59e0b;">'+fmt(cashCommitted)+'</td>';
 html+='<td class="'+pnlClass+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
 html+='<td style="color:'+deltaColor+';">'+deltaDisplay+'</td>';
 html+='<td>'+(p.dte||'--')+'</td>';

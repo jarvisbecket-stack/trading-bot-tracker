@@ -153,10 +153,12 @@ const buybackCost = currentOptionPrice * contracts * 100;
 const netProfit = premium - buybackCost;
 const profitPct = premium > 0 ? (netProfit / premium) * 100 : 0;
 const target50 = premium * 0.50;
+const cashCommitted = (p.strike || 0) * contracts * 100;
 
 html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin:16px 0;">';
 html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Buy-to-Close Analysis</div>';
 html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cost to Close ('+currentOptionPrice.toFixed(2)+' × '+contracts+' × 100)</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cash Committed</span><span style="color:#f59e0b;font-weight:600;">'+fmt(cashCommitted)+'</span></div>';
 html+='<div style="border-top:1px solid #2a2a3a;margin:8px 0;padding-top:8px;display:flex;justify-content:space-between;"><span style="color:#e8e8f0;font-size:14px;font-weight:600;">Net if Closed Now</span><span style="color:'+(netProfit>=0?'#10b981':'#ef4444')+';font-weight:600;">'+(netProfit>=0?'+':'')+fmt(netProfit)+'</span></div>';
 html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;"><span style="color:#64748b;">Profit: '+profitPct.toFixed(1)+'%</span><span style="color:#6366f1;">50% Target: '+fmt(target50)+'</span></div>';
 html+='</div>';
