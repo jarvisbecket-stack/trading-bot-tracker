@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>White Wolf Clan | Trading Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -348,13 +351,19 @@
             }).format(value);
         }
         
-        // Fetch real data from scoreboard
+        // Fetch real data from scoreboard with cache-busting
         async function fetchData() {
             try {
+                // Add cache-busting parameter
+                const cacheBuster = '?_=' + Date.now();
+                
                 // Try to fetch from scoreboard API
-                const response = await fetch('data/scoreboard.json', { 
+                const response = await fetch('data/scoreboard.json' + cacheBuster, { 
                     cache: 'no-store',
-                    headers: { 'Accept': 'application/json' }
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
                 });
                 
                 if (!response.ok) {

@@ -3,237 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="60">
-    <title>Paper Trading Bot - Trade Log</title>
-    <style>
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: #1a1a25;
-            --text-primary: #e8e8f0;
-            --text-secondary: #a0a0b0;
-            --accent-success: #10b981;
-            --accent-costco: #e31837;
-            --accent-bitcoin: #f7931a;
-            --accent-ko: #dc2626;
-            --border-color: #2a2a3a;
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>White Wolf Clan | Trade History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ww-dark': '#0a0a0f',
+                        'ww-card': '#12121a',
+                        'ww-elevated': '#1a1a25',
+                        'ww-border': '#2a2a3a',
+                        'ww-text': '#e8e8f0',
+                        'ww-muted': '#8b8b9e',
+                        'ww-accent': '#6366f1',
+                        'ww-success': '#10b981',
+                        'ww-danger': '#ef4444',
+                        'ww-warning': '#f59e0b'
+                    }
+                }
+            }
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
-        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 1rem; text-align: center; }
-        h1 { font-size: 2rem; }
-        .subtitle { opacity: 0.9; margin-top: 0.5rem; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
-        .alert-box { background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.5); border-radius: 12px; padding: 1.5rem; margin: 2rem 0; text-align: center; }
-        .alert-title { color: var(--accent-success); font-size: 1.5rem; font-weight: 700; }
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .summary-card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid var(--border-color); }
-        .summary-value { font-size: 2.5rem; font-weight: 700; }
-        .summary-label { color: var(--text-secondary); margin-top: 0.5rem; }
-        .trades-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg-card); border-radius: 12px; overflow: hidden; }
-        .trades-table th, .trades-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
-        .trades-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.875rem; }
-        .status-open { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600; }
-        .bot-section { margin: 2rem 0; }
-        .bot-header { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); }
-        .bot-header.cost { color: var(--accent-costco); border-color: var(--accent-costco); }
-        .bot-header.mstr { color: var(--accent-bitcoin); border-color: var(--accent-bitcoin); }
-        .bot-header.ko { color: var(--accent-ko); border-color: var(--accent-ko); }
-        .bot-header.vz { color: #2563eb; border-color: #2563eb; }
-        .bot-header.bac { color: #0891b2; border-color: #0891b2; }
-        .bot-header.wfc { color: #dc2626; border-color: #dc2626; }
-        .bot-header.nvda { color: #10b981; border-color: #10b981; }
-        .bot-header.amd { color: #f59e0b; border-color: #f59e0b; }
-        .bot-header.nflx { color: #ef4444; border-color: #ef4444; }
-        .bot-header.xom { color: #8b5cf6; border-color: #8b5cf6; }
-        .bot-header.crm { color: #06b6d4; border-color: #06b6d4; }
-        .bot-header.wmt { color: #3b82f6; border-color: #3b82f6; }
-        .bot-header.pg { color: #14b8a6; border-color: #14b8a6; }
-        .bot-header.cvx { color: #f97316; border-color: #f97316; }
-        .bot-header.sbux { color: #22c55e; border-color: #22c55e; }
-        .bot-header.aapl { color: #64748b; border-color: #64748b; }
-        .bot-header.msft { color: #0ea5e9; border-color: #0ea5e9; }
-        .bot-header.googl { color: #eab308; border-color: #eab308; }
-        .bot-header.amzn { color: #ec4899; border-color: #ec4899; }
-        .bot-header.t { color: #6366f1; border-color: #6366f1; }
-        .update-time { text-align: center; color: var(--text-secondary); margin: 1rem 0; font-size: 0.875rem; }
-        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
+    </script>
+    <style>
+        * { scrollbar-width: thin; scrollbar-color: #2a2a3a #0a0a0f; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+        body { font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .glass { background: rgba(18, 18, 26, 0.8); backdrop-filter: blur(12px); }
+        .gradient-text { background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Password overlay */
+        #password-gate {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #0a0a0f;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-box {
+            background: #12121a;
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .password-input {
+            background: #1a1a25;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #e8e8f0;
+            width: 100%;
+            margin: 16px 0;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+        .password-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .password-error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .password-error.show { opacity: 1; }
+        
+        .trade-row:hover { background: rgba(99, 102, 241, 0.1); }
     </style>
 </head>
-<body>
-    <header>
-        <h1>📋 Paper Trading Bot - Trade Log</h1>
-        <div class="subtitle">20-Way Bot Race | Live Trade Updates | Timeout Enabled | Wash Sale Compliant</div>
-    </header>
-
-    <div class="container">
-        <div class="update-time">🔄 Last Updated: 2026-03-02 08:30:52 CST | Auto-refresh: 60s</div>
-
-        <div class="alert-box">
-            <div class="alert-title">🟢 RACE IS LIVE - 20 BOTS TRADING</div>
-            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Auto-timeout enabled | Wash sale compliant | Mid-price fills</div>
-        </div>
-
-        <div class="summary-grid">
-            <div class="summary-card">
-                <div class="summary-value">9</div>
-                <div class="summary-label">Total Trades Today</div>
+<body class="bg-ww-dark text-ww-text min-h-screen">
+    <!-- Password Gate -->
+    <div id="password-gate">
+        <div class="password-box">
+            <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-6">
+                <span class="text-white font-bold text-2xl">WW</span>
             </div>
-            <div class="summary-card">
-                <div class="summary-value" style="color: var(--accent-success);">$+3,005,381.8499999996</div>
-                <div class="summary-label">Combined P&L</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-value">$5,005,382</div>
-                <div class="summary-label">Total Portfolio Value</div>
-            </div>
-        </div>
-
-        <div class="bot-section">
-            <div class="bot-header ko">COCA-COLA (KO) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 3 trades | 
-                <strong>Cash:</strong> $101,824.75 | 
-                <strong>Return:</strong> +1.82%
-            </div>
-
-            <table class="trades-table">
-                <thead>
-                    <tr>
-                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-03-02 08:30:47</td>
-                        <td>SELL_PUT</td>
-                        <td>KO260323P00078790</td>
-                        <td>$78.79</td>
-                        <td>2026-03-23</td>
-                        <td>5</td>
-                        <td style="color: var(--accent-success);">+$608.25</td>
-                        <td><span class="status-open">OPEN</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header vz">VERIZON (VZ) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 3 trades | 
-                <strong>Cash:</strong> $101,789.50 | 
-                <strong>Return:</strong> +1.79%
-            </div>
-
-            <table class="trades-table">
-                <thead>
-                    <tr>
-                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-03-02 08:30:50</td>
-                        <td>SELL_PUT</td>
-                        <td>VZ260323P00047920</td>
-                        <td>$47.92</td>
-                        <td>2026-03-23</td>
-                        <td>10</td>
-                        <td style="color: var(--accent-success);">+$596.50</td>
-                        <td><span class="status-open">OPEN</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header bac">BANK OF AMERICA (BAC) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 3 trades | 
-                <strong>Cash:</strong> $101,767.60 | 
-                <strong>Return:</strong> +1.77%
-            </div>
-
-            <table class="trades-table">
-                <thead>
-                    <tr>
-                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-03-02 08:30:52</td>
-                        <td>SELL_PUT</td>
-                        <td>BAC260323P00046320</td>
-                        <td>$46.32</td>
-                        <td>2026-03-23</td>
-                        <td>8</td>
-                        <td style="color: var(--accent-success);">+$581.20</td>
-                        <td><span class="status-open">OPEN</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header wfc">WELLS FARGO (WFC) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header xom">EXXON MOBIL (XOM) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header wmt">WALMART (WMT) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header pg">PROCTER & GAMBLE (PG) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header cvx">CHEVRON (CVX) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header sbux">STARBUCKS (SBUX) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header t">AT&T (T) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
+            <h2 class="text-xl font-bold mb-2">White Wolf Clan</h2>
+            <p class="text-ww-muted text-sm mb-6">Trade History • Restricted Access</p>
+            <input type="password" id="password-input" class="password-input" placeholder="••••••••" maxlength="20">
+            <button onclick="checkPassword()" class="w-full bg-ww-accent hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition">
+                Access Trade Log
+            </button>
+            <p id="password-error" class="password-error">Invalid password. Access denied.</p>
         </div>
     </div>
 
-    <div class="footer">
-        <p>Paper Trading Trade Log | 3-Way Bot Race</p>
-        <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a></p>
+    <!-- Main Content (Hidden until auth) -->
+    <div id="main-content" style="display: none;">
+        <!-- Navigation -->
+        <nav class="glass border-b border-ww-border sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">WW</span>
+                        </div>
+                        <span class="font-bold text-lg tracking-tight">White Wolf<span class="gradient-text">Clan</span></span>
+                    </div>
+                    <div class="hidden md:flex items-center gap-1">
+                        <a href="index.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Dashboard</a>
+                        <a href="positions.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Positions</a>
+                        <a href="watchlist.html" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Watchlist</a>
+                        <a href="trades.html" class="px-4 py-2 rounded-lg bg-ww-accent/20 text-ww-accent text-sm font-medium">Trades</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div id="data-status" class="flex items-center gap-2 text-xs text-ww-muted">
+                            <span class="w-2 h-2 bg-ww-muted rounded-full"></span>
+                            LOADING
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Header -->
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold mb-1">Trade History</h1>
+                    <p class="text-ww-muted text-sm">All transactions • Filterable • Real-time</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="filterTrades('today')" class="px-4 py-2 rounded-lg bg-ww-accent/20 text-ww-accent text-sm font-medium">Today</button>
+                    <button onclick="filterTrades('week')" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Week</button>
+                    <button onclick="filterTrades('month')" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">Month</button>
+                    <button onclick="filterTrades('all')" class="px-4 py-2 rounded-lg hover:bg-ww-elevated text-ww-muted text-sm font-medium transition">All</button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
+                    <div class="text-ww-muted text-xs uppercase tracking-wider font-medium mb-2">Total Trades</div>
+                    <div class="text-3xl font-bold" id="total-trades">--</div>
+                </div>
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
+                    <div class="text-ww-muted text-xs uppercase tracking-wider font-medium mb-2">Win Rate</div>
+                    <div class="text-3xl font-bold text-ww-success" id="win-rate">--</div>
+                </div>
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
+                    <div class="text-ww-muted text-xs uppercase tracking-wider font-medium mb-2">Total P&L</div>
+                    <div class="text-3xl font-bold" id="total-pnl">--</div>
+                </div>
+                <div class="bg-ww-card border border-ww-border rounded-xl p-5">
+                    <div class="text-ww-muted text-xs uppercase tracking-wider font-medium mb-2">Avg Trade</div>
+                    <div class="text-3xl font-bold" id="avg-trade">--</div>
+                </div>
+            </div>
+
+            <!-- Trades Table -->
+            <div class="bg-ww-card border border-ww-border rounded-xl overflow-hidden">
+                <div class="px-5 py-4 border-b border-ww-border flex items-center justify-between">
+                    <h3 class="font-semibold">All Trades</h3>
+                    <div class="flex gap-2">
+                        <select id="filter-symbol" onchange="applyFilters()" class="bg-ww-elevated border border-ww-border rounded-lg px-3 py-1.5 text-sm text-ww-text">
+                            <option value="">All Symbols</option>
+                            <option value="SPY">SPY</option>
+                            <option value="QQQ">QQQ</option>
+                            <option value="AAPL">AAPL</option>
+                            <option value="TSLA">TSLA</option>
+                        </select>
+                        <select id="filter-result" onchange="applyFilters()" class="bg-ww-elevated border border-ww-border rounded-lg px-3 py-1.5 text-sm text-ww-text">
+                            <option value="">All Results</option>
+                            <option value="win">Winners</option>
+                            <option value="loss">Losers</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-ww-elevated text-left text-xs uppercase tracking-wider text-ww-muted">
+                                <th class="px-5 py-3 font-medium">Time</th>
+                                <th class="px-5 py-3 font-medium">Symbol</th>
+                                <th class="px-5 py-3 font-medium">Strategy</th>
+                                <th class="px-5 py-3 font-medium">Direction</th>
+                                <th class="px-5 py-3 font-medium">Entry</th>
+                                <th class="px-5 py-3 font-medium">Exit</th>
+                                <th class="px-5 py-3 font-medium">P&L</th>
+                                <th class="px-5 py-3 font-medium">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trades-tbody">
+                            <tr>
+                                <td colspan="8" class="px-5 py-12 text-center text-ww-muted">
+                                    <div class="flex flex-col items-center gap-3">
+                                        <svg class="w-10 h-10 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                        </svg>
+                                        <p>No trades recorded</p>
+                                        <p class="text-sm opacity-70">Trading begins Monday 9:15 AM CST</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
+
+    <script>
+        // Password Protection
+        const CORRECT_PASSWORD = 'jarvisb';
+        
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            const error = document.getElementById('password-error');
+            
+            if (input === CORRECT_PASSWORD) {
+                sessionStorage.setItem('ww-authenticated', 'true');
+                document.getElementById('password-gate').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                initTrades();
+            } else {
+                error.classList.add('show');
+                setTimeout(() => error.classList.remove('show'), 3000);
+            }
+        }
+        
+        document.getElementById('password-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+        
+        if (sessionStorage.getItem('ww-authenticated') === 'true') {
+            document.getElementById('password-gate').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+        
+        // Trade Data Management
+        let allTrades = [];
+        let currentFilter = 'all';
+        
+        async function loadTrades() {
+            try {
+                // Add cache-busting
+                const cacheBuster = '?_=' + Date.now();
+                
+                // Try to load from chronicle
+                const response = await fetch('data/trade_chronicle.jsonl' + cacheBuster, { 
+                    cache: 'no-store',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    allTrades = text.trim().split('\n')
+                        .filter(line => line.trim())
+                        .map(line => {
+                            try { return JSON.parse(line); } 
+                            catch { return null; }
+                        })
+                        .filter(t => t !== null);
+                    
+                    updateDataStatus('live');
+                } else {
+                    throw new Error('No trade data');
+                }
+            } catch (error) {
+                console.log('Trade data not available:', error);
+                updateDataStatus('offline');
+                allTrades = [];
+            }
+            
+            applyFilters();
+        }
+        
+        function updateDataStatus(status) {
+            const statusEl = document.getElementById('data-status');
+            if (status === 'live') {
+                statusEl.innerHTML = '<span class="w-2 h-2 bg-ww-success rounded-full pulse-dot"></span>LIVE';
+            } else {
+                statusEl.innerHTML = '<span class="w-2 h-2 bg-ww-muted rounded-full"></span>OFFLINE';
+            }
+        }
+        
+        function formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '$--';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(value);
+        }
+        
+        function formatTime(timestamp) {
+            if (!timestamp) return '--';
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                timeZone: 'America/Chicago'
+            }) + ' CST';
+        }
+        
+        function updateSummary() {
+            const totalTrades = allTrades.length;
+            const wins = allTrades.filter(t => (t.result?.pnl || 0) > 0).length;
+            const winRate = totalTrades > 0 ? (wins / totalTrades * 100).toFixed(1) : 0;
+            const totalPnl = allTrades.reduce((sum, t) => sum + (t.result?.pnl || 0), 0);
+            const avgTrade = totalTrades > 0 ? totalPnl / totalTrades : 0;
+            
+            document.getElementById('total-trades').textContent = totalTrades;
+            document.getElementById('win-rate').textContent = winRate + '%';
+            document.getElementById('win-rate').className = 'text-3xl font-bold ' + (winRate >= 50 ? 'text-ww-success' : 'text-ww-danger');
+            document.getElementById('total-pnl').textContent = formatCurrency(totalPnl);
+            document.getElementById('total-pnl').className = 'text-3xl font-bold ' + (totalPnl >= 0 ? 'text-ww-success' : 'text-ww-danger');
+            document.getElementById('avg-trade').textContent = formatCurrency(avgTrade);
+        }
+        
+        function renderTrades(trades) {
+            const tbody = document.getElementById('trades-tbody');
+            
+            if (trades.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-5 py-12 text-center text-ww-muted">
+                            <div class="flex flex-col items-center gap-3">
+                                <svg class="w-10 h-10 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                                <p>No trades match filters</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = trades.map(trade => {
+                const pnl = trade.result?.pnl || 0;
+                const isWin = pnl > 0;
+                const pnlClass = isWin ? 'text-ww-success' : pnl < 0 ? 'text-ww-danger' : 'text-ww-muted';
+                const pnlSign = pnl > 0 ? '+' : '';
+                
+                return `
+                    <tr class="trade-row border-b border-ww-border/50 transition">
+                        <td class="px-5 py-4 text-sm">${formatTime(trade.timestamp)}</td>
+                        <td class="px-5 py-4 font-medium">${trade.symbol || '--'}</td>
+                        <td class="px-5 py-4 text-sm text-ww-muted">${trade.strategy || '--'}</td>
+                        <td class="px-5 py-4 text-sm">${trade.direction || '--'}</td>
+                        <td class="px-5 py-4 text-sm font-mono">${trade.entry_price ? '$' + trade.entry_price.toFixed(2) : '--'}</td>
+                        <td class="px-5 py-4 text-sm font-mono">${trade.exit_price ? '$' + trade.exit_price.toFixed(2) : '--'}</td>
+                        <td class="px-5 py-4 text-sm font-bold ${pnlClass}">${pnlSign}${formatCurrency(pnl).replace('$', '$')}</td>
+                        <td class="px-5 py-4">
+                            <span class="px-2 py-1 rounded-full text-xs font-medium ${trade.exit_time ? 'bg-ww-success/20 text-ww-success' : 'bg-ww-warning/20 text-ww-warning'}">
+                                ${trade.exit_time ? 'CLOSED' : 'OPEN'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function filterTrades(period) {
+            currentFilter = period;
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            const symbolFilter = document.getElementById('filter-symbol')?.value || '';
+            const resultFilter = document.getElementById('filter-result')?.value || '';
+            
+            let filtered = [...allTrades];
+            
+            // Time filter
+            if (currentFilter !== 'all') {
+                const now = new Date();
+                filtered = filtered.filter(t => {
+                    const tradeDate = new Date(t.timestamp);
+                    if (currentFilter === 'today') {
+                        return tradeDate.toDateString() === now.toDateString();
+                    } else if (currentFilter === 'week') {
+                        const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+                        return tradeDate >= weekAgo;
+                    } else if (currentFilter === 'month') {
+                        return tradeDate.getMonth() === now.getMonth() && 
+                               tradeDate.getFullYear() === now.getFullYear();
+                    }
+                    return true;
+                });
+            }
+            
+            // Symbol filter
+            if (symbolFilter) {
+                filtered = filtered.filter(t => t.symbol === symbolFilter);
+            }
+            
+            // Result filter
+            if (resultFilter) {
+                filtered = filtered.filter(t => {
+                    const pnl = t.result?.pnl || 0;
+                    return resultFilter === 'win' ? pnl > 0 : pnl <= 0;
+                });
+            }
+            
+            renderTrades(filtered);
+            updateSummary();
+        }
+        
+        function initTrades() {
+            loadTrades();
+            // Refresh every 30 seconds
+            setInterval(loadTrades, 30000);
+        }
+        
+        if (sessionStorage.getItem('ww-authenticated') === 'true') {
+            initTrades();
+        }
+    </script>
 </body>
 </html>
