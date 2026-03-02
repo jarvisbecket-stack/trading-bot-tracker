@@ -111,9 +111,9 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="statsub" id="committed-sub">--% deployed</div>
 </div>
 <div class="stat">
-<div class="statlabel">Cash Available</div>
-<div class="statvalue" id="cash">$--</div>
-<div class="statsub" id="bp">BP: $--</div>
+<div class="statlabel">Data Source</div>
+<div class="statvalue" id="data-source" style="color:#10b981;font-size:18px">● LIVE</div>
+<div class="statsub" id="data-provider">Tradier</div>
 </div>
 </div>
 
@@ -240,6 +240,19 @@ document.getElementById('cash').textContent=fmt(cash);
 }
 if(bp!==undefined){
 document.getElementById('bp').textContent='BP: '+fmt(bp);
+}
+
+// Update data source indicator
+const dataSource = data?.data_source || 'UNKNOWN';
+const dataStatus = data?.data_status || 'UNKNOWN';
+const sourceEl = document.getElementById('data-source');
+const providerEl = document.getElementById('data-provider');
+if(sourceEl){
+sourceEl.textContent = dataStatus === 'LIVE' ? '● LIVE' : '○ STATIC';
+sourceEl.style.color = dataStatus === 'LIVE' ? '#10b981' : '#f59e0b';
+}
+if(providerEl){
+providerEl.textContent = dataSource === 'TRADIER_LIVE' ? 'Tradier Real-Time' : dataSource;
 }
 
 // Update YTD P&L
