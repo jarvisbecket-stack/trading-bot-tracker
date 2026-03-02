@@ -127,11 +127,26 @@ html+='<div class="posdetails"><div>'+(p.type||'Short Put')+' $'+(p.strike||'--'
 html+='</div>';
 html+='<div class="pospnl"><div class="main '+(pnl>=0?'green':'red')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</div><div class="sub">'+(p.pnl_pct||0)+'% unrealized</div></div>';
 html+='</div>';
+
+// Premium & Buy-to-Close Box
+const premium = p.premium || (p.contracts * 312.50); // Default calc if not provided
+const buybackCost = p.current ? (p.current * p.contracts * 100) : 0;
+const netProfit = premium - buybackCost;
+const profitPct = premium > 0 ? (netProfit / premium) * 100 : 0;
+
+html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin:16px 0;">';
+html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Buy-to-Close Analysis</div>';
+html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#8b8b9e;font-size:14px;">Premium Collected</span><span style="color:#10b981;font-weight:600;">+'+fmt(premium)+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#8b8b9e;font-size:14px;">Current Buyback Cost</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
+html+='<div style="border-top:1px solid #2a2a3a;margin:8px 0;padding-top:8px;display:flex;justify-content:space-between;"><span style="color:#e8e8f0;font-size:14px;font-weight:600;">Net Profit if Closed</span><span style="color:'+(netProfit>=0?'#10b981':'#ef4444')+';font-weight:600;">'+(netProfit>=0?'+':'')+fmt(netProfit)+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;"><span style="color:#8b8b9e;">Profit %: '+profitPct.toFixed(1)+'%</span><span style="color:#8b8b9e;">50% Target: $'+fmt(premium*0.5)+'</span></div>';
+html+='</div>';
+
 html+='<div class="metrics">';
 html+='<div class="metric"><div class="label">Entry</div><div class="value">$'+(p.entry||'--')+'</div></div>';
 html+='<div class="metric"><div class="label">Current</div><div class="value">$'+(p.current||'--')+'</div></div>';
-html+='<div class="metric"><div class="label">Delta</div><div class="value">'+(p.delta||'--')+'</div></div>';
-html+='<div class="metric"><div class="label">Theta</div><div class="value">+'+(p.theta||'--')+'</div></div>';
+html+='<div class="metric"><div class="label">Delta</div><div class="value" style="color:#10b981;">+'+Math.abs(p.delta||0.25)+'</div></div>';
+html+='<div class="metric"><div class="label">Theta</div><div class="value" style="color:#10b981;">+'+(p.theta||'--')+'</div></div>';
 html+='<div class="metric"><div class="label">OTM%</div><div class="value">'+(p.otm||'--')+'%</div></div>';
 html+='<div class="metric"><div class="label">DTE</div><div class="value">'+(p.dte||'--')+'</div></div>';
 html+='</div>';

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-02T11:10:00.000000",
+  "timestamp": "2026-03-02T11:25:00.000000",
   "account": {
     "total_equity": 1026764.60,
     "cash_available": 630764.60,
@@ -22,10 +22,11 @@
       "dte": 5,
       "pnl": 0,
       "pnl_pct": 0,
-      "delta": -0.25,
+      "delta": 0.25,
       "theta": 12.50,
       "otm": 1.0,
-      "iv": 28.5
+      "iv": 28.5,
+      "premium": 1250.00
     }
   ]
 }
