@@ -1,1 +1,31 @@
-{"account":{"total_equity":1026764.60,"cash_available":400000,"buying_power":1026764.60},"pnl":{"total_pnl":0,"total_pnl_pct":0},"committed_capital":0,"positions":[],"timestamp":"2026-03-02T10:05:33-06:00"}
+{
+  "timestamp": "2026-03-02T10:40:17.684613",
+  "account": {
+    "total_equity": 1026764.6,
+    "cash_available": 360400.0,
+    "buying_power": 1026764.6
+  },
+  "pnl": {
+    "total_pnl": 1250.0,
+    "total_pnl_pct": 0.12
+  },
+  "committed_capital": 396000.0,
+  "positions": [
+    {
+      "symbol": "COST",
+      "type": "Short Put",
+      "strike": 990.0,
+      "contracts": 4,
+      "entry": 985.5,
+      "current": 985.5,
+      "expiry": "Mar 7, 2026",
+      "dte": 5,
+      "pnl": 0,
+      "pnl_pct": 0,
+      "delta": -0.25,
+      "theta": 12.5,
+      "otm": 1.0,
+      "iv": 28.5
+    }
+  ]
+}
