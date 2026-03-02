@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debug - White Wolf Clan</title>
+<style>
+body{font-family:monospace;background:#0a0a0f;color:#0f0;padding:40px;line-height:1.8}
+h1{color:#fff}
+.box{background:#12121a;border:1px solid #2a2a3a;padding:20px;margin:20px 0;border-radius:8px}
+.red{color:#f44}
+.green{color:#4f4}
+.yellow{color:#ff4}
+button{background:#6366f1;color:#fff;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;margin:5px}
+</style>
+</head>
+<body>
+<h1>🔧 White Wolf Clan - Debug Page</h1>
+
+<div class="box">
+<h3>Browser Info:</h3>
+<div id="browser">Loading...</div>
+</div>
+
+<div class="box">
+<h3>Session Storage:</h3>
+<div id="storage">Checking...</div>
+</div>
+
+<div class="box">
+<h3>Test Password Gate:</h3>
+<input type="text" id="testpwd" placeholder="Type jarvisb" style="padding:8px;margin-right:10px">
+<button onclick="testAuth()">Test Auth</button>
+<div id="authresult"></div>
+</div>
+
+<div class="box">
+<h3>Navigation:</h3>
+<button onclick="location.href='index.html'">Go to Dashboard</button>
+<button onclick="location.reload()">Reload Page</button>
+<button onclick="clearStorage()">Clear Session</button>
+</div>
+
+<div class="box">
+<h3>Console Output:</h3>
+<div id="console"></div>
+</div>
+
+<script>
+// Browser info
+document.getElementById('browser').innerHTML = `
+User Agent: ${navigator.userAgent.substring(0,100)}...<br>
+Screen: ${window.innerWidth}x${window.innerHeight}<br>
+Language: ${navigator.language}<br>
+Online: ${navigator.onLine ? '<span class="green">YES</span>' : '<span class="red">NO</span>'}<br>
+`;
+
+// Storage check
+function checkStorage() {
+    const auth = sessionStorage.getItem('auth');
+    document.getElementById('storage').innerHTML = `
+Auth token: ${auth ? '<span class="green">'+auth+'</span>' : '<span class="yellow">NOT SET</span>'}<br>
+Timestamp: ${new Date().toISOString()}<br>
+    `;
+}
+checkStorage();
+
+// Test auth
+function testAuth() {
+    const val = document.getElementById('testpwd').value;
+    if (val === 'jarvisb') {
+        sessionStorage.setItem('auth', '1');
+        document.getElementById('authresult').innerHTML = '<span class="green">✓ AUTH SUCCESS - Refreshing...</span>';
+        setTimeout(() => location.href='index.html', 1000);
+    } else {
+        document.getElementById('authresult').innerHTML = '<span class="red">✗ WRONG PASSWORD</span>';
+    }
+    checkStorage();
+}
+
+function clearStorage() {
+    sessionStorage.clear();
+    document.getElementById('console').innerHTML += '<div class="yellow">Storage cleared</div>';
+    checkStorage();
+}
+
+// Log to page
+console.log = function(...args) {
+    const div = document.getElementById('console');
+    div.innerHTML += '<div>' + args.join(' ') + '</div>';
+};
+
+console.log('Debug page loaded');
+console.log('URL:', location.href);
+console.log('Protocol:', location.protocol);
+</script>
+</body>
+</html>
