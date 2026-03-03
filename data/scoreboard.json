@@ -128,5 +128,62 @@
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     }
-  ]
+  ],
+  "commission_adjusted_pnl": {
+    "total_net_unrealized_pnl": 72.80,
+    "total_gross_pnl": 98.00,
+    "total_commissions": 25.20,
+    "commission_rate_per_contract": 0.35,
+    "commission_round_trip_per_contract": 0.70,
+    "last_updated": "2026-03-03T10:27:00-06:00",
+    "break_even_prices": {
+      "MSTR": 127.86,
+      "BAC": 47.31
+    },
+    "positions_detail": [
+      {
+        "symbol": "MSTR",
+        "contracts": 10,
+        "strike": 130.0,
+        "entry_premium": 2150.0,
+        "gross_pnl": 150.0,
+        "total_commission": 7.00,
+        "net_unrealized_pnl": 143.0,
+        "break_even": 127.86,
+        "current_stock_price": 136.69,
+        "is_itm": false,
+        "distance_to_itm_pct": 4.9
+      },
+      {
+        "symbol": "BAC",
+        "contracts": 26,
+        "strike": 47.50,
+        "entry_premium": 494.0,
+        "gross_pnl": -52.0,
+        "total_commission": 18.20,
+        "net_unrealized_pnl": -70.20,
+        "break_even": 47.31,
+        "current_stock_price": 50.175,
+        "is_itm": false,
+        "distance_to_itm_pct": 5.3
+      }
+    ]
+  },
+  "stop_loss_monitoring": {
+    "enabled": true,
+    "check_interval_seconds": 120,
+    "telegram_alerts": true,
+    "telegram_chat_id": "7954184484",
+    "alert_thresholds": {
+      "MSTR": {
+        "itm_warning": 132.0,
+        "stop_loss_trigger": null
+      },
+      "BAC": {
+        "itm_warning": 48.0,
+        "stop_loss_trigger": null
+      }
+    },
+    "last_check": null
+  }
 }
