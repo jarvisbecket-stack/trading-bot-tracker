@@ -66,12 +66,15 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 .position-preview-pnl.negative{color:#ef4444}
 
 /* Line Chart */
-.line-chart{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;margin-bottom:16px;height:160px;position:relative}
+.line-chart{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;margin-bottom:16px;height:180px;position:relative}
 .line-chart svg{width:100%;height:100%}
 .line-chart-line{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .line-chart-area{fill-opacity:0.1}
 .line-chart-dot{fill:#0a0a0f;stroke-width:2}
 .line-chart-grid{stroke:#2a2a3a;stroke-width:1;stroke-dasharray:4 4}
+.chart-label{font-size:9px;fill:#64748b;font-family:monospace}
+.chart-y-label{alignment-baseline:middle}
+.chart-x-label{text-anchor:middle}
 
 /* Status Bar */
 #statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
@@ -142,9 +145,10 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 </div>
 <div class="line-chart" id="line-chart">
 <svg viewBox="0 0 300 120" preserveAspectRatio="none">
-<line x1="0" y1="30" x2="300" y2="30" class="line-chart-grid"/>
-<line x1="0" y1="60" x2="300" y2="60" class="line-chart-grid"/>
-<line x1="0" y1="90" x2="300" y2="90" class="line-chart-grid"/>
+<!-- Grid lines at 25%, 50%, 75% of chart height -->
+<line x1="40" y1="35" x2="300" y2="35" class="line-chart-grid"/>
+<line x1="40" y1="60" x2="300" y2="60" class="line-chart-grid"/>
+<line x1="40" y1="85" x2="300" y2="85" class="line-chart-grid"/>
 </svg>
 </div>
 
@@ -261,25 +265,62 @@ const range=max-min||1;
 
 const width=300;
 const height=120;
-const padding=10;
-const chartHeight=height-padding*2;
+const paddingLeft=40;
+const paddingBottom=20;
+const paddingTop=10;
+const chartWidth=width-paddingLeft;
+const chartHeight=height-paddingBottom-paddingTop;
 
+// Clear existing paths (keep grid)
+const existingPaths=svg.querySelectorAll('path:not(.line-chart-grid), circle, text');
+existingPaths.forEach(p=>p.remove());
+
+// Y-axis labels (3 labels: min, mid, max)
+for(let i=0;i<3;i++){
+const value=min+(range*(1-i/2));
+const y=height-paddingBottom-(i/2)*chartHeight;
+const text=document.createElementNS('http://www.w3.org/2000/svg','text');
+text.setAttribute('x',paddingLeft-6);
+text.setAttribute('y',y);
+text.setAttribute('class','chart-label chart-y-label');
+text.setAttribute('text-anchor','end');
+text.textContent=(value/1000000).toFixed(2)+'M';
+svg.appendChild(text);
+}
+
+// X-axis labels (first, middle, last dates)
+const datesToShow=[0,Math.floor((history.length-1)/2),history.length-1];
+datesToShow.forEach(i=>{
+if(i<history.length){
+const x=paddingLeft+(i/(history.length-1))*chartWidth;
+const date=new Date(history[i].date);
+const label=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const text=document.createElementNS('http://www.w3.org/2000/svg','text');
+text.setAttribute('x',x);
+text.setAttribute('y',height-4);
+text.setAttribute('class','chart-label chart-x-label');
+text.textContent=label;
+svg.appendChild(text);
+}
+});
+
+// Create line path
 let pathD='';
 let areaD='';
 
 history.forEach((h,i)=>{
-const x=(i/(history.length-1))*width;
-const y=height-padding-((h.value-min)/range)*chartHeight;
+const x=paddingLeft+(i/(history.length-1))*chartWidth;
+const y=height-paddingBottom-((h.value-min)/range)*chartHeight;
 if(i===0){
 pathD=`M ${x} ${y}`;
-areaD=`M ${x} ${height} L ${x} ${y}`;
+areaD=`M ${x} ${height-paddingBottom} L ${x} ${y}`;
 }else{
 pathD+=` L ${x} ${y}`;
 areaD+=` L ${x} ${y}`;
 }
 });
 
-areaD+=` L ${width} ${height} Z`;
+areaD+=` L ${paddingLeft+chartWidth} ${height-paddingBottom} Z`;
 
 const isPositive=values[values.length-1]>=values[0];
 const strokeColor=isPositive?'#10b981':'#ef4444';
@@ -295,17 +336,14 @@ linePath.setAttribute('d',pathD);
 linePath.setAttribute('class','line-chart-line');
 linePath.setAttribute('stroke',strokeColor);
 
-const lastX=width;
-const lastY=height-padding-((values[values.length-1]-min)/range)*chartHeight;
+const lastX=paddingLeft+chartWidth;
+const lastY=height-paddingBottom-((values[values.length-1]-min)/range)*chartHeight;
 const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
 dot.setAttribute('cx',lastX);
 dot.setAttribute('cy',lastY);
 dot.setAttribute('r',4);
 dot.setAttribute('class','line-chart-dot');
 dot.setAttribute('stroke',strokeColor);
-
-const existingPaths=svg.querySelectorAll('path:not(.line-chart-grid), circle');
-existingPaths.forEach(p=>p.remove());
 
 svg.appendChild(areaPath);
 svg.appendChild(linePath);
