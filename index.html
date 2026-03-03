@@ -225,7 +225,8 @@ document.getElementById('current-time').textContent=now.toLocaleTimeString('en-U
 
 async function loadData(){
 try{
-const response=await fetch('data/scoreboard.json?v=5?_='+Date.now(),{cache:'no-store'});
+const ts=Date.now();
+const response=await fetch('data/scoreboard.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
 if(!response.ok)throw new Error('HTTP '+response.status);
 const data=await response.json();
 

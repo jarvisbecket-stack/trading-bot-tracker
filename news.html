@@ -201,7 +201,8 @@ setInterval(loadData,60000);
 
 async function loadData(){
 try{
-const response=await fetch('data/scoreboard.json?v=4?_='+Date.now(),{cache:'no-store'});
+const ts=Date.now();
+const response=await fetch('data/scoreboard.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
 if(!response.ok)throw new Error('HTTP '+response.status);
 const data=await response.json();
 
@@ -237,7 +238,8 @@ console.error('Load error:',e);
 
 async function loadNews(positionSymbols){
 try{
-const response=await fetch('data/news.json?_='+Date.now(),{cache:'no-store'});
+const ts=Date.now();
+const response=await fetch('data/news.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
 if(!response.ok){
 document.getElementById('news-count').textContent='0 articles';
 document.getElementById('news-feed').innerHTML='<div style="text-align:center;padding:40px;color:#64748b;font-size:13px">No news available</div>';
