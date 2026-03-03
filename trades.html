@@ -1,211 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>White Wolf Clan | Trade History</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden;box-sizing:border-box}
-
-#app{max-width:100vw;overflow-x:hidden;box-sizing:border-box}
-
-nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;position:sticky;top:0;z-index:100}
-.navinner{max-width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
-.brandicon{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
-.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.navlinks::-webkit-scrollbar{display:none}
-.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
-.navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
-
-.container{padding:16px;padding-bottom:80px;max-width:100vw}
-
-/* Page Header */
-.page-header{margin-bottom:20px}
-.page-title{font-size:24px;font-weight:700;margin-bottom:4px}
-.page-subtitle{font-size:13px;color:#8b8b9e}
-
-/* Summary Cards */
-.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
-.summary-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;text-align:center}
-.summary-value{font-size:28px;font-weight:800;font-family:monospace;margin-bottom:4px}
-.summary-value.green{color:#10b981}
-.summary-value.red{color:#ef4444}
-.summary-label{font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:0.5px}
-
-/* Filter Tabs */
-.filter-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-.filter-tabs::-webkit-scrollbar{display:none}
-.filter-tab{background:#12121a;border:1px solid #2a2a3a;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:500;color:#8b8b9e;cursor:pointer;white-space:nowrap}
-.filter-tab.active{background:rgba(99,102,241,.15);border-color:#6366f1;color:#6366f1}
-
-/* Trade Cards */
-.trade-list{display:flex;flex-direction:column;gap:12px}
-.trade-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px}
-.trade-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.trade-symbol{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px}
-.trade-status{font-size:11px;padding:4px 10px;border-radius:12px;font-weight:600;text-transform:uppercase}
-.trade-status.open{background:rgba(16,185,129,.1);color:#10b981}
-.trade-status.closed{background:rgba(100,116,139,.1);color:#64748b}
-
-.trade-details{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px}
-.trade-detail{display:flex;flex-direction:column;gap:4px}
-.trade-detail-label{font-size:10px;color:#64748b;text-transform:uppercase}
-.trade-detail-value{font-size:15px;font-weight:600;font-family:monospace}
-.trade-detail-value.strike{color:#6366f1}
-.trade-detail-value.premium{color:#10b981}
-
-.trade-pnl{display:flex;justify-content:space-between;align-items:center;background:#0a0a0f;border-radius:12px;padding:12px 16px}
-.trade-pnl-label{font-size:13px;font-weight:500}
-.trade-pnl-value{font-size:20px;font-weight:800;font-family:monospace}
-.trade-pnl-value.positive{color:#10b981}
-.trade-pnl-value.negative{color:#ef4444}
-
-/* Empty State */
-.empty{text-align:center;padding:60px 20px;color:#64748b;font-size:14px}
-.empty-icon{font-size:48px;margin-bottom:16px}
-
-/* Status Bar */
-#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
-.status-live{color:#10b981;display:flex;align-items:center;gap:6px}
-.status-live::before{content:'';width:6px;height:6px;background:#10b981;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-
-.positive{color:#10b981}
-.negative{color:#ef4444}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
+    <title>Paper Trading Bot - Trade Log</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-success: #10b981;
+            --accent-costco: #e31837;
+            --accent-bitcoin: #f7931a;
+            --accent-ko: #dc2626;
+            --border-color: #2a2a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 1rem; text-align: center; }
+        h1 { font-size: 2rem; }
+        .subtitle { opacity: 0.9; margin-top: 0.5rem; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        .alert-box { background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.5); border-radius: 12px; padding: 1.5rem; margin: 2rem 0; text-align: center; }
+        .alert-title { color: var(--accent-success); font-size: 1.5rem; font-weight: 700; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .summary-card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid var(--border-color); }
+        .summary-value { font-size: 2.5rem; font-weight: 700; }
+        .summary-label { color: var(--text-secondary); margin-top: 0.5rem; }
+        .trades-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg-card); border-radius: 12px; overflow: hidden; }
+        .trades-table th, .trades-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .trades-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.875rem; }
+        .status-open { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600; }
+        .bot-section { margin: 2rem 0; }
+        .bot-header { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); }
+        .bot-header.cost { color: var(--accent-costco); border-color: var(--accent-costco); }
+        .bot-header.mstr { color: var(--accent-bitcoin); border-color: var(--accent-bitcoin); }
+        .bot-header.ko { color: var(--accent-ko); border-color: var(--accent-ko); }
+        .bot-header.vz { color: #2563eb; border-color: #2563eb; }
+        .bot-header.bac { color: #0891b2; border-color: #0891b2; }
+        .bot-header.wfc { color: #dc2626; border-color: #dc2626; }
+        .bot-header.nvda { color: #10b981; border-color: #10b981; }
+        .bot-header.amd { color: #f59e0b; border-color: #f59e0b; }
+        .bot-header.nflx { color: #ef4444; border-color: #ef4444; }
+        .bot-header.xom { color: #8b5cf6; border-color: #8b5cf6; }
+        .bot-header.crm { color: #06b6d4; border-color: #06b6d4; }
+        .bot-header.wmt { color: #3b82f6; border-color: #3b82f6; }
+        .bot-header.pg { color: #14b8a6; border-color: #14b8a6; }
+        .bot-header.cvx { color: #f97316; border-color: #f97316; }
+        .bot-header.sbux { color: #22c55e; border-color: #22c55e; }
+        .bot-header.aapl { color: #64748b; border-color: #64748b; }
+        .bot-header.msft { color: #0ea5e9; border-color: #0ea5e9; }
+        .bot-header.googl { color: #eab308; border-color: #eab308; }
+        .bot-header.amzn { color: #ec4899; border-color: #ec4899; }
+        .bot-header.t { color: #6366f1; border-color: #6366f1; }
+        .update-time { text-align: center; color: var(--text-secondary); margin: 1rem 0; font-size: 0.875rem; }
+        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
+    </style>
 </head>
 <body>
-<div id="app">
-<nav><div class="navinner">
-<div class="brand"><div class="brandicon">WW</div>White Wolf</div>
-<div class="navlinks">
-<a href="index.html">Dashboard</a>
-<a href="positions.html">Positions</a>
-<a href="trades.html" class="active">Trades</a>
-<a href="news.html">Intel</a>
-</div>
-</div></nav>
+    <header>
+        <h1>📋 Paper Trading Bot - Trade Log</h1>
+        <div class="subtitle">20-Way Bot Race | Live Trade Updates | Timeout Enabled | Wash Sale Compliant</div>
+    </header>
 
-<div class="container">
-<div class="page-header">
-<div class="page-title">Trade History</div>
-<div class="page-subtitle">All transactions • CST timezone</div>
-</div>
+    <div class="container">
+        <div class="update-time">🔄 Last Updated: 2026-03-03 08:30:10 CST | Auto-refresh: 60s</div>
 
-<!-- Summary -->
-<div class="summary-grid">
-<div class="summary-card">
-<div class="summary-value green" id="total-pnl">--</div>
-<div class="summary-label">Total P&L</div>
-</div>
-<div class="summary-card">
-<div class="summary-value" id="total-trades">--</div>
-<div class="summary-label">Total Trades</div>
-</div>
-</div>
+        <div class="alert-box">
+            <div class="alert-title">🟢 RACE IS LIVE - 20 BOTS TRADING</div>
+            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Auto-timeout enabled | Wash sale compliant | Mid-price fills</div>
+        </div>
 
-<!-- Filters -->
-<div class="filter-tabs">
-<div class="filter-tab active" onclick="filter('all')">All Trades</div>
-<div class="filter-tab" onclick="filter('open')">Open</div>
-<div class="filter-tab" onclick="filter('closed')">Closed</div>
-</div>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-value">9</div>
+                <div class="summary-label">Total Trades Today</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-value" style="color: var(--accent-success);">$+3,005,381.8499999996</div>
+                <div class="summary-label">Combined P&L</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-value">$5,005,382</div>
+                <div class="summary-label">Total Portfolio Value</div>
+            </div>
+        </div>
 
-<!-- Trade List -->
-<div id="trade-list" class="trade-list">
-<div class="empty"><div class="empty-icon">📊</div>Loading trades...</div>
-</div>
-</div>
+        <div class="bot-section">
+            <div class="bot-header ko">COCA-COLA (KO) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 3 trades | 
+                <strong>Cash:</strong> $101,824.75 | 
+                <strong>Return:</strong> +1.82%
+            </div>
 
-<div id="statusbar">
-<span id="last-update">--</span>
-<span class="status-live">Live</span>
-</div>
-</div>
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-03-02 08:30:47</td>
+                        <td>SELL_PUT</td>
+                        <td>KO260323P00078790</td>
+                        <td>$78.79</td>
+                        <td>2026-03-23</td>
+                        <td>5</td>
+                        <td style="color: var(--accent-success);">+$608.25</td>
+                        <td><span class="status-open">OPEN</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header vz">VERIZON (VZ) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 3 trades | 
+                <strong>Cash:</strong> $101,789.50 | 
+                <strong>Return:</strong> +1.79%
+            </div>
 
-<script>
-let allTrades=[];
-let currentFilter='all';
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-03-02 08:30:50</td>
+                        <td>SELL_PUT</td>
+                        <td>VZ260323P00047920</td>
+                        <td>$47.92</td>
+                        <td>2026-03-23</td>
+                        <td>10</td>
+                        <td style="color: var(--accent-success);">+$596.50</td>
+                        <td><span class="status-open">OPEN</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header bac">BANK OF AMERICA (BAC) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 3 trades | 
+                <strong>Cash:</strong> $101,767.60 | 
+                <strong>Return:</strong> +1.77%
+            </div>
 
-function fmt(n){if(n==null||isNaN(n))return'$0';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
-function fmtDec(n){if(n==null||isNaN(n))return'$0.00';return '$'+n.toFixed(2);}
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-03-02 08:30:52</td>
+                        <td>SELL_PUT</td>
+                        <td>BAC260323P00046320</td>
+                        <td>$46.32</td>
+                        <td>2026-03-23</td>
+                        <td>8</td>
+                        <td style="color: var(--accent-success);">+$581.20</td>
+                        <td><span class="status-open">OPEN</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header wfc">WELLS FARGO (WFC) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header xom">EXXON MOBIL (XOM) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header wmt">WALMART (WMT) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header pg">PROCTER & GAMBLE (PG) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header cvx">CHEVRON (CVX) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header sbux">STARBUCKS (SBUX) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+        <div class="bot-section">
+            <div class="bot-header t">AT&T (T) - Current Position</div>
+            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Trade Count:</strong> 0 trades | 
+                <strong>Cash:</strong> $100,000.00 | 
+                <strong>Return:</strong> +0.00%
+            </div>
+        </div>
+    </div>
 
-async function load(){
-try{
-const ts=Date.now();
-const r=await fetch('data/trade_chronicle.jsonl?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
-if(!r.ok)throw new Error('HTTP '+r.status);
-const text=await r.text();
-const lines=text.trim().split('\n').filter(l=>l.trim());
-allTrades=lines.map(line=>{try{return JSON.parse(line);}catch(e){return null;}}).filter(t=>t!==null);
-renderTrades();
-document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
-}catch(e){
-console.error('Load error:',e);
-document.getElementById('trade-list').innerHTML='<div class="empty">Error loading trades</div>';
-}
-}
-
-function renderTrades(){
-let filtered=[...allTrades];
-if(currentFilter==='open')filtered=allTrades.filter(t=>!t.exit_time);
-if(currentFilter==='closed')filtered=allTrades.filter(t=>t.exit_time);
-
-const totalTrades=allTrades.length;
-const totalPnl=allTrades.reduce((sum,t)=>sum+(t.result?.pnl||0),0);
-document.getElementById('total-trades').textContent=totalTrades;
-document.getElementById('total-pnl').textContent=(totalPnl>=0?'+':'')+fmtDec(totalPnl);
-document.getElementById('total-pnl').className='summary-value '+(totalPnl>=0?'green':'red');
-
-const container=document.getElementById('trade-list');
-if(filtered.length===0){
-container.innerHTML='<div class="empty"><div class="empty-icon">📭</div>No trades found</div>';
-return;
-}
-
-let html='';
-filtered.slice().reverse().forEach(t=>{
-const isOpen=!t.exit_time;
-const pnl=t.result?.pnl||0;
-const pnlClass=pnl>=0?'positive':'negative';
-const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
-const date=new Date(t.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-const pnlLabel=isOpen?'Unrealized P&L':'Realized P&L';
-
-html+='<div class="trade-card">';
-html+='<div class="trade-header">';
-html+='<span class="trade-symbol">'+t.symbol+'</span>';
-html+='<span class="trade-status '+(isOpen?'open':'closed')+'">'+(isOpen?'OPEN':'CLOSED')+'</span>';
-html+='</div>';
-html+='<div class="trade-details">';
-html+='<div class="trade-detail"><span class="trade-detail-label">Strike</span><span class="trade-detail-value strike">$'+t.strike+'</span></div>';
-html+='<div class="trade-detail"><span class="trade-detail-label">Contracts</span><span class="trade-detail-value">'+t.contracts+'</span></div>';
-html+='<div class="trade-detail"><span class="trade-detail-label">Date</span><span class="trade-detail-value">'+date+' '+time+'</span></div>';
-html+='<div class="trade-detail"><span class="trade-detail-label">Premium</span><span class="trade-detail-value premium">'+fmt(t.premium)+'</span></div>';
-html+='</div>';
-html+='<div class="trade-pnl">';
-html+='<span class="trade-pnl-label">'+pnlLabel+'</span>';
-html+='<span class="trade-pnl-value '+pnlClass+'">'+(pnl>=0?'+':'')+fmtDec(pnl)+'</span>';
-html+='</div>';
-html+='</div>';
-});
-container.innerHTML=html;
-}
-
-function filter(type){
-currentFilter=type;
-document.querySelectorAll('.filter-tab').forEach(tab=>tab.classList.remove('active'));
-event.target.classList.add('active');
-renderTrades();
-}
-
-// Auto-load on DOM ready
-document.addEventListener('DOMContentLoaded',()=>{
-load();
-});
-</script>
+    <div class="footer">
+        <p>Paper Trading Trade Log | 3-Way Bot Race</p>
+        <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a></p>
+    </div>
 </body>
 </html>
