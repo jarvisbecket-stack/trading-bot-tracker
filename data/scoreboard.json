@@ -16,7 +16,21 @@
     "ytd_pnl_pct": 0.26,
     "commission_paid": 25.20,
     "commission_rate": 0.35,
-    "pnl_after_commission": 2618.80
+    "commission_per_contract": 0.35,
+    "commission_round_trip": 0.70,
+    "pnl_after_commission": 2618.80,
+    "commission_breakdown": {
+      "MSTR": {
+        "contracts": 10,
+        "commission": 7.00,
+        "calculation": "10 contracts × $0.70 round-trip"
+      },
+      "BAC": {
+        "contracts": 26,
+        "commission": 18.20,
+        "calculation": "26 contracts × $0.70 round-trip"
+      }
+    }
   },
   "market_data": {
     "MSTR": {
