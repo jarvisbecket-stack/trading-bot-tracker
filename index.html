@@ -111,6 +111,11 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="statsub" id="committed-sub">--% deployed</div>
 </div>
 <div class="stat">
+<div class="statlabel">Cash Available</div>
+<div class="statvalue" id="cash">$--</div>
+<div class="statsub" id="cash-sub">Ready to deploy</div>
+</div>
+<div class="stat">
 <div class="statlabel">Data Source</div>
 <div class="statvalue" id="data-source" style="color:#10b981;font-size:18px">● LIVE</div>
 <div class="statsub" id="data-provider">Tradier</div>
@@ -233,6 +238,14 @@ if(committed!==undefined){
 document.getElementById('committed').textContent=fmt(committed);
 const pct=fund?(committed/fund*100).toFixed(1):0;
 document.getElementById('committed-sub').textContent=pct+'% deployed';
+}
+
+// Update cash available
+const cash=data?.account?.cash_available;
+if(cash!==undefined){
+document.getElementById('cash').textContent=fmt(cash);
+const pct=fund?(cash/fund*100).toFixed(1):0;
+document.getElementById('cash-sub').textContent=pct+'% available';
 }
 
 // Update data source indicator
