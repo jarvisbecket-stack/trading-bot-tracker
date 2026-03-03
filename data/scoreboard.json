@@ -13,7 +13,10 @@
     "total_pnl": 2644.0,
     "total_pnl_pct": 0.26,
     "ytd_pnl": 2644.0,
-    "ytd_pnl_pct": 0.26
+    "ytd_pnl_pct": 0.26,
+    "commission_paid": 25.20,
+    "commission_rate": 0.35,
+    "pnl_after_commission": 2618.80
   },
   "market_data": {
     "MSTR": {
@@ -75,6 +78,8 @@
       "dte": 5,
       "pnl": 150.0,
       "pnl_pct": 7.0,
+      "commission": 7.00,
+      "pnl_after_commission": 143.00,
       "delta": -0.2384,
       "theta": -0.5226,
       "otm": 4.9,
@@ -97,6 +102,8 @@
       "dte": 5,
       "pnl": -52.0,
       "pnl_pct": -10.5,
+      "commission": 18.20,
+      "pnl_after_commission": -70.20,
       "delta": -0.1375,
       "theta": -0.0437,
       "otm": 5.3,

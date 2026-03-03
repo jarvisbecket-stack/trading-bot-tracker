@@ -138,9 +138,9 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 <div class="stat-sub" id="cash-sub">Available</div>
 </div>
 <div class="stat-card">
-<div class="stat-label">Positions</div>
-<div class="stat-value" id="position-count">--</div>
-<div class="stat-sub">Active</div>
+<div class="stat-label">Commissions</div>
+<div class="stat-value" id="commission">--</div>
+<div class="stat-sub" id="commission-sub">$0.35/contract</div>
 </div>
 </div>
 
@@ -221,7 +221,9 @@ document.getElementById('committed-sub').textContent=fund?((committed/fund*100).
 document.getElementById('cash').textContent=fmt(cash);
 document.getElementById('cash-sub').textContent=fund?((cash/fund*100).toFixed(0)+'% available'):'0%';
 
-document.getElementById('position-count').textContent=positions.length;
+// Commission display
+const commission=data?.pnl?.commission_paid||0;
+document.getElementById('commission').textContent=fmtDec(commission);
 
 const container=document.getElementById('positions-preview');
 if(positions.length===0){
