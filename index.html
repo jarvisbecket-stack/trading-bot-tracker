@@ -2,77 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>White Wolf Clan | Command Center</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden}
+
+/* Gate */
 #gate{position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999}
-.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:40px;width:90%;max-width:380px;text-align:center}
-.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
-.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
-.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;font-weight:500;cursor:pointer}
-.gatebox .err{color:#ef4444;margin-top:12px;font-size:14px;display:none}
-#app{display:none}
-nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
-.navinner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:bold;font-size:18px}
-.brandicon{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.navlinks{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px;white-space:nowrap}
+.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:32px 24px;width:90%;max-width:340px;text-align:center}
+.gatelogo{width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;font-weight:bold}
+.gatebox h2{font-size:20px;margin-bottom:4px}
+.gatebox p{color:#8b8b9e;font-size:13px;margin-bottom:20px}
+.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:15px;text-align:center;margin-bottom:12px}
+.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:600;cursor:pointer}
+.gatebox .err{color:#ef4444;margin-top:12px;font-size:13px;display:none}
+
+/* App */
+#app{display:none;max-width:100vw;overflow-x:hidden}
+
+/* Navigation */
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;position:sticky;top:0;z-index:100}
+.navinner{max-width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+.brandicon{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
 .navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
-.container{max-width:1200px;margin:0 auto;padding:16px}
-@media (max-width:768px){
-.container{padding:12px}
-.navinner{flex-direction:column;align-items:flex-start}
-.navlinks{width:100%;justify-content:flex-start;overflow-x:auto}
-.stats{grid-template-columns:repeat(2,1fr)!important;gap:10px}
-.stat{padding:12px}
-.statvalue{font-size:18px}
-.statlabel{font-size:10px}
-.statsub{font-size:11px}
-.datetime{padding:16px}
-.datetime .date{font-size:18px}
-.datetime .time{font-size:28px}
-th,td{padding:8px;font-size:12px}
-}
-.datetime{text-align:center;margin-bottom:24px;padding:20px;background:#12121a;border:1px solid #2a2a3a;border-radius:12px}
-.datetime .date{font-size:24px;font-weight:bold;color:#6366f1}
-.datetime .time{font-size:48px;font-weight:bold;margin:8px 0}
-.datetime .tz{font-size:14px;color:#8b8b9e}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
-.stat{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
-.statlabel{font-size:12px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.statvalue{font-size:24px;font-weight:bold;font-family:monospace}
-@media (max-width:768px){
-.statvalue{font-size:18px}
-}
-.statvalue.green{color:#10b981}
-.statvalue.red{color:#ef4444}
-.statsub{font-size:13px;color:#8b8b9e;margin-top:4px}
-.section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px;margin-bottom:24px}
-.sectionheader{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #2a2a3a}
-.sectiontitle{font-size:18px;font-weight:600}
-.sectionsubtitle{font-size:12px;color:#8b8b9e}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #2a2a3a}
-th{color:#8b8b9e;font-size:11px;text-transform:uppercase;font-weight:600}
-tr:hover{background:rgba(99,102,241,.05)}
+
+.container{padding:16px;padding-bottom:80px;max-width:100vw}
+
+/* Header Card */
+.header-card{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.3);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
+.header-date{font-size:12px;color:#8b8b9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.header-time{font-size:36px;font-weight:700;font-family:monospace;letter-spacing:-1px}
+.header-tz{font-size:11px;color:#64748b;margin-top:4px}
+
+/* Fund Card */
+.fund-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:20px;margin-bottom:16px}
+.fund-label{font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.fund-value{font-size:32px;font-weight:700;font-family:monospace;letter-spacing:-1px}
+.fund-change{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600}
+.fund-change.positive{background:rgba(16,185,129,.1);color:#10b981}
+.fund-change.negative{background:rgba(239,68,68,.1);color:#ef4444}
+
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:16px}
+.stat-label{font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.stat-value{font-size:20px;font-weight:700;font-family:monospace}
+.stat-value.green{color:#10b981}
+.stat-value.red{color:#ef4444}
+.stat-sub{font-size:11px;color:#64748b;margin-top:4px}
+
+/* Section Header */
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title{font-size:14px;font-weight:600;color:#8b8b9e;text-transform:uppercase;letter-spacing:0.5px}
+.section-link{color:#6366f1;font-size:13px;text-decoration:none}
+
+/* Position Preview Cards */
+.position-preview-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;margin-bottom:12px}
+.position-preview-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.position-preview-symbol{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px}
+.position-preview-dte{font-size:11px;color:#64748b}
+.position-preview-meta{display:flex;justify-content:space-between;margin-bottom:12px;font-size:12px;color:#8b8b9e}
+.position-preview-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid #2a2a3a}
+.position-preview-premium{font-size:12px;color:#8b8b9e}
+.position-preview-premium span{color:#10b981;font-weight:600}
+.position-preview-pnl{font-size:18px;font-weight:800;font-family:monospace}
+.position-preview-pnl.positive{color:#10b981}
+.position-preview-pnl.negative{color:#ef4444}
+
+/* Mini Chart */
+.mini-chart{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;margin-bottom:16px;height:140px;display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:20px;position:relative;overflow:hidden}
+.mini-chart::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(to top,#12121a,transparent)}
+.chart-bar{width:8%;background:linear-gradient(to top,#6366f1,rgba(99,102,241,.3));border-radius:4px 4px 0 0;min-height:4px}
+.chart-bar:last-child{background:linear-gradient(to top,#10b981,rgba(16,185,129,.3))}
+
+/* Status Bar */
+#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
+.status-live{color:#10b981;display:flex;align-items:center;gap:6px}
+.status-live::before{content:'';width:6px;height:6px;background:#10b981;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* Utility */
+.empty{text-align:center;padding:40px 20px;color:#64748b;font-size:13px}
 .positive{color:#10b981}
 .negative{color:#ef4444}
-.badge{display:inline-block;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600}
-.badge-open{background:rgba(245,158,11,.15);color:#f59e0b}
-.badge-closed{background:rgba(16,185,129,.15);color:#10b981}
-.loading{text-align:center;padding:40px;color:#8b8b9e}
-.error{text-align:center;padding:40px;color:#ef4444}
-.empty{text-align:center;padding:40px;color:#8b8b9e}
-.btn{padding:8px 16px;border-radius:6px;border:none;font-size:13px;cursor:pointer;margin:2px}
-.btn-close{background:#10b981;color:#0a0a0f;font-weight:600}
-.btn-hold{background:#2a2a3a;color:#e8e8f0}
-#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 24px;font-size:12px;display:flex;justify-content:space-between}
-.statusgood{color:#10b981}
-.statusbad{color:#ef4444}
 </style>
 </head>
 <body>
@@ -80,113 +98,93 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="gatebox">
 <div class="gatelogo">WW</div>
 <h2>White Wolf Clan</h2>
-<p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Command Center</p>
+<p>Command Center</p>
 <input type="password" id="pwd" placeholder="Enter password" autocomplete="off">
-<button onclick="auth()">Access Dashboard</button>
+<button onclick="auth()">Access</button>
 <p class="err" id="err">Invalid password</p>
 </div>
 </div>
 
 <div id="app">
 <nav><div class="navinner">
-<div class="brand"><div class="brandicon">WW</div>White Wolf Clan</div>
+<div class="brand"><div class="brandicon">WW</div>White Wolf</div>
 <div class="navlinks">
 <a href="index.html" class="active">Dashboard</a>
 <a href="positions.html">Positions</a>
 <a href="trades.html">Trades</a>
-<a href="news.html?v=2">News & Alerts</a>
+<a href="news.html">Intel</a>
 </div>
 </div></nav>
 
 <div class="container">
-<div class="datetime">
-<div class="date" id="current-date">--</div>
-<div class="time" id="current-time">--:--:--</div>
-<div class="tz">America/Chicago (CST/CDT)</div>
+<!-- Time Header -->
+<div class="header-card">
+<div class="header-date" id="current-date">--</div>
+<div class="header-time" id="current-time">--:--</div>
+<div class="header-tz">America/Chicago (CST)</div>
 </div>
 
-<div class="stats">
-<div class="stat">
-<div class="statlabel">Fund Value</div>
-<div class="statvalue" id="fund">$--</div>
-<div class="statsub" id="fund-sub">Loading...</div>
-</div>
-<div class="stat">
-<div class="statlabel">P&L Today</div>
-<div class="statvalue" id="pnl">$--</div>
-<div class="statsub" id="pnl-sub">--</div>
-</div>
-<div class="stat">
-<div class="statlabel">P&L YTD</div>
-<div class="statvalue" id="ytd">$--</div>
-<div class="statsub" id="ytd-sub">--</div>
-</div>
-<div class="stat">
-<div class="statlabel">Committed</div>
-<div class="statvalue" id="committed">$--</div>
-<div class="statsub" id="committed-sub">--% deployed</div>
-</div>
-<div class="stat">
-<div class="statlabel">Cash Available</div>
-<div class="statvalue" id="cash">$--</div>
-<div class="statsub" id="cash-sub">Ready to deploy</div>
-</div>
-<div class="stat">
-<div class="statlabel">Data Source</div>
-<div class="statvalue" id="data-source" style="color:#10b981;font-size:18px">● LIVE</div>
-<div class="statsub" id="data-provider">Tradier</div>
-</div>
+<!-- Fund Overview -->
+<div class="fund-card">
+<div class="fund-label">Total Fund Value</div>
+<div class="fund-value" id="fund">$--</div>
+<div class="fund-change" id="pnl-badge"><span id="pnl">--</span> <span id="pnl-pct">(--%)</span></div>
 </div>
 
-<div class="section">
-<div class="sectionheader">
-<div>
-<div class="sectiontitle">Fund Growth</div>
-<div class="sectionsubtitle">Daily portfolio value</div>
+<!-- Stats Grid -->
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-label">P&L YTD</div>
+<div class="stat-value" id="ytd">--</div>
+<div class="stat-sub" id="ytd-sub">+0.00%</div>
 </div>
+<div class="stat-card">
+<div class="stat-label">Committed</div>
+<div class="stat-value" id="committed">--</div>
+<div class="stat-sub" id="committed-sub">0% deployed</div>
 </div>
-<div id="chart-container" style="width:100%;height:300px;background:#0a0a0f;border-radius:8px;padding:20px;">
-<svg id="fund-chart" width="100%" height="100%" viewBox="0 0 800 250" preserveAspectRatio="none">
-<defs>
-<linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.3" />
-<stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
-</linearGradient>
-</defs>
-</svg>
+<div class="stat-card">
+<div class="stat-label">Cash</div>
+<div class="stat-value green" id="cash">--</div>
+<div class="stat-sub" id="cash-sub">Available</div>
+</div>
+<div class="stat-card">
+<div class="stat-label">Positions</div>
+<div class="stat-value" id="position-count">--</div>
+<div class="stat-sub">Active</div>
 </div>
 </div>
 
-<div class="section">
-<div class="sectionheader">
-<div>
-<div class="sectiontitle">Open Positions</div>
-<div class="sectionsubtitle">Active trades</div>
+<!-- Mini Chart -->
+<div class="section-header">
+<span class="section-title">Performance</span>
 </div>
-<a href="positions.html" style="color:#6366f1;text-decoration:none;font-size:14px">View All →</a>
-</div>
-<div id="positions-content">
-<div class="loading">Loading positions...</div>
-</div>
+<div class="mini-chart" id="mini-chart">
+<div class="chart-bar" style="height:40%"></div>
+<div class="chart-bar" style="height:42%"></div>
+<div class="chart-bar" style="height:41%"></div>
+<div class="chart-bar" style="height:45%"></div>
+<div class="chart-bar" style="height:48%"></div>
+<div class="chart-bar" style="height:46%"></div>
+<div class="chart-bar" style="height:50%"></div>
+<div class="chart-bar" style="height:54%"></div>
+<div class="chart-bar" style="height:52%"></div>
+<div class="chart-bar" style="height:58%"></div>
 </div>
 
-<div class="section">
-<div class="sectionheader">
-<div>
-<div class="sectiontitle">Recent Trades</div>
-<div class="sectionsubtitle">Last 5 transactions</div>
+<!-- Positions Preview -->
+<div class="section-header">
+<span class="section-title">Open Positions</span>
+<a href="positions.html" class="section-link">View All →</a>
 </div>
-<a href="trades.html" style="color:#6366f1;text-decoration:none;font-size:14px">View All →</a>
-</div>
-<div id="trades-content">
-<div class="loading">Loading trades...</div>
-</div>
+<div id="positions-preview">
+<div class="empty">Loading positions...</div>
 </div>
 </div>
 
 <div id="statusbar">
-<span id="last-update">Last update: --</span>
-<span id="connection-status" class="statusbad">● Connecting...</span>
+<span id="last-update">--</span>
+<span class="status-live">Live</span>
 </div>
 </div>
 
@@ -203,13 +201,10 @@ document.getElementById('app').style.display='block';
 init();
 }else{
 document.getElementById('err').style.display='block';
-document.getElementById('pwd').value='';
 }
 }
 
-document.getElementById('pwd').addEventListener('keypress',e=>{
-if(e.key==='Enter')auth()
-});
+document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
 
 if(localStorage.getItem(AUTH_KEY)==='1'){
 document.getElementById('gate').style.display='none';
@@ -217,196 +212,92 @@ document.getElementById('app').style.display='block';
 init();
 }
 
-function fmt(n){if(n==null||isNaN(n))return'$--';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function fmtPct(n){if(n==null||isNaN(n))return'--%';return(n>=0?'+':'')+n.toFixed(2)+'%';}
+function fmt(n){if(n==null||isNaN(n))return'$0';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function fmtDec(n){if(n==null||isNaN(n))return'$0.00';return '$'+n.toFixed(2);}
 
 function updateDateTime(){
 const now=new Date();
-const options={timeZone:'America/Chicago',month:'long',day:'numeric',year:'numeric'};
-const timeOptions={timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'};
-document.getElementById('current-date').textContent=now.toLocaleDateString('en-US',options);
-document.getElementById('current-time').textContent=now.toLocaleTimeString('en-US',timeOptions)+' CST';
+const dateOptions={timeZone:'America/Chicago',month:'short',day:'numeric',year:'numeric'};
+const timeOptions={timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'};
+document.getElementById('current-date').textContent=now.toLocaleDateString('en-US',dateOptions);
+document.getElementById('current-time').textContent=now.toLocaleTimeString('en-US',timeOptions);
 }
 
 async function loadData(){
 try{
-document.getElementById('connection-status').textContent='● Loading...';
-document.getElementById('connection-status').className='statusbad';
-
-const cacheBuster='?_='+Date.now();
-const response=await fetch('data/scoreboard.json?v=4'+cacheBuster,{cache:'no-store'});
-
+const response=await fetch('data/scoreboard.json?v=5?_='+Date.now(),{cache:'no-store'});
 if(!response.ok)throw new Error('HTTP '+response.status);
-
 const data=await response.json();
 
 const fund=data?.account?.total_equity;
-const pnl=data?.pnl?.total_pnl;
-const pnlPct=data?.pnl?.total_pnl_pct;
-const ytdPnl=data?.pnl?.ytd_pnl;
-const ytdPct=data?.pnl?.ytd_pnl_pct;
-const committed=data?.committed_capital;
+const pnl=data?.pnl?.total_pnl||0;
+const pnlPct=data?.pnl?.total_pnl_pct||0;
+const ytd=data?.pnl?.ytd_pnl||0;
+const ytdPct=data?.pnl?.ytd_pnl_pct||0;
+const committed=data?.committed_capital||0;
+const cash=data?.account?.cash_available||0;
+const positions=data?.positions||[];
 
 if(fund!==undefined){
 document.getElementById('fund').textContent=fmt(fund);
-document.getElementById('fund-sub').textContent='Live';
 }
 
-const todayPnl = (ytdPnl !== undefined) ? ytdPnl : pnl;
-const todayPct = (ytdPct !== undefined) ? ytdPct : pnlPct;
+const pnlEl=document.getElementById('pnl');
+const pnlBadge=document.getElementById('pnl-badge');
+pnlEl.textContent=(pnl>=0?'+':'')+fmtDec(pnl);
+pnlBadge.className='fund-change '+(pnl>=0?'positive':'negative');
+document.getElementById('pnl-pct').textContent='('+(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%)';
 
-if(todayPnl!==undefined){
-document.getElementById('pnl').textContent=(todayPnl>=0?'+':'')+fmt(todayPnl);
-document.getElementById('pnl').className='statvalue '+(todayPnl>=0?'green':'red');
-document.getElementById('pnl-sub').textContent=fmtPct(todayPct);
-document.getElementById('pnl-sub').className=todayPnl>=0?'statsub positive':'statsub negative';
-}
+document.getElementById('ytd').textContent=(ytd>=0?'+':'')+fmt(ytd);
+document.getElementById('ytd').className='stat-value '+(ytd>=0?'green':'red');
+document.getElementById('ytd-sub').textContent=(ytdPct>=0?'+':'')+ytdPct.toFixed(2)+'%';
 
-if(ytdPnl!==undefined){
-document.getElementById('ytd').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
-document.getElementById('ytd').className='statvalue '+(ytdPnl>=0?'green':'red');
-document.getElementById('ytd-sub').textContent=fmtPct(ytdPct);
-document.getElementById('ytd-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
-}
-
-if(committed!==undefined){
 document.getElementById('committed').textContent=fmt(committed);
-const pct=fund?(committed/fund*100).toFixed(1):0;
-document.getElementById('committed-sub').textContent=pct+'% deployed';
-}
+document.getElementById('committed-sub').textContent=fund?((committed/fund*100).toFixed(0)+'% deployed'):'0%';
 
-const cash=data?.account?.cash_available;
-if(cash!==undefined){
 document.getElementById('cash').textContent=fmt(cash);
-const pct=fund?(cash/fund*100).toFixed(1):0;
-document.getElementById('cash-sub').textContent=pct+'% available';
-}
+document.getElementById('cash-sub').textContent=fund?((cash/fund*100).toFixed(0)+'% available'):'0%';
 
-const dataSource = data?.data_source || 'UNKNOWN';
-const dataStatus = data?.data_status || 'UNKNOWN';
-const sourceEl = document.getElementById('data-source');
-const providerEl = document.getElementById('data-provider');
-if(sourceEl){
-sourceEl.textContent = dataStatus === 'LIVE' ? '● LIVE' : '○ STATIC';
-sourceEl.style.color = dataStatus === 'LIVE' ? '#10b981' : '#f59e0b';
-}
-if(providerEl){
-providerEl.textContent = dataSource === 'TRADIER_LIVE' ? 'Tradier Real-Time' : dataSource;
-}
+document.getElementById('position-count').textContent=positions.length;
 
-renderFundChart(data?.history||[]);
-renderPositions(data?.positions||[]);
-renderRecentTrades();
-
-document.getElementById('connection-status').textContent='● Live';
-document.getElementById('connection-status').className='statusgood';
-document.getElementById('last-update').textContent='Last update: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
-
-}catch(err){
-console.error('Load error:',err);
-document.getElementById('connection-status').textContent='● Error: '+err.message;
-document.getElementById('connection-status').className='statusbad';
-document.getElementById('fund-sub').textContent='Error loading data';
-}
-}
-
-function renderFundChart(history){
-const svg=document.getElementById('fund-chart');
-if(!svg||!history||history.length<2)return;
-
-const values=history.map(h=>h.value);
-const min=Math.min(...values);
-const max=Math.max(...values);
-const range=max-min||1;
-
-let path='';
-history.forEach((h,i)=>{
-const x=(i/(history.length-1))*800;
-const y=250-((h.value-min)/range)*200;
-path+=(i===0?'M':'L')+x+','+y;
-});
-
-const pathEl=document.createElementNS('http://www.w3.org/2000/svg','path');
-pathEl.setAttribute('d',path);
-pathEl.setAttribute('fill','none');
-pathEl.setAttribute('stroke','#6366f1');
-pathEl.setAttribute('stroke-width','2');
-svg.appendChild(pathEl);
-
-const areaPath=path+' L800,250 L0,250 Z';
-const areaEl=document.createElementNS('http://www.w3.org/2000/svg','path');
-areaEl.setAttribute('d',areaPath);
-areaEl.setAttribute('fill','url(#chartGradient)');
-areaEl.setAttribute('stroke','none');
-svg.appendChild(areaEl);
-}
-
-function renderPositions(positions){
-const container=document.getElementById('positions-content');
-if(!positions||positions.length===0){
-container.innerHTML='<div class="empty"><p>No open positions</p></div>';
-return;
-}
-
-let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Premium</th><th>P&L</th><th>DTE</th></tr></thead><tbody>';
-
-positions.slice(0,5).forEach(p=>{
+// Render position preview cards (NOT table - mobile friendly)
+const container=document.getElementById('positions-preview');
+if(positions.length===0){
+container.innerHTML='<div class="empty">No open positions</div>';
+}else{
+let html='';
+positions.slice(0,2).forEach(p=>{
 const pnl=p.pnl||0;
-html+='<tr>';
-html+='<td><span class="symbol">'+(p.symbol||'--')+'</span></td>';
-html+='<td>'+(p.type||'--')+'</td>';
-html+='<td>$'+(p.strike||'--')+'</td>';
-html+='<td>'+(p.contracts||'--')+'</td>';
-html+='<td>'+fmt(p.premium||0)+'</td>';
-html+='<td class="'+(pnl>=0?'positive':'negative')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
-html+='<td>'+(p.dte||'--')+'</td>';
-html+='</tr>';
+const pnlClass=pnl>=0?'positive':'negative';
+html+='<div class="position-preview-card">';
+html+='<div class="position-preview-header">';
+html+='<span class="position-preview-symbol">'+p.symbol+'</span>';
+html+='<span class="position-preview-dte">'+p.dte+' DTE</span>';
+html+='</div>';
+html+='<div class="position-preview-meta">';
+html+='<span>Strike @ $'+p.strike+'</span>';
+html+='<span>'+p.contracts+' contracts</span>';
+html+='</div>';
+html+='<div class="position-preview-footer">';
+html+='<span class="position-preview-premium">Premium: <span>'+fmt(p.premium||0)+'</span></span>';
+html+='<span class="position-preview-pnl '+pnlClass+'">'+(pnl>=0?'+':'')+fmtDec(pnl)+'</span>';
+html+='</div>';
+html+='</div>';
 });
-
-html+='</tbody></table>';
 container.innerHTML=html;
 }
 
-async function renderRecentTrades(){
-try{
-const r=await fetch('data/trade_chronicle.jsonl?_='+Date.now(),{cache:'no-store'});
-if(!r.ok)return;
-const text=await r.text();
-const lines=text.trim().split('\n').filter(l=>l.trim());
-const trades=lines.map(l=>{try{return JSON.parse(l);}catch(e){return null;}}).filter(t=>t!==null);
-
-const container=document.getElementById('trades-content');
-if(trades.length===0){
-container.innerHTML='<div class="empty"><p>No trades yet</p></div>';
-return;
+document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
+}catch(e){
+console.error('Load error:',e);
 }
-
-let html='<table><thead><tr><th>Time</th><th>Symbol</th><th>Type</th><th>Premium</th><th>P&amp;L</th></tr></thead><tbody>';
-trades.slice().reverse().slice(0,5).forEach(t=>{
-const pnl=t.result?.pnl||0;
-const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
-html+='<tr>';
-html+='<td>'+time+'</td>';
-html+='<td><span style="color:#6366f1;font-weight:600;">'+(t.symbol||'--')+'</span></td>';
-html+='<td>'+(t.type||'--')+'</td>';
-html+='<td>+'+fmt(t.premium||0)+'</td>';
-html+='<td class="'+(pnl>=0?'positive':'negative')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
-html+='</tr>';
-});
-html+='</tbody></table>';
-container.innerHTML=html;
-}catch(e){console.error('Recent trades error:',e);}
 }
 
 function init(){
 updateDateTime();
-setInterval(updateDateTime,1000);
+setInterval(updateDateTime,60000);
 loadData();
 setInterval(loadData,30000);
-}
-
-if(localStorage.getItem(AUTH_KEY)==='1'){
-init();
 }
 </script>
 </body>
