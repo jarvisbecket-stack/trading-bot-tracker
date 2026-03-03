@@ -14,6 +14,7 @@ body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
 .gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
 .gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;font-weight:500;cursor:pointer}
 .gatebox .err{color:#ef4444;margin-top:12px;font-size:14px;display:none}
+.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
 #app{display:none}
 nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 .navinner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
@@ -117,7 +118,8 @@ function fmt(n){if(n==null||isNaN(n))return'$--';return'$'+n.toLocaleString('en-
 
 async function load(){
 try{
-const r=await fetch('data/scoreboard.json?v=3?_='+Date.now(),{cache:'no-store'});
+const cacheBuster='?_='+Date.now();
+const r=await fetch('data/scoreboard.json?v=4'+cacheBuster,{cache:'no-store'});
 if(!r.ok)throw new Error('HTTP '+r.status);
 const d=await r.json();
 const positions=d?.positions||[];
@@ -133,7 +135,7 @@ const premium = p.premium || 0;
 const contracts = p.contracts || 1;
 
 // Calculate correct option price from premium (per contract) - this is ENTRY price
-const entryPrice = premium > 0 && contracts > 0 ? premium / contracts / 100 : (p.entry || 0);
+const entryPrice = p.entry || (premium > 0 && contracts > 0 ? premium / contracts / 100 : 0);
 // Get CURRENT option price from API
 const currentOptionPrice = p.option_price || entryPrice;
 

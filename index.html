@@ -152,7 +152,6 @@ tr:hover{background:rgba(99,102,241,.05)}
 <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.3" />
 <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
 </linearGradient>
-</linearGradient>
 </defs>
 </svg>
 </div>
@@ -297,6 +296,7 @@ providerEl.textContent = dataSource === 'TRADIER_LIVE' ? 'Tradier Real-Time' : d
 
 renderFundChart(data?.history||[]);
 renderPositions(data?.positions||[]);
+renderRecentTrades();
 
 document.getElementById('connection-status').textContent='● Live';
 document.getElementById('connection-status').className='statusgood';
@@ -365,6 +365,37 @@ html+='</tr>';
 
 html+='</tbody></table>';
 container.innerHTML=html;
+}
+
+async function renderRecentTrades(){
+try{
+const r=await fetch('data/trade_chronicle.jsonl?_='+Date.now(),{cache:'no-store'});
+if(!r.ok)return;
+const text=await r.text();
+const lines=text.trim().split('\n').filter(l=>l.trim());
+const trades=lines.map(l=>{try{return JSON.parse(l);}catch(e){return null;}}).filter(t=>t!==null);
+
+const container=document.getElementById('trades-content');
+if(trades.length===0){
+container.innerHTML='<div class="empty"><p>No trades yet</p></div>';
+return;
+}
+
+let html='<table><thead><tr><th>Time</th><th>Symbol</th><th>Type</th><th>Premium</th><th>P&amp;L</th></tr></thead><tbody>';
+trades.slice().reverse().slice(0,5).forEach(t=>{
+const pnl=t.result?.pnl||0;
+const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
+html+='<tr>';
+html+='<td>'+time+'</td>';
+html+='<td><span style="color:#6366f1;font-weight:600;">'+(t.symbol||'--')+'</span></td>';
+html+='<td>'+(t.type||'--')+'</td>';
+html+='<td>+'+fmt(t.premium||0)+'</td>';
+html+='<td class="'+(pnl>=0?'positive':'negative')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
+html+='</tr>';
+});
+html+='</tbody></table>';
+container.innerHTML=html;
+}catch(e){console.error('Recent trades error:',e);}
 }
 
 function init(){
