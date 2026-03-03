@@ -182,10 +182,13 @@ html+='</div>';
 html+='<div class="profit-target">Target: $'+fmt(profit50)+' (50% of premium)</div>';
 html+='</div>';
 
-// Compact Greeks
+// Compact Greeks - FLIP signs for short puts (we're short, so opposite of option greeks)
+const displayDelta = -(p.delta||0);  // Flip: short put has positive delta
+const displayTheta = -(p.theta||0);  // Flip: short put has positive theta
+
 html+='<div class="greeks-compact">';
-html+='<div class="greek-chip"><span class="greek-chip-label">Delta</span><span class="greek-chip-value '+(p.delta<0?'negative':'positive')+'">'+(p.delta||0).toFixed(2)+'</span></div>';
-html+='<div class="greek-chip"><span class="greek-chip-label">Theta</span><span class="greek-chip-value positive">+'+(p.theta||0).toFixed(2)+'</span></div>';
+html+='<div class="greek-chip"><span class="greek-chip-label">Delta</span><span class="greek-chip-value '+(displayDelta>=0?'positive':'negative')+'">'+(displayDelta>=0?'+':'')+displayDelta.toFixed(2)+'</span></div>';
+html+='<div class="greek-chip"><span class="greek-chip-label">Theta</span><span class="greek-chip-value '+(displayTheta>=0?'positive':'negative')+'">'+(displayTheta>=0?'+':'')+displayTheta.toFixed(2)+'</span></div>';
 html+='<div class="greek-chip"><span class="greek-chip-label">OTM</span><span class="greek-chip-value">'+(p.otm||0)+'%</span></div>';
 html+='<div class="greek-chip"><span class="greek-chip-label">IV</span><span class="greek-chip-value">'+((p.iv||0)*100).toFixed(0)+'%</span></div>';
 html+='</div>';
