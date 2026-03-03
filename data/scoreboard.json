@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-03T15:58:05.757491",
+  "timestamp": "2026-03-03T10:30:52.762750",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
@@ -14,21 +14,21 @@
     "total_pnl_pct": 0.26,
     "ytd_pnl": 2644.0,
     "ytd_pnl_pct": 0.26,
-    "commission_paid": 25.20,
+    "commission_paid": 25.2,
     "commission_rate": 0.35,
     "commission_per_contract": 0.35,
-    "commission_round_trip": 0.70,
-    "pnl_after_commission": 2618.80,
+    "commission_round_trip": 0.7,
+    "pnl_after_commission": 2618.8,
     "commission_breakdown": {
       "MSTR": {
         "contracts": 10,
-        "commission": 7.00,
-        "calculation": "10 contracts × $0.70 round-trip"
+        "commission": 7.0,
+        "calculation": "10 contracts \u00d7 $0.70 round-trip"
       },
       "BAC": {
         "contracts": 26,
-        "commission": 18.20,
-        "calculation": "26 contracts × $0.70 round-trip"
+        "commission": 18.2,
+        "calculation": "26 contracts \u00d7 $0.70 round-trip"
       }
     }
   },
@@ -92,8 +92,8 @@
       "dte": 5,
       "pnl": 150.0,
       "pnl_pct": 7.0,
-      "commission": 7.00,
-      "pnl_after_commission": 143.00,
+      "commission": 7.0,
+      "pnl_after_commission": 143.0,
       "delta": -0.2384,
       "theta": -0.5226,
       "otm": 4.9,
@@ -102,7 +102,13 @@
       "buyback_cost": 2000.0,
       "net_value": 150.0,
       "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE"
+      "trade_type": "REAL_PAPER_TRADE",
+      "net_unrealized_pnl": 351.33,
+      "gross_pnl": 358.33,
+      "total_commission": 7.0,
+      "current_stock_price": 134.97,
+      "is_itm": false,
+      "break_even": 127.86
     },
     {
       "symbol": "BAC",
@@ -116,8 +122,8 @@
       "dte": 5,
       "pnl": -52.0,
       "pnl_pct": -10.5,
-      "commission": 18.20,
-      "pnl_after_commission": -70.20,
+      "commission": 18.2,
+      "pnl_after_commission": -70.2,
       "delta": -0.1375,
       "theta": -0.0437,
       "otm": 5.3,
@@ -126,48 +132,21 @@
       "buyback_cost": 546.0,
       "net_value": -52.0,
       "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE"
+      "trade_type": "REAL_PAPER_TRADE",
+      "net_unrealized_pnl": 64.13,
+      "gross_pnl": 82.33,
+      "total_commission": 18.2,
+      "current_stock_price": 49.35,
+      "is_itm": false,
+      "break_even": 47.32
     }
   ],
   "commission_adjusted_pnl": {
-    "total_net_unrealized_pnl": 72.80,
-    "total_gross_pnl": 98.00,
-    "total_commissions": 25.20,
+    "total_net_unrealized_pnl": 415.46,
+    "total_gross_pnl": 440.66,
+    "total_commissions": 25.2,
     "commission_rate_per_contract": 0.35,
-    "commission_round_trip_per_contract": 0.70,
-    "last_updated": "2026-03-03T10:27:00-06:00",
-    "break_even_prices": {
-      "MSTR": 127.86,
-      "BAC": 47.31
-    },
-    "positions_detail": [
-      {
-        "symbol": "MSTR",
-        "contracts": 10,
-        "strike": 130.0,
-        "entry_premium": 2150.0,
-        "gross_pnl": 150.0,
-        "total_commission": 7.00,
-        "net_unrealized_pnl": 143.0,
-        "break_even": 127.86,
-        "current_stock_price": 136.69,
-        "is_itm": false,
-        "distance_to_itm_pct": 4.9
-      },
-      {
-        "symbol": "BAC",
-        "contracts": 26,
-        "strike": 47.50,
-        "entry_premium": 494.0,
-        "gross_pnl": -52.0,
-        "total_commission": 18.20,
-        "net_unrealized_pnl": -70.20,
-        "break_even": 47.31,
-        "current_stock_price": 50.175,
-        "is_itm": false,
-        "distance_to_itm_pct": 5.3
-      }
-    ]
+    "last_updated": "2026-03-03T10:30:52.762766"
   },
   "stop_loss_monitoring": {
     "enabled": true,
