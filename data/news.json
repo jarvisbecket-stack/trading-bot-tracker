@@ -1,7 +1,72 @@
 {
-  "timestamp": "2026-03-03T15:07:02.293481",
+  "timestamp": "2026-03-03T01:46:18.075354",
   "data_source": "FINNHUB",
   "data_status": "LIVE",
-  "article_count": 0,
-  "articles": []
+  "article_count": 8,
+  "articles": [
+    {
+      "symbol": "MSTR",
+      "headline": "Strategy Incorporated (MSTR) Inspires Confidence Based on Impressive Bitcoin Execution",
+      "source": "Yahoo",
+      "url": "https://finnhub.io/api/news?id=9feeebf89edb9079fa6f56ddc2205edb0651f3e0c43ee55fe149b3391bf5b563",
+      "datetime": 1772516794,
+      "summary": "Strategy Incorporated (NASDAQ:MSTR) is one of the 10 beaten-down technology stocks that could bounce back in 2026. On February 17, Mizuho maintained i..."
+    },
+    {
+      "symbol": "MARKET",
+      "headline": "Facing backlash, OpenAI\u2019s Sam Altman says he made a \u2018sloppy\u2019 mistake in Pentagon deal",
+      "source": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/facing-backlash-openais-sam-altman-says-he-made-a-sloppy-mistake-in-pentagon-deal-cf8f3ad9",
+      "datetime": 1772510880,
+      "summary": "The OpenAI CEO admits he came off as \u201copportunistic\u201d in how he announced the company\u2019s new government deal and says he will amend the language to emph..."
+    },
+    {
+      "symbol": "MARKET",
+      "headline": "MongoDB\u2019s stock sinks after earnings, signaling more tough times for the software sector",
+      "source": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/mongodbs-stock-sinks-after-earnings-signaling-more-tough-times-for-the-software-sector-5dd37daa",
+      "datetime": 1772504580,
+      "summary": "A \u201cplanned\u201d transition involving the exits of two sales leaders is also rattling investors."
+    },
+    {
+      "symbol": "MARKET",
+      "headline": "SoFi\u2019s stock rises as CEO Anthony Noto reacts to recent selloff with a $1 million purchase",
+      "source": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/sofis-stock-rises-as-ceo-anthony-noto-reacts-to-recent-selloff-with-a-1-million-purchase-d03ba5b6",
+      "datetime": 1772501280,
+      "summary": "Noto, who already owns a SoFi stake worth about $215 million on paper, has been known to buy the dip before."
+    },
+    {
+      "symbol": "MARKET",
+      "headline": "How this under-the-radar U.S. natural-gas exporter could capitalize on a potential shortage in Europe",
+      "source": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/how-this-under-the-radar-u-s-natural-gas-exporter-could-capitalize-on-a-potential-shortage-in-europe-c6938bab",
+      "datetime": 1772492460,
+      "summary": "The U.S. is the world\u2019s largest exporter of liquefied natural gas, and one relatively obscure U.S. company seems ready to reap the benefits of a surge..."
+    },
+    {
+      "symbol": "MARKET",
+      "headline": "The smartest money moves to make as the Iran conflict rattles markets",
+      "source": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/the-smartest-money-moves-to-make-as-the-iran-conflict-rattles-markets-d8e57ef3",
+      "datetime": 1772490900,
+      "summary": "You may have opportunities to optimize for short-term volatility, financial planners told MarketWatch."
+    },
+    {
+      "symbol": "MSTR",
+      "headline": "Stock Market Today: Dow Dips As Trump Says This On Iran; Warren Buffett Stock Flashes Sell Signal (Live Coverage)",
+      "source": "Yahoo",
+      "url": "https://finnhub.io/api/news?id=fe29d5467c5cfa82630e5ebabe24ed39822249cc3b736041d6cd0d779b557ab4",
+      "datetime": 1772487424,
+      "summary": "The Dow Jones index fell and other indexes were mixed after President Trump spoke on Iran. A Warren Buffett stock dived but Palantir popped. Oil and d..."
+    },
+    {
+      "symbol": "MSTR",
+      "headline": "Michael Saylor Once Said You Should Master This Technology To Get Wealthy: Bitcoin Billionaire Wants People To Set Their Egos Aside To Achieve Success",
+      "source": "Yahoo",
+      "url": "https://finnhub.io/api/news?id=0275cef52355f844b5f3f08ee04e184dd161e35b3d2aa97d2701251c043f1ff5",
+      "datetime": 1772487015,
+      "summary": "Strategy Inc. (NASDAQ:MSTR) co-founder Michael Saylor has been one of artificial intelligence\u2019s biggest proponents, and not long ago stressed the impo..."
+    }
+  ]
 }
