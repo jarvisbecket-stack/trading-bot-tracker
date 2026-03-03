@@ -81,7 +81,7 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="gatelogo">WW</div>
 <h2>White Wolf Clan</h2>
 <p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Command Center</p>
-<input type="password" id="pwd" placeholder="Enter password">
+<input type="password" id="pwd" placeholder="Enter password" autocomplete="off">
 <button onclick="auth()">Access Dashboard</button>
 <p class="err" id="err">Invalid password</p>
 </div>
@@ -152,6 +152,7 @@ tr:hover{background:rgba(99,102,241,.05)}
 <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.3" />
 <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
 </linearGradient>
+</linearGradient>
 </defs>
 </svg>
 </div>
@@ -192,21 +193,29 @@ tr:hover{background:rgba(99,102,241,.05)}
 
 <script>
 const PWD='jarvisb';
+const AUTH_KEY='ww-auth-v2';
+
 function auth(){
 const input=document.getElementById('pwd').value;
 if(input===PWD){
-sessionStorage.setItem('ww-auth','1');
+localStorage.setItem(AUTH_KEY,'1');
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 init();
 }else{
 document.getElementById('err').style.display='block';
+document.getElementById('pwd').value='';
 }
 }
-document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
-if(sessionStorage.getItem('ww-auth')==='1'){
+
+document.getElementById('pwd').addEventListener('keypress',e=>{
+if(e.key==='Enter')auth()
+});
+
+if(localStorage.getItem(AUTH_KEY)==='1'){
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
+init();
 }
 
 function fmt(n){if(n==null||isNaN(n))return'$--';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -226,28 +235,24 @@ document.getElementById('connection-status').textContent='● Loading...';
 document.getElementById('connection-status').className='statusbad';
 
 const cacheBuster='?_='+Date.now();
-const response=await fetch('data/scoreboard.json?v=3'+cacheBuster,{cache:'no-store'});
+const response=await fetch('data/scoreboard.json?v=4'+cacheBuster,{cache:'no-store'});
 
 if(!response.ok)throw new Error('HTTP '+response.status);
 
 const data=await response.json();
 
-// Update stats
 const fund=data?.account?.total_equity;
 const pnl=data?.pnl?.total_pnl;
 const pnlPct=data?.pnl?.total_pnl_pct;
 const ytdPnl=data?.pnl?.ytd_pnl;
 const ytdPct=data?.pnl?.ytd_pnl_pct;
 const committed=data?.committed_capital;
-const bp=data?.account?.buying_power;
 
 if(fund!==undefined){
 document.getElementById('fund').textContent=fmt(fund);
 document.getElementById('fund-sub').textContent='Live';
 }
 
-// P&L Today = unrealized P&L from positions (daily change)
-// P&L YTD = total since fund start
 const todayPnl = (ytdPnl !== undefined) ? ytdPnl : pnl;
 const todayPct = (ytdPct !== undefined) ? ytdPct : pnlPct;
 
@@ -264,13 +269,13 @@ document.getElementById('ytd').className='statvalue '+(ytdPnl>=0?'green':'red');
 document.getElementById('ytd-sub').textContent=fmtPct(ytdPct);
 document.getElementById('ytd-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
 }
+
 if(committed!==undefined){
 document.getElementById('committed').textContent=fmt(committed);
 const pct=fund?(committed/fund*100).toFixed(1):0;
 document.getElementById('committed-sub').textContent=pct+'% deployed';
 }
 
-// Update cash available
 const cash=data?.account?.cash_available;
 if(cash!==undefined){
 document.getElementById('cash').textContent=fmt(cash);
@@ -278,7 +283,6 @@ const pct=fund?(cash/fund*100).toFixed(1):0;
 document.getElementById('cash-sub').textContent=pct+'% available';
 }
 
-// Update data source indicator
 const dataSource = data?.data_source || 'UNKNOWN';
 const dataStatus = data?.data_status || 'UNKNOWN';
 const sourceEl = document.getElementById('data-source');
@@ -291,29 +295,9 @@ if(providerEl){
 providerEl.textContent = dataSource === 'TRADIER_LIVE' ? 'Tradier Real-Time' : dataSource;
 }
 
-// Update P&L - Today equals YTD for single day view
-const ytdPnl=data?.pnl?.ytd_pnl;
-const ytdPct=data?.pnl?.ytd_pnl_pct;
-if(ytdPnl!==undefined){
-// P&L Today = YTD (since we're tracking from start)
-document.getElementById('pnl').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
-document.getElementById('pnl').className='statvalue '+(ytdPnl>=0?'green':'red');
-document.getElementById('pnl-sub').textContent=fmtPct(ytdPct);
-document.getElementById('pnl-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
-// YTD same value
-document.getElementById('ytd').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
-document.getElementById('ytd').className='statvalue '+(ytdPnl>=0?'green':'red');
-document.getElementById('ytd-sub').textContent=fmtPct(ytdPct);
-document.getElementById('ytd-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
-}
-
-// Render fund growth chart
 renderFundChart(data?.history||[]);
-
-// Update positions
 renderPositions(data?.positions||[]);
 
-// Update connection status
 document.getElementById('connection-status').textContent='● Live';
 document.getElementById('connection-status').className='statusgood';
 document.getElementById('last-update').textContent='Last update: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
@@ -326,190 +310,71 @@ document.getElementById('fund-sub').textContent='Error loading data';
 }
 }
 
+function renderFundChart(history){
+const svg=document.getElementById('fund-chart');
+if(!svg||!history||history.length<2)return;
+
+const values=history.map(h=>h.value);
+const min=Math.min(...values);
+const max=Math.max(...values);
+const range=max-min||1;
+
+let path='';
+history.forEach((h,i)=>{
+const x=(i/(history.length-1))*800;
+const y=250-((h.value-min)/range)*200;
+path+=(i===0?'M':'L')+x+','+y;
+});
+
+const pathEl=document.createElementNS('http://www.w3.org/2000/svg','path');
+pathEl.setAttribute('d',path);
+pathEl.setAttribute('fill','none');
+pathEl.setAttribute('stroke','#6366f1');
+pathEl.setAttribute('stroke-width','2');
+svg.appendChild(pathEl);
+
+const areaPath=path+' L800,250 L0,250 Z';
+const areaEl=document.createElementNS('http://www.w3.org/2000/svg','path');
+areaEl.setAttribute('d',areaPath);
+areaEl.setAttribute('fill','url(#chartGradient)');
+areaEl.setAttribute('stroke','none');
+svg.appendChild(areaEl);
+}
+
 function renderPositions(positions){
 const container=document.getElementById('positions-content');
 if(!positions||positions.length===0){
-container.innerHTML='<div class="empty"><p>No open positions</p><p style="font-size:13px;margin-top:8px">Trading hours: 8:30 AM - 3:30 PM CST</p></div>';
+container.innerHTML='<div class="empty"><p>No open positions</p></div>';
 return;
 }
 
-let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Cash Committed</th><th>P&L</th><th>Delta</th><th>DTE</th></tr></thead><tbody>';
-positions.forEach(p=>{
+let html='<table><thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Contracts</th><th>Premium</th><th>P&L</th><th>DTE</th></tr></thead><tbody>';
+
+positions.slice(0,5).forEach(p=>{
 const pnl=p.pnl||0;
-const pnlClass=pnl>=0?'positive':'negative';
-const contracts = p.contracts || 1;
-const premium = p.premium || 0;
-const cashCommitted = (p.strike || 0) * contracts * 100;
-// Calculate correct option price from premium
-const optionPrice = premium > 0 && contracts > 0 ? premium / contracts / 100 : (p.option_price || 0);
-// Short puts have positive delta - display with + sign
-const deltaValue = p.delta || 0.25;
-const deltaColor = deltaValue > 0 ? '#10b981' : (deltaValue < 0 ? '#ef4444' : '#6366f1');
-const deltaDisplay = deltaValue >= 0 ? '+' + deltaValue.toFixed(2) : deltaValue.toFixed(2);
 html+='<tr>';
-html+='<td><strong>'+(p.symbol||'--')+'</strong></td>';
+html+='<td><span class="symbol">'+(p.symbol||'--')+'</span></td>';
 html+='<td>'+(p.type||'--')+'</td>';
 html+='<td>$'+(p.strike||'--')+'</td>';
-html+='<td>'+contracts+'</td>';
-html+='<td style="color:#f59e0b;">'+fmt(cashCommitted)+'</td>';
-html+='<td class="'+pnlClass+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
-html+='<td style="color:'+deltaColor+';">'+deltaDisplay+'</td>';
+html+='<td>'+(p.contracts||'--')+'</td>';
+html+='<td>'+fmt(p.premium||0)+'</td>';
+html+='<td class="'+(pnl>=0?'positive':'negative')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
 html+='<td>'+(p.dte||'--')+'</td>';
 html+='</tr>';
 });
+
 html+='</tbody></table>';
 container.innerHTML=html;
-}
-
-async function loadTrades(){
-try{
-const response=await fetch('data/trade_chronicle.jsonl?_='+Date.now(),{cache:'no-store'});
-const container=document.getElementById('trades-content');
-
-if(!response.ok){
-container.innerHTML='<div class="empty"><p>No trades recorded yet</p></div>';
-return;
-}
-
-const text=await response.text();
-const lines=text.trim().split('\n').filter(l=>l.trim());
-
-if(lines.length===0){
-container.innerHTML='<div class="empty"><p>No trades recorded yet</p></div>';
-return;
-}
-
-const trades=lines.slice(-5).map(line=>{
-try{return JSON.parse(line);}catch(e){return null;}
-}).filter(t=>t!==null);
-
-if(trades.length===0){
-container.innerHTML='<div class="empty"><p>No trades recorded yet</p></div>';
-return;
-}
-
-let html='<table><thead><tr><th>Time</th><th>Symbol</th><th>Type</th><th>Entry</th><th>Exit</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
-trades.forEach(t=>{
-const pnl=t.result?.pnl||0;
-const isOpen=!t.exit_price;
-const pnlClass=pnl>=0?'positive':'negative';
-const badgeClass=isOpen?'badge-open':'badge-closed';
-const status=isOpen?'OPEN':'CLOSED';
-html+='<tr>';
-html+='<td>'+(t.timestamp?new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'}):'--')+'</td>';
-html+='<td><strong>'+(t.symbol||'--')+'</strong></td>';
-html+='<td>'+(t.type||'--')+'</td>';
-html+='<td>$'+(t.entry_price||'--')+'</td>';
-html+='<td>'+(t.exit_price?'$'+t.exit_price:'--')+'</td>';
-html+='<td class="'+pnlClass+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
-html+='<td><span class="badge '+badgeClass+'">'+status+'</span></td>';
-html+='</tr>';
-});
-html+='</tbody></table>';
-container.innerHTML=html;
-
-}catch(err){
-document.getElementById('trades-content').innerHTML='<div class="empty"><p>No trades recorded yet</p></div>';
-}
-}
-
-function renderFundChart(history) {
-const svg = document.getElementById('fund-chart');
-if (!svg || history.length === 0) return;
-
-const width = 800;
-const height = 250;
-const padding = { top: 20, right: 40, bottom: 40, left: 80 };
-
-// Find min/max for scaling
-const values = history.map(h => h.value);
-const minValue = Math.min(...values);
-const maxValue = Math.max(...values);
-const valueRange = maxValue - minValue || 1;
-
-// Create points for the line
-const chartWidth = width - padding.left - padding.right;
-const chartHeight = height - padding.top - padding.bottom;
-
-let pathData = '';
-let areaData = '';
-
-history.forEach((point, i) => {
-const x = padding.left + (i / (history.length - 1)) * chartWidth;
-const y = padding.top + chartHeight - ((point.value - minValue) / valueRange) * chartHeight;
-
-if (i === 0) {
-pathData = `M ${x} ${y}`;
-areaData = `M ${x} ${padding.top + chartHeight} L ${x} ${y}`;
-} else {
-pathData += ` L ${x} ${y}`;
-areaData += ` L ${x} ${y}`;
-}
-});
-
-// Close the area
-areaData += ` L ${padding.left + chartWidth} ${padding.top + chartHeight} Z`;
-
-// Generate SVG content
-const startValue = values[0];
-const endValue = values[values.length - 1];
-const isPositive = endValue >= startValue;
-const lineColor = isPositive ? '#10b981' : '#ef4444';
-
-let svgContent = '';
-
-// Grid lines
-for (let i = 0; i <= 4; i++) {
-const y = padding.top + (i / 4) * chartHeight;
-svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>`;
-}
-
-// Area fill
-svgContent += `<path d="${areaData}" fill="url(#chartGradient)" opacity="0.3"/>`;
-
-// Line
-svgContent += `<path d="${pathData}" fill="none" stroke="${lineColor}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
-
-// End point dot
-const lastX = padding.left + chartWidth;
-const lastY = padding.top + chartHeight - ((endValue - minValue) / valueRange) * chartHeight;
-svgContent += `<circle cx="${lastX}" cy="${lastY}" r="6" fill="${lineColor}"/>`;
-svgContent += `<circle cx="${lastX}" cy="${lastY}" r="10" fill="${lineColor}" opacity="0.3"/>`;
-
-// Y-axis labels
-for (let i = 0; i <= 4; i++) {
-const value = minValue + (valueRange * (1 - i / 4));
-const y = padding.top + (i / 4) * chartHeight;
-svgContent += `<text x="${padding.left - 10}" y="${y + 4}" fill="#8b8b9e" font-size="11" text-anchor="end" font-family="monospace">$${(value/1000).toFixed(0)}k</text>`;
-}
-
-// X-axis labels (dates)
-history.forEach((point, i) => {
-if (i % Math.ceil(history.length / 5) === 0 || i === history.length - 1) {
-const x = padding.left + (i / (history.length - 1)) * chartWidth;
-const date = new Date(point.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-svgContent += `<text x="${x}" y="${height - 10}" fill="#8b8b9e" font-size="10" text-anchor="middle">${date}</text>`;
-}
-});
-
-// Current value label
-const labelY = lastY > height / 2 ? lastY - 15 : lastY + 25;
-svgContent += `<rect x="${lastX - 60}" y="${labelY - 12}" width="120" height="20" rx="4" fill="#12121a" stroke="${lineColor}" stroke-width="1"/>`;
-svgContent += `<text x="${lastX}" y="${labelY + 2}" fill="${lineColor}" font-size="12" text-anchor="middle" font-weight="600" font-family="monospace">${fmt(endValue)}</text>`;
-
-svg.innerHTML = svg.innerHTML.split('</defs>')[0] + '</defs>' + svgContent;
 }
 
 function init(){
 updateDateTime();
-loadData();
-loadTrades();
 setInterval(updateDateTime,1000);
-setInterval(loadData,10000);
-setInterval(loadTrades,10000);
+loadData();
+setInterval(loadData,30000);
 }
 
-if(sessionStorage.getItem('ww-auth')==='1'){
+if(localStorage.getItem(AUTH_KEY)==='1'){
 init();
 }
 </script>
