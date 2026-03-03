@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-03-03T09:36:10.729115",
+  "timestamp": "2026-03-03T09:50:00.000000",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
   "account": {
-    "total_equity": 1005331.0,
-    "cash_available": 71072.0,
-    "buying_power": 1000000.0,
-    "starting_capital": 1000000.0
+    "total_equity": 1000644.00,
+    "cash_available": 71458.00,
+    "buying_power": 1000000.00,
+    "starting_capital": 1000000.00
   },
   "pnl": {
-    "total_pnl": 3288.0,
-    "total_pnl_pct": 0.53,
-    "ytd_pnl": 5331.0,
-    "ytd_pnl_pct": 0.53
+    "total_pnl": 644.00,
+    "total_pnl_pct": 0.06,
+    "ytd_pnl": 644.00,
+    "ytd_pnl_pct": 0.06
   },
   "market_data": {
     "MSTR": {
@@ -73,68 +73,53 @@
     }
   },
   "history": [
-    {
-      "date": "2026-01-02",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-01-15",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-02-01",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-02-15",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-03-02",
-      "value": 1005331.0
-    }
+    {"date": "2026-01-02", "value": 1000000.00},
+    {"date": "2026-01-15", "value": 1000000.00},
+    {"date": "2026-02-01", "value": 1000000.00},
+    {"date": "2026-02-15", "value": 1000000.00},
+    {"date": "2026-03-02", "value": 1000644.00}
   ],
-  "committed_capital": 928928.0,
+  "committed_capital": 928486.00,
   "positions": [
     {
       "symbol": "MSTR",
       "type": "Short Put",
-      "strike": 130.0,
+      "strike": 130.00,
       "contracts": 10,
       "entry": 2.15,
-      "current": 2.0,
-      "option_price": 2.0,
+      "current": 2.00,
+      "option_price": 2.00,
       "expiry": "Mar 7, 2026",
       "dte": 5,
-      "pnl": 150.0,
+      "pnl": 150.00,
       "pnl_pct": 7.0,
-      "delta": -0.2384,
-      "theta": -0.5226,
+      "delta": 0.24,
+      "theta": 0.52,
       "otm": 4.9,
-      "iv": 0.9147,
-      "premium": 2150.0,
-      "buyback_cost": 2000.0,
+      "iv": 91.5,
+      "premium": 2150.00,
+      "buyback_cost": 2000.00,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     },
     {
       "symbol": "BAC",
       "type": "Short Put",
-      "strike": 47.5,
+      "strike": 47.50,
       "contracts": 26,
       "entry": 0.19,
       "current": 0.21,
       "option_price": 0.21,
       "expiry": "Mar 7, 2026",
       "dte": 5,
-      "pnl": -52.0,
+      "pnl": -52.00,
       "pnl_pct": -10.5,
-      "delta": -0.1375,
-      "theta": -0.0437,
+      "delta": 0.14,
+      "theta": 0.04,
       "otm": 5.3,
-      "iv": 0.4551,
-      "premium": 494.0,
-      "buyback_cost": 546.0,
+      "iv": 45.5,
+      "premium": 494.00,
+      "buyback_cost": 546.00,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     },
@@ -143,19 +128,19 @@
       "type": "Short Put",
       "strike": 76.39,
       "contracts": 19,
-      "entry": 0.3,
+      "entry": 0.30,
       "current": 0.24,
       "option_price": 0.24,
       "expiry": "Mar 7, 2026",
       "dte": 5,
-      "pnl": 114.0,
+      "pnl": 114.00,
       "pnl_pct": 20.0,
       "delta": 0.18,
       "theta": 0.08,
       "otm": 5.0,
       "iv": 22.0,
-      "premium": 570.0,
-      "buyback_cost": 456.0,
+      "premium": 570.00,
+      "buyback_cost": 456.00,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     },
@@ -169,14 +154,14 @@
       "option_price": 0.15,
       "expiry": "Mar 7, 2026",
       "dte": 5,
-      "pnl": 124.0,
+      "pnl": 124.00,
       "pnl_pct": 21.1,
       "delta": 0.15,
       "theta": 0.06,
       "otm": 5.0,
       "iv": 20.5,
-      "premium": 589.0,
-      "buyback_cost": 465.0,
+      "premium": 589.00,
+      "buyback_cost": 465.00,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     },
@@ -190,14 +175,14 @@
       "option_price": 3.05,
       "expiry": "Mar 7, 2026",
       "dte": 5,
-      "pnl": 308.0,
+      "pnl": 308.00,
       "pnl_pct": 20.2,
-      "delta": 0.2,
+      "delta": 0.20,
       "theta": 0.85,
       "otm": 5.0,
       "iv": 25.0,
-      "premium": 1528.0,
-      "buyback_cost": 1220.0,
+      "premium": 1528.00,
+      "buyback_cost": 1220.00,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     }
