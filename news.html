@@ -186,12 +186,15 @@ document.getElementById('err').style.display='block';
 
 document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
 
+// Wait for DOM to be ready before checking auth
+document.addEventListener('DOMContentLoaded',()=>{
 if(localStorage.getItem(AUTH_KEY)==='1'){
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 loadData();
 setInterval(loadData,60000);
 }
+});
 
 async function loadData(){
 try{
