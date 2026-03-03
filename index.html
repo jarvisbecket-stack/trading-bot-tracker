@@ -27,10 +27,15 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 .container{padding:12px}
 .navinner{flex-direction:column;align-items:flex-start}
 .navlinks{width:100%;justify-content:flex-start;overflow-x:auto}
-.stats{grid-template-columns:repeat(2,1fr)!important;gap:12px}
-.stat{padding:16px}
-.statvalue{font-size:20px}
-.datetime .time{font-size:32px}
+.stats{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+.stat{padding:12px}
+.statvalue{font-size:18px}
+.statlabel{font-size:10px}
+.statsub{font-size:11px}
+.datetime{padding:16px}
+.datetime .date{font-size:18px}
+.datetime .time{font-size:28px}
+th,td{padding:8px;font-size:12px}
 }
 .datetime{text-align:center;margin-bottom:24px;padding:20px;background:#12121a;border:1px solid #2a2a3a;border-radius:12px}
 .datetime .date{font-size:24px;font-weight:bold;color:#6366f1}
@@ -39,7 +44,10 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
 .stat{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
 .statlabel{font-size:12px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.statvalue{font-size:28px;font-weight:bold;font-family:monospace}
+.statvalue{font-size:24px;font-weight:bold;font-family:monospace}
+@media (max-width:768px){
+.statvalue{font-size:18px}
+}
 .statvalue.green{color:#10b981}
 .statvalue.red{color:#ef4444}
 .statsub{font-size:13px;color:#8b8b9e;margin-top:4px}
@@ -87,7 +95,6 @@ tr:hover{background:rgba(99,102,241,.05)}
 <a href="positions.html">Positions</a>
 <a href="trades.html">Trades</a>
 <a href="news.html?v=2">News & Alerts</a>
-<a href="calculator.html">Calculator</a>
 </div>
 </div></nav>
 
@@ -229,6 +236,8 @@ const data=await response.json();
 const fund=data?.account?.total_equity;
 const pnl=data?.pnl?.total_pnl;
 const pnlPct=data?.pnl?.total_pnl_pct;
+const ytdPnl=data?.pnl?.ytd_pnl;
+const ytdPct=data?.pnl?.ytd_pnl_pct;
 const committed=data?.committed_capital;
 const bp=data?.account?.buying_power;
 
@@ -236,12 +245,24 @@ if(fund!==undefined){
 document.getElementById('fund').textContent=fmt(fund);
 document.getElementById('fund-sub').textContent='Live';
 }
-if(pnl!==undefined){
-const el=document.getElementById('pnl');
-el.textContent=(pnl>=0?'+':'')+fmt(pnl);
-el.className='statvalue '+(pnl>=0?'green':'red');
-document.getElementById('pnl-sub').textContent=fmtPct(pnlPct);
-document.getElementById('pnl-sub').className=pnl>=0?'statsub positive':'statsub negative';
+
+// P&L Today = unrealized P&L from positions (daily change)
+// P&L YTD = total since fund start
+const todayPnl = (ytdPnl !== undefined) ? ytdPnl : pnl;
+const todayPct = (ytdPct !== undefined) ? ytdPct : pnlPct;
+
+if(todayPnl!==undefined){
+document.getElementById('pnl').textContent=(todayPnl>=0?'+':'')+fmt(todayPnl);
+document.getElementById('pnl').className='statvalue '+(todayPnl>=0?'green':'red');
+document.getElementById('pnl-sub').textContent=fmtPct(todayPct);
+document.getElementById('pnl-sub').className=todayPnl>=0?'statsub positive':'statsub negative';
+}
+
+if(ytdPnl!==undefined){
+document.getElementById('ytd').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
+document.getElementById('ytd').className='statvalue '+(ytdPnl>=0?'green':'red');
+document.getElementById('ytd-sub').textContent=fmtPct(ytdPct);
+document.getElementById('ytd-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
 }
 if(committed!==undefined){
 document.getElementById('committed').textContent=fmt(committed);
@@ -270,10 +291,16 @@ if(providerEl){
 providerEl.textContent = dataSource === 'TRADIER_LIVE' ? 'Tradier Real-Time' : dataSource;
 }
 
-// Update YTD P&L
+// Update P&L - Today equals YTD for single day view
 const ytdPnl=data?.pnl?.ytd_pnl;
 const ytdPct=data?.pnl?.ytd_pnl_pct;
 if(ytdPnl!==undefined){
+// P&L Today = YTD (since we're tracking from start)
+document.getElementById('pnl').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
+document.getElementById('pnl').className='statvalue '+(ytdPnl>=0?'green':'red');
+document.getElementById('pnl-sub').textContent=fmtPct(ytdPct);
+document.getElementById('pnl-sub').className=ytdPnl>=0?'statsub positive':'statsub negative';
+// YTD same value
 document.getElementById('ytd').textContent=(ytdPnl>=0?'+':'')+fmt(ytdPnl);
 document.getElementById('ytd').className='statvalue '+(ytdPnl>=0?'green':'red');
 document.getElementById('ytd-sub').textContent=fmtPct(ytdPct);
