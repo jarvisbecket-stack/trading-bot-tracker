@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-03-03T09:56:10.337593",
+  "timestamp": "2026-03-03T13:08:06.019901",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
-  "disclaimer": "REAL MARKET DATA ONLY - CORRECTED STRIKES",
+  "disclaimer": "REAL MARKET DATA ONLY - FAKE STRIKE TRADES UNDONE",
   "account": {
-    "total_equity": 1000531.0,
-    "cash_available": 71969.0,
+    "total_equity": 1000098.0,
+    "cash_available": 746500.0,
     "buying_power": 1000000.0,
     "starting_capital": 1000000.0
   },
   "pnl": {
-    "total_pnl": 3985.0,
-    "total_pnl_pct": 0.05,
-    "ytd_pnl": 531.0,
-    "ytd_pnl_pct": 0.05
+    "total_pnl": 2742.0,
+    "total_pnl_pct": 0.01,
+    "ytd_pnl": 98.0,
+    "ytd_pnl_pct": 0.01
   },
   "market_data": {
     "MSTR": {
@@ -25,39 +25,6 @@
       "change_percent": 5.56,
       "volume": 15188564,
       "timestamp": "2026-03-02T12:27:18",
-      "source": "tradier"
-    },
-    "COST": {
-      "symbol": "COST",
-      "last": 1006.745,
-      "bid": 1006.44,
-      "ask": 1007.05,
-      "change": -4.05,
-      "change_percent": -0.4,
-      "volume": 798713,
-      "timestamp": "2026-03-02T12:27:19",
-      "source": "tradier"
-    },
-    "KO": {
-      "symbol": "KO",
-      "last": 80.41,
-      "bid": 80.41,
-      "ask": 80.42,
-      "change": -1.15,
-      "change_percent": -1.41,
-      "volume": 6987606,
-      "timestamp": "2026-03-02T12:27:20",
-      "source": "tradier"
-    },
-    "VZ": {
-      "symbol": "VZ",
-      "last": 50.015,
-      "bid": 50.01,
-      "ask": 50.02,
-      "change": -0.13,
-      "change_percent": -0.25,
-      "volume": 11903310,
-      "timestamp": "2026-03-02T12:27:21",
       "source": "tradier"
     },
     "BAC": {
@@ -91,10 +58,10 @@
     },
     {
       "date": "2026-03-02",
-      "value": 1000531.0
+      "value": 1000098.0
     }
   ],
-  "committed_capital": 928531.0,
+  "committed_capital": 253500.0,
   "positions": [
     {
       "symbol": "MSTR",
@@ -137,75 +104,7 @@
       "buyback_cost": 546.0,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
-    },
-    {
-      "symbol": "KO",
-      "type": "Short Put",
-      "strike": 76.0,
-      "contracts": 19,
-      "entry": 0.3,
-      "current": 0.02,
-      "option_price": 0.02,
-      "expiry": "Mar 7, 2026",
-      "dte": 5,
-      "pnl": 532.0,
-      "pnl_pct": 93.3,
-      "delta": -0.036,
-      "theta": -0.0348,
-      "otm": 5.5,
-      "iv": 0.2887,
-      "premium": 570.0,
-      "buyback_cost": 38.0,
-      "cash_committed": 144400.0,
-      "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "note": "Strike corrected from 76.39 to 76.00 (standard $1 increment)"
-    },
-    {
-      "symbol": "VZ",
-      "type": "Short Put",
-      "strike": 47.5,
-      "contracts": 31,
-      "entry": 0.19,
-      "current": 0.06,
-      "option_price": 0.06,
-      "expiry": "Mar 7, 2026",
-      "dte": 5,
-      "pnl": 403.0,
-      "pnl_pct": 68.4,
-      "delta": -0.049,
-      "theta": -0.0233,
-      "otm": 5.0,
-      "iv": 0.4539,
-      "premium": 589.0,
-      "buyback_cost": 186.0,
-      "cash_committed": 147250.0,
-      "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "note": "Strike corrected from 47.51 to 47.50 (standard $0.50 increment)"
-    },
-    {
-      "symbol": "COST",
-      "type": "Short Put",
-      "strike": 955.0,
-      "contracts": 4,
-      "entry": 3.82,
-      "current": 3.05,
-      "option_price": 3.05,
-      "expiry": "Mar 7, 2026",
-      "dte": 5,
-      "pnl": 308.0,
-      "pnl_pct": 20.2,
-      "delta": -0.1489,
-      "theta": -1.4814,
-      "otm": 5.1,
-      "iv": 0.4446,
-      "premium": 1528.0,
-      "buyback_cost": 1220.0,
-      "cash_committed": 382000.0,
-      "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "note": "Strike corrected from 956.41 to 955.00 (standard $5 increment)"
     }
-  ]
+  ],
+  "note": "Trades with fake strikes (KO $76.39, VZ $47.51, COST $956.41) have been undone per Data Integrity Covenant. Only MSTR $130 and BAC $47.50 remain - these were always real standard strikes."
 }
