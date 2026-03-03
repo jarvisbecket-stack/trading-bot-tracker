@@ -4,16 +4,16 @@
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
   "account": {
-    "total_equity": 1000098.0,
-    "cash_available": 746500.0,
+    "total_equity": 1002644.0,
+    "cash_available": 749144.0,
     "buying_power": 1000000.0,
     "starting_capital": 1000000.0
   },
   "pnl": {
-    "total_pnl": 2742.0,
-    "total_pnl_pct": 0.01,
-    "ytd_pnl": 98.0,
-    "ytd_pnl_pct": 0.01
+    "total_pnl": 2644.0,
+    "total_pnl_pct": 0.26,
+    "ytd_pnl": 2644.0,
+    "ytd_pnl_pct": 0.26
   },
   "market_data": {
     "MSTR": {
@@ -58,7 +58,7 @@
     },
     {
       "date": "2026-03-02",
-      "value": 1000098.0
+      "value": 1002644.0
     }
   ],
   "committed_capital": 253500.0,
@@ -81,6 +81,7 @@
       "iv": 0.9147,
       "premium": 2150.0,
       "buyback_cost": 2000.0,
+      "net_value": 150.0,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     },
@@ -102,6 +103,7 @@
       "iv": 0.4551,
       "premium": 494.0,
       "buyback_cost": 546.0,
+      "net_value": -52.0,
       "data_source": "TRADIER_LIVE",
       "trade_type": "REAL_PAPER_TRADE"
     }
