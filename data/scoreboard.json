@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-03T10:30:52.762750",
+  "timestamp": "2026-03-03T12:50:00Z",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
   "account": {
     "total_equity": 1002644.0,
-    "cash_available": 530644.0,
+    "cash_available": 749144.0,
     "buying_power": 1000000.0,
     "starting_capital": 1000000.0
   },
@@ -18,19 +18,7 @@
     "commission_rate": 0.35,
     "commission_per_contract": 0.35,
     "commission_round_trip": 0.7,
-    "pnl_after_commission": 2618.8,
-    "commission_breakdown": {
-      "MSTR": {
-        "contracts": 10,
-        "commission": 7.0,
-        "calculation": "10 contracts \u00d7 $0.70 round-trip"
-      },
-      "BAC": {
-        "contracts": 26,
-        "commission": 18.2,
-        "calculation": "26 contracts \u00d7 $0.70 round-trip"
-      }
-    }
+    "pnl_after_commission": 2618.8
   },
   "market_data": {
     "MSTR": {
@@ -57,28 +45,13 @@
     }
   },
   "history": [
-    {
-      "date": "2026-01-02",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-01-15",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-02-01",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-02-15",
-      "value": 1000000.0
-    },
-    {
-      "date": "2026-03-02",
-      "value": 1002644.0
-    }
+    {"date": "2026-01-02", "value": 1000000.0},
+    {"date": "2026-01-15", "value": 1000000.0},
+    {"date": "2026-02-01", "value": 1000000.0},
+    {"date": "2026-02-15", "value": 1000000.0},
+    {"date": "2026-03-02", "value": 1002644.0}
   ],
-  "committed_capital": 472000.0,
+  "committed_capital": 253500.0,
   "positions": [
     {
       "symbol": "MSTR",
@@ -89,7 +62,7 @@
       "current": 2.0,
       "option_price": 2.0,
       "expiry": "Mar 7, 2026",
-      "dte": 5,
+      "dte": 4,
       "pnl": 150.0,
       "pnl_pct": 7.0,
       "commission": 7.0,
@@ -102,13 +75,7 @@
       "buyback_cost": 2000.0,
       "net_value": 150.0,
       "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "net_unrealized_pnl": 351.33,
-      "gross_pnl": 358.33,
-      "total_commission": 7.0,
-      "current_stock_price": 134.97,
-      "is_itm": false,
-      "break_even": 127.86
+      "trade_type": "REAL_PAPER_TRADE"
     },
     {
       "symbol": "BAC",
@@ -119,7 +86,7 @@
       "current": 0.21,
       "option_price": 0.21,
       "expiry": "Mar 7, 2026",
-      "dte": 5,
+      "dte": 4,
       "pnl": -52.0,
       "pnl_pct": -10.5,
       "commission": 18.2,
@@ -132,95 +99,7 @@
       "buyback_cost": 546.0,
       "net_value": -52.0,
       "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "net_unrealized_pnl": 64.13,
-      "gross_pnl": 82.33,
-      "total_commission": 18.2,
-      "current_stock_price": 49.35,
-      "is_itm": false,
-      "break_even": 47.32
-    },
-    {
-      "symbol": "SPY",
-      "type": "Short Put",
-      "strike": 570.0,
-      "contracts": 3,
-      "entry": 1.20,
-      "current": 1.20,
-      "option_price": 1.20,
-      "expiry": "Mar 14, 2026",
-      "dte": 11,
-      "pnl": 0.0,
-      "pnl_pct": 0.0,
-      "commission": 2.1,
-      "pnl_after_commission": -2.1,
-      "delta": -0.15,
-      "theta": -0.08,
-      "otm": 1.2,
-      "iv": 0.18,
-      "premium": 360.0,
-      "buyback_cost": 360.0,
-      "net_value": 0.0,
-      "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "entry_time": "2026-03-03T12:45:00Z"
-    },
-    {
-      "symbol": "QQQ",
-      "type": "Short Put",
-      "strike": 475.0,
-      "contracts": 1,
-      "entry": 1.80,
-      "current": 1.80,
-      "option_price": 1.80,
-      "expiry": "Mar 14, 2026",
-      "dte": 11,
-      "pnl": 0.0,
-      "pnl_pct": 0.0,
-      "commission": 0.7,
-      "pnl_after_commission": -0.7,
-      "delta": -0.15,
-      "theta": -0.06,
-      "otm": 2.1,
-      "iv": 0.22,
-      "premium": 180.0,
-      "buyback_cost": 180.0,
-      "net_value": 0.0,
-      "data_source": "TRADIER_LIVE",
-      "trade_type": "REAL_PAPER_TRADE",
-      "entry_time": "2026-03-03T12:45:00Z"
+      "trade_type": "REAL_PAPER_TRADE"
     }
-  ],
-  "commission_adjusted_pnl": {
-    "total_net_unrealized_pnl": 415.46,
-    "total_gross_pnl": 440.66,
-    "total_commissions": 28.0,
-    "commission_rate_per_contract": 0.35,
-    "last_updated": "2026-03-03T12:45:00Z"
-  },
-  "stop_loss_monitoring": {
-    "enabled": true,
-    "check_interval_seconds": 120,
-    "telegram_alerts": true,
-    "telegram_chat_id": "7954184484",
-    "alert_thresholds": {
-      "MSTR": {
-        "itm_warning": 132.0,
-        "stop_loss_trigger": null
-      },
-      "BAC": {
-        "itm_warning": 48.0,
-        "stop_loss_trigger": null
-      },
-      "SPY": {
-        "itm_warning": 573.0,
-        "stop_loss_trigger": null
-      },
-      "QQQ": {
-        "itm_warning": 478.0,
-        "stop_loss_trigger": null
-      }
-    },
-    "last_check": null
-  }
+  ]
 }
