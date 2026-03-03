@@ -5,7 +5,7 @@
   "disclaimer": "REAL MARKET DATA ONLY",
   "account": {
     "total_equity": 1002644.0,
-    "cash_available": 749144.0,
+    "cash_available": 530644.0,
     "buying_power": 1000000.0,
     "starting_capital": 1000000.0
   },
@@ -78,7 +78,7 @@
       "value": 1002644.0
     }
   ],
-  "committed_capital": 253500.0,
+  "committed_capital": 472000.0,
   "positions": [
     {
       "symbol": "MSTR",
@@ -139,14 +139,64 @@
       "current_stock_price": 49.35,
       "is_itm": false,
       "break_even": 47.32
+    },
+    {
+      "symbol": "SPY",
+      "type": "Short Put",
+      "strike": 570.0,
+      "contracts": 3,
+      "entry": 1.20,
+      "current": 1.20,
+      "option_price": 1.20,
+      "expiry": "Mar 14, 2026",
+      "dte": 11,
+      "pnl": 0.0,
+      "pnl_pct": 0.0,
+      "commission": 2.1,
+      "pnl_after_commission": -2.1,
+      "delta": -0.15,
+      "theta": -0.08,
+      "otm": 1.2,
+      "iv": 0.18,
+      "premium": 360.0,
+      "buyback_cost": 360.0,
+      "net_value": 0.0,
+      "data_source": "TRADIER_LIVE",
+      "trade_type": "REAL_PAPER_TRADE",
+      "entry_time": "2026-03-03T12:45:00Z"
+    },
+    {
+      "symbol": "QQQ",
+      "type": "Short Put",
+      "strike": 475.0,
+      "contracts": 1,
+      "entry": 1.80,
+      "current": 1.80,
+      "option_price": 1.80,
+      "expiry": "Mar 14, 2026",
+      "dte": 11,
+      "pnl": 0.0,
+      "pnl_pct": 0.0,
+      "commission": 0.7,
+      "pnl_after_commission": -0.7,
+      "delta": -0.15,
+      "theta": -0.06,
+      "otm": 2.1,
+      "iv": 0.22,
+      "premium": 180.0,
+      "buyback_cost": 180.0,
+      "net_value": 0.0,
+      "data_source": "TRADIER_LIVE",
+      "trade_type": "REAL_PAPER_TRADE",
+      "entry_time": "2026-03-03T12:45:00Z"
     }
   ],
   "commission_adjusted_pnl": {
     "total_net_unrealized_pnl": 415.46,
     "total_gross_pnl": 440.66,
-    "total_commissions": 25.2,
+    "total_commissions": 28.0,
     "commission_rate_per_contract": 0.35,
-    "last_updated": "2026-03-03T10:30:52.762766"
+    "last_updated": "2026-03-03T12:45:00Z"
   },
   "stop_loss_monitoring": {
     "enabled": true,
@@ -160,6 +210,14 @@
       },
       "BAC": {
         "itm_warning": 48.0,
+        "stop_loss_trigger": null
+      },
+      "SPY": {
+        "itm_warning": 573.0,
+        "stop_loss_trigger": null
+      },
+      "QQQ": {
+        "itm_warning": 478.0,
         "stop_loss_trigger": null
       }
     },
