@@ -31,8 +31,10 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 .stat{padding:16px}
 .statvalue{font-size:24px}
 .filters{flex-wrap:wrap}
-table{font-size:12px}
-th,td{padding:8px}
+table{font-size:11px}
+th,td{padding:6px 4px}
+.section{overflow-x:auto}
+table{min-width:600px}
 }
 .header{margin-bottom:24px}
 .header h1{font-size:28px;margin-bottom:4px}
@@ -211,17 +213,9 @@ return;
 let html='<table><thead><tr><th>Time (CST)</th><th>Symbol</th><th>Type</th><th>Contracts</th><th>Strike</th><th>Entry</th><th>Premium</th><th>Cash Committed</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
 
 filtered.slice().reverse().forEach(t=>{
-// For open positions, calculate unrealized P&L from position data
+// For open positions, use result.pnl directly from data
 const isOpen=!t.exit_price;
-let pnl;
-if (isOpen) {
-  // Calculate from premium and current buyback cost if available
-  const premium = t.premium || 0;
-  const buyback = t.buyback_cost || premium;
-  pnl = premium - buyback;
-} else {
-  pnl = t.result?.pnl || 0;
-}
+const pnl = t.result?.pnl || 0;
 const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
 const cashCommitted=(t.strike||0)*(t.contracts||0)*100;
 html+='<tr>';
