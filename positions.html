@@ -2,62 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>White Wolf Clan | Positions</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden;box-sizing:border-box}
+
 #gate{position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999}
-.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:40px;width:90%;max-width:380px;text-align:center}
-.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
-.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
-.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;font-weight:500;cursor:pointer}
-.gatebox .err{color:#ef4444;margin-top:12px;font-size:14px;display:none}
-.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
-#app{display:none}
-nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
-.navinner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:bold;font-size:18px}
-.brandicon{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.navlinks{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px;white-space:nowrap}
+.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:32px 24px;width:90%;max-width:340px;text-align:center}
+.gatelogo{width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;font-weight:bold}
+.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:15px;text-align:center;margin-bottom:12px}
+.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:600;cursor:pointer}
+.gatebox .err{color:#ef4444;margin-top:12px;font-size:13px;display:none}
+
+#app{display:none;max-width:100vw;overflow-x:hidden;box-sizing:border-box}
+
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;position:sticky;top:0;z-index:100}
+.navinner{max-width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+.brandicon{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
 .navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
-.container{max-width:1200px;margin:0 auto;padding:16px}
-@media (max-width:768px){
-.container{padding:12px}
-.navinner{flex-direction:column;align-items:flex-start}
-.navlinks{width:100%;justify-content:flex-start;overflow-x:auto}
-.posheader{flex-direction:column;align-items:flex-start;gap:12px}
-.poscard{padding:16px}
-.metrics{grid-template-columns:repeat(3,1fr)!important;gap:8px}
-.metric .value{font-size:14px}
-}
-.header{margin-bottom:24px}
-.header h1{font-size:28px;margin-bottom:4px}
-.header p{color:#8b8b9e;font-size:14px}
-.section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
-.poscard{background:#1a1a25;border:1px solid #2a2a3a;border-radius:12px;padding:20px;margin-bottom:16px}
-.posheader{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
-.possymbol{display:flex;align-items:center;gap:12px}
-.symbadge{background:#6366f1;padding:6px 14px;border-radius:8px;font-weight:bold;font-size:14px}
-.posdetails{font-size:14px;color:#8b8b9e;margin-top:4px}
-.pospnl{text-align:right}
-.pospnl .main{font-size:24px;font-weight:bold;font-family:monospace}
-.pospnl .sub{font-size:13px;color:#8b8b9e}
-.green{color:#10b981}
-.red{color:#ef4444}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:12px;margin:16px 0;padding:16px 0;border-top:1px solid #2a2a3a;border-bottom:1px solid #2a2a3a}
-.metric{text-align:center}
-.metric .label{font-size:11px;color:#8b8b9e;text-transform:uppercase}
-.metric .value{font-size:16px;font-weight:600;margin-top:4px;font-family:monospace}
-.actions{display:flex;gap:12px}
-.btn{padding:10px 20px;border-radius:8px;border:none;font-size:14px;font-weight:500;cursor:pointer;flex:1}
+
+.container{padding:16px;padding-bottom:80px;max-width:100vw}
+
+/* Page Header */
+.page-header{margin-bottom:20px}
+.page-title{font-size:24px;font-weight:700;margin-bottom:4px}
+.page-subtitle{font-size:13px;color:#8b8b9e}
+
+/* Position Card */
+.position-card{background:#12121a;border:1px solid #2a2a3a;border-radius:20px;padding:20px;margin-bottom:16px}
+.position-card:last-child{margin-bottom:0}
+
+/* Card Header */
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.card-symbol{display:flex;align-items:center;gap:12px}
+.card-badge{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:8px 16px;border-radius:10px;font-weight:700;font-size:16px}
+.card-meta{text-align:right}
+.card-meta-label{font-size:10px;color:#64748b;text-transform:uppercase;margin-bottom:2px}
+.card-meta-value{font-size:13px;color:#8b8b9e}
+
+/* Premium Display */
+.premium-section{text-align:center;padding:20px 0;border-top:1px solid #2a2a3a;border-bottom:1px solid #2a2a3a;margin-bottom:20px}
+.premium-label{font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.premium-value{font-size:42px;font-weight:800;color:#10b981;font-family:monospace;letter-spacing:-2px}
+.premium-sub{font-size:13px;color:#64748b;margin-top:8px}
+
+/* Stats Row */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-item{text-align:center}
+.stat-item-label{font-size:10px;color:#64748b;text-transform:uppercase;margin-bottom:4px}
+.stat-item-value{font-size:16px;font-weight:700;font-family:monospace}
+.stat-item-value.green{color:#10b981}
+.stat-item-value.red{color:#ef4444}
+
+/* P&L Bar */
+.pnl-bar{display:flex;justify-content:space-between;align-items:center;background:#0a0a0f;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.pnl-bar-label{font-size:14px;font-weight:600}
+.pnl-bar-value{font-size:24px;font-weight:800;font-family:monospace}
+.pnl-bar-value.positive{color:#10b981}
+.pnl-bar-value.negative{color:#ef4444}
+
+/* Greeks Grid */
+.greeks-title{font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.greeks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.greek-item{background:#0a0a0f;border-radius:10px;padding:14px}
+.greek-label{font-size:11px;color:#64748b;text-transform:uppercase;margin-bottom:4px}
+.greek-value{font-size:18px;font-weight:700;font-family:monospace}
+.greek-value.positive{color:#10b981}
+.greek-value.negative{color:#ef4444}
+
+/* Action Buttons */
+.action-buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+.btn{padding:14px 20px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer}
 .btn-close{background:#10b981;color:#0a0a0f}
 .btn-hold{background:#2a2a3a;color:#e8e8f0}
-.empty{text-align:center;padding:60px 20px;color:#8b8b9e}
-#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 24px;font-size:12px;display:flex;justify-content:space-between}
-.statusgood{color:#10b981}
+
+/* Empty State */
+.empty{text-align:center;padding:60px 20px;color:#64748b;font-size:14px}
+.empty-icon{font-size:48px;margin-bottom:16px}
+
+/* Status Bar */
+#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
+.status-live{color:#10b981;display:flex;align-items:center;gap:6px}
+.status-live::before{content:'';width:6px;height:6px;background:#10b981;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
@@ -65,8 +98,8 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 <div class="gatebox">
 <div class="gatelogo">WW</div>
 <h2>White Wolf Clan</h2>
-<p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Positions</p>
-<input type="password" id="pwd" placeholder="Enter password">
+<p style="color:#8b8b9e;font-size:13px;margin:8px 0 20px">Positions</p>
+<input type="password" id="pwd" placeholder="Enter password" autocomplete="off">
 <button onclick="auth()">Access</button>
 <p class="err" id="err">Invalid password</p>
 </div>
@@ -74,182 +107,133 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 
 <div id="app">
 <nav><div class="navinner">
-<div class="brand"><div class="brandicon">WW</div>White Wolf Clan</div>
+<div class="brand"><div class="brandicon">WW</div>White Wolf</div>
 <div class="navlinks">
 <a href="index.html">Dashboard</a>
 <a href="positions.html" class="active">Positions</a>
 <a href="trades.html">Trades</a>
-<a href="news.html?v=2">News & Alerts</a>
+<a href="news.html">Intel</a>
 </div>
 </div></nav>
 
 <div class="container">
-<div class="header"><h1>Open Positions</h1><p>Active trades • Manage or close</p></div>
+<div class="page-header">
+<div class="page-title">Open Positions</div>
+<div class="page-subtitle">Active trades & Greeks</div>
+</div>
 
 <div id="positions-list">
-<div class="section"><div class="empty">Loading positions...</div></div>
+<div class="empty">
+<div class="empty-icon">📊</div>
+Loading positions...
+</div>
 </div>
 </div>
 
 <div id="statusbar">
 <span id="last-update">--</span>
-<span id="conn-status" class="statusgood">● Live</span>
+<span class="status-live">Live</span>
 </div>
 </div>
 
 <script>
 const PWD='jarvisb';
+const AUTH_KEY='ww-auth-v2';
+
 function auth(){
 const input=document.getElementById('pwd').value;
 if(input===PWD){
-localStorage.setItem('ww-auth-v2','1');
+localStorage.setItem(AUTH_KEY,'1');
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 load();
-}else{document.getElementById('err').style.display='block';}
+setInterval(load,10000);
+}else{
+document.getElementById('err').style.display='block';
 }
-document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
-if(localStorage.getItem('ww-auth-v2')==='1'){
-document.getElementById('gate').style.display='none';
-document.getElementById('app').style.display='block';
 }
 
-function fmt(n){if(n==null||isNaN(n))return'$--';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
+
+if(localStorage.getItem(AUTH_KEY)==='1'){
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+load();
+setInterval(load,10000);
+}
+
+function fmt(n){if(n==null||isNaN(n))return'$0';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function fmtDec(n){if(n==null||isNaN(n))return'$0.00';return '$'+n.toFixed(2);}
 
 async function load(){
 try{
-const cacheBuster='?_='+Date.now();
-const r=await fetch('data/scoreboard.json?v=4'+cacheBuster,{cache:'no-store'});
+const r=await fetch('data/scoreboard.json?v=5?_='+Date.now(),{cache:'no-store'});
 if(!r.ok)throw new Error('HTTP '+r.status);
 const d=await r.json();
 const positions=d?.positions||[];
 const container=document.getElementById('positions-list');
 
 if(positions.length===0){
-container.innerHTML='<div class="section"><div class="empty"><p>No open positions</p><p style="font-size:13px;margin-top:8px">Market hours: 8:30 AM - 3:30 PM CST</p></div></div>';
+container.innerHTML='<div class="empty"><div class="empty-icon">📭</div>No open positions<br><span style="font-size:12px">Check back during market hours</span></div>';
 }else{
 let html='';
 positions.forEach(p=>{
 const pnl=p.pnl||0;
-const premium = p.premium || 0;
-const contracts = p.contracts || 1;
+const pnlClass=pnl>=0?'positive':'negative';
+html+='<div class="position-card">';
 
-// Calculate correct option price from premium (per contract) - this is ENTRY price
-const entryPrice = p.entry || (premium > 0 && contracts > 0 ? premium / contracts / 100 : 0);
-// Get CURRENT option price from API
-const currentOptionPrice = p.option_price || entryPrice;
-
-html+='<div class="poscard">';
-
-// Header with Symbol and Premium Badge
-html+='<div class="posheader">';
-html+='<div class="possymbol">';
-html+='<span class="symbadge">'+(p.symbol||'--')+'</span>';
-html+='<div class="posdetails"><div>'+(p.type||'Short Put')+' $'+(p.strike||'--')+'</div><div>'+contracts+' contracts • Exp '+(p.expiry||'--')+'</div></div>';
+// Header
+html+='<div class="card-header">';
+html+='<div class="card-symbol"><span class="card-badge">'+p.symbol+'</span></div>';
+html+='<div class="card-meta"><div class="card-meta-label">Expires</div><div class="card-meta-value">'+p.expiry+'</div></div>';
 html+='</div>';
 
-// Premium collected badge in header
-html+='<div style="text-align:right;">';
-html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;margin-bottom:4px;">Premium Collected</div>';
-html+='<div style="font-size:24px;font-weight:bold;color:#10b981;font-family:monospace;">+'+fmt(premium)+'</div>';
-const calcPnLPct = entryPrice > 0 && currentOptionPrice < entryPrice ? ((entryPrice - currentOptionPrice) / entryPrice * 100) : 0;
-html+='<div style="font-size:12px;color:'+(calcPnLPct>=0?'#10b981':'#ef4444')+';">'+(calcPnLPct>=0?'+':'')+calcPnLPct.toFixed(1)+'% unrealized P&L</div>';
+// Premium
+html+='<div class="premium-section">';
+html+='<div class="premium-label">Premium Collected</div>';
+html+='<div class="premium-value">'+fmt(p.premium||0)+'</div>';
+html+='<div class="premium-sub">'+p.contracts+' contracts @ $'+p.strike+' strike</div>';
 html+='</div>';
 
+// Stats Row
+html+='<div class="stats-row">';
+html+='<div class="stat-item"><div class="stat-item-label">Entry</div><div class="stat-item-value">$'+p.entry+'</div></div>';
+html+='<div class="stat-item"><div class="stat-item-label">Current</div><div class="stat-item-value">$'+p.option_price+'</div></div>';
+html+='<div class="stat-item"><div class="stat-item-label">DTE</div><div class="stat-item-value">'+p.dte+'</div></div>';
 html+='</div>';
 
-// Buy-to-Close Analysis Box - USE CURRENT OPTION PRICE
-const buybackCost = currentOptionPrice * contracts * 100;
-const netProfit = premium - buybackCost;
-const profitPct = premium > 0 ? (netProfit / premium) * 100 : 0;
-const target50 = premium * 0.50;
-const cashCommitted = (p.strike || 0) * contracts * 100;
-
-html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin:16px 0;">';
-html+='<div style="font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Buy-to-Close Analysis</div>';
-html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cost to Close ('+currentOptionPrice.toFixed(2)+' × '+contracts+' × 100)</span><span style="color:#ef4444;font-weight:600;">-'+fmt(buybackCost)+'</span></div>';
-html+='<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#64748b;font-size:14px;">Cash Committed</span><span style="color:#f59e0b;font-weight:600;">'+fmt(cashCommitted)+'</span></div>';
-html+='<div style="border-top:1px solid #2a2a3a;margin:8px 0;padding-top:8px;display:flex;justify-content:space-between;"><span style="color:#e8e8f0;font-size:14px;font-weight:600;">Net if Closed Now</span><span style="color:'+(netProfit>=0?'#10b981':'#ef4444')+';font-weight:600;">'+(netProfit>=0?'+':'')+fmt(netProfit)+'</span></div>';
-html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;"><span style="color:#64748b;">Profit: '+profitPct.toFixed(1)+'%</span><span style="color:#6366f1;">50% Target: '+fmt(target50)+'</span></div>';
+// P&L Bar
+html+='<div class="pnl-bar">';
+html+='<span class="pnl-bar-label">Unrealized P&L</span>';
+html+='<span class="pnl-bar-value '+pnlClass+'">'+(pnl>=0?'+':'')+fmtDec(pnl)+'</span>';
 html+='</div>';
 
-html+='<div class="metrics">';
-html+='<div class="metric"><div class="label">Strike</div><div class="value">$'+(p.strike||'--')+'</div></div>';
-html+='<div class="metric"><div class="label">Entry Price</div><div class="value">$'+entryPrice.toFixed(2)+'</div></div>';
-html+='<div class="metric"><div class="label">Current Price</div><div class="value" style="color:'+(currentOptionPrice<entryPrice?'#10b981':'#ef4444')+';">$'+currentOptionPrice.toFixed(2)+'</div></div>';
-const deltaVal = p.delta !== undefined ? p.delta : 0.25;
-const deltaColor = deltaVal > 0 ? '#10b981' : (deltaVal < 0 ? '#ef4444' : '#6366f1');
-html+='<div class="metric"><div class="label">Delta</div><div class="value" style="color:'+deltaColor+';">'+(deltaVal>0?'+':'')+deltaVal.toFixed(2)+'</div></div>';
-html+='<div class="metric"><div class="label">Theta</div><div class="value" style="color:#10b981;">+'+(p.theta||0).toFixed(2)+'</div></div>';
-html+='<div class="metric"><div class="label">OTM%</div><div class="value">'+(p.otm||'--')+'%</div></div>';
-html+='<div class="metric"><div class="label">DTE</div><div class="value">'+(p.dte||'--')+'</div></div>';
+// Greeks
+html+='<div class="greeks-title">Greeks</div>';
+html+='<div class="greeks-grid">';
+html+='<div class="greek-item"><div class="greek-label">Delta</div><div class="greek-value '+((p.delta||0)<0?'negative':'positive')+'">'+(p.delta||0).toFixed(2)+'</div></div>';
+html+='<div class="greek-item"><div class="greek-label">Theta</div><div class="greek-value positive">+'+(p.theta||0).toFixed(2)+'</div></div>';
+html+='<div class="greek-item"><div class="greek-label">OTM%</div><div class="greek-value">'+(p.otm||0)+'%</div></div>';
+html+='<div class="greek-item"><div class="greek-label">IV</div><div class="greek-value">'+((p.iv||0)*100).toFixed(0)+'%</div></div>';
 html+='</div>';
+
+// Actions
+html+='<div class="action-buttons">';
+html+='<button class="btn btn-close" onclick="alert('Close position: '+''+p.symbol+'')">Close Position</button>';
+html+='<button class="btn btn-hold">Hold</button>';
+html+='</div>';
+
 html+='</div>';
 });
 container.innerHTML=html;
-
-// Load recently closed positions
-loadClosedTrades();
 }
 
-async function loadClosedTrades(){
-try{
-const r=await fetch('data/trade_chronicle.jsonl?_='+Date.now(),{cache:'no-store'});
-if(!r.ok)return;
-const text=await r.text();
-const lines=text.trim().split('\n').filter(l=>l.trim());
-const trades=lines.map(line=>{try{return JSON.parse(line);}catch(e){return null;}}).filter(t=>t!==null);
-
-// Find closed trades (have exit_time or exit_reason)
-const closed=trades.filter(t=>t.exit_time||t.result?.exit_reason).sort((a,b)=>new Date(b.exit_time||b.timestamp)-new Date(a.exit_time||a.timestamp)).slice(0,3);
-
-if(closed.length>0){
-let html='<div class="section" style="margin-top:24px;">';
-html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">';
-html+='<h2 style="font-size:18px;font-weight:600;">Recently Closed</h2>';
-html+='<span style="font-size:12px;color:#64748b;">Last 3 trades</span>';
-html+='</div>';
-
-closed.forEach(t=>{
-const pnl=t.result?.pnl||0;
-const pnlPct=t.result?.pnl_pct||0;
-const reason=t.result?.exit_reason||'closed';
-const date=new Date(t.exit_time||t.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-const holding=t.result?.holding_minutes||0;
-const holdingHrs=Math.floor(holding/60);
-const holdingMin=holding%60;
-
-html+='<div style="background:#0f0f16;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin-bottom:12px;">';
-html+='<div style="display:flex;justify-content:space-between;align-items:center;">';
-html+='<div>';
-html+='<span style="font-weight:600;font-size:16px;">'+t.symbol+'</span>';
-html+='<span style="color:#64748b;font-size:13px;margin-left:8px;">'+t.type+' $'+t.strike+'</span>';
-html+='</div>';
-html+='<div style="text-align:right;">';
-html+='<div style="color:'+(pnl>=0?'#10b981':'#ef4444')+';font-weight:600;font-size:18px;font-family:monospace;">'+(pnl>=0?'+':'')+fmt(pnl)+'</div>';
-html+='<div style="color:'+(pnlPct>=0?'#10b981':'#ef4444')+';font-size:12px;">'+pnlPct.toFixed(1)+'% realized</div>';
-html+='</div>';
-html+='</div>';
-html+='<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#64748b;">';
-html+='<span>'+date+' • '+reason+'</span>';
-html+='<span>Held: '+(holdingHrs>0?holdingHrs+'h ':'')+holdingMin+'m</span>';
-html+='</div>';
-html+='</div>';
-});
-
-html+='</div>';
-document.getElementById('positions-list').insertAdjacentHTML('beforeend',html);
-}
-}catch(e){console.error('Closed trades load error:',e);}
-}
-
-document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
+document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
 }catch(e){
-document.getElementById('positions-list').innerHTML='<div class="section"><div class="empty">Error loading positions: '+e.message+'</div></div>';
+console.error('Load error:',e);
+document.getElementById('positions-list').innerHTML='<div class="empty">Error loading positions</div>';
 }
 }
-
-if(localStorage.getItem('ww-auth-v2')==='1'){load();setInterval(load,10000);}
 </script>
 </body>
 </html>

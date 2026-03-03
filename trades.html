@@ -2,66 +2,86 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>White Wolf Clan | Trade History</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#0a0a0f;color:#e8e8f0;min-height:100vh}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden;box-sizing:border-box}
+
 #gate{position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999}
-.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:40px;width:90%;max-width:380px;text-align:center}
-.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
-.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:16px;text-align:center;margin:16px 0}
-.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:16px;font-weight:500;cursor:pointer}
-.gatebox .err{color:#ef4444;margin-top:12px;font-size:14px;display:none}
-.gatelogo{width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;font-weight:bold}
-#app{display:none}
-nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
-.navinner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:bold;font-size:18px}
-.brandicon{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.navlinks{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px;white-space:nowrap}
+.gatebox{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:32px 24px;width:90%;max-width:340px;text-align:center}
+.gatelogo{width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;font-weight:bold}
+.gatebox input{width:100%;background:#1a1a25;border:1px solid #2a2a3a;border-radius:8px;padding:12px;color:#e8e8f0;font-size:15px;text-align:center;margin-bottom:12px}
+.gatebox button{width:100%;background:#6366f1;color:white;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:600;cursor:pointer}
+.gatebox .err{color:#ef4444;margin-top:12px;font-size:13px;display:none}
+
+#app{display:none;max-width:100vw;overflow-x:hidden;box-sizing:border-box}
+
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;position:sticky;top:0;z-index:100}
+.navinner{max-width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+.brandicon{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
 .navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
-.container{max-width:1200px;margin:0 auto;padding:16px}
-@media (max-width:768px){
-.container{padding:12px}
-.navinner{flex-direction:column;align-items:flex-start}
-.navlinks{width:100%;justify-content:flex-start;overflow-x:auto}
-.stats{grid-template-columns:repeat(2,1fr)!important;gap:12px}
-.stat{padding:16px}
-.statvalue{font-size:24px}
-.filters{flex-wrap:wrap}
-table{font-size:11px}
-th,td{padding:6px 4px}
-.section{overflow-x:auto}
-table{min-width:600px}
-}
-.header{margin-bottom:24px}
-.header h1{font-size:28px;margin-bottom:4px}
-.header p{color:#8b8b9e;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.stat{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px;text-align:center}
-.statvalue{font-size:32px;font-weight:bold;font-family:monospace}
-.statvalue.green{color:#10b981}
-.statlabel{font-size:12px;color:#8b8b9e;text-transform:uppercase;margin-top:4px}
-.filters{display:flex;gap:12px;margin-bottom:20px}
-.filterbtn{padding:8px 16px;border-radius:8px;border:1px solid #2a2a3a;background:#12121a;color:#8b8b9e;font-size:13px;cursor:pointer}
-.filterbtn:hover,.filterbtn.active{background:rgba(99,102,241,.15);border-color:#6366f1;color:#6366f1}
-.section{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:20px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #2a2a3a}
-th{color:#8b8b9e;font-size:11px;text-transform:uppercase}
-tr:hover{background:rgba(99,102,241,.05)}
-.symbol{color:#6366f1;font-weight:600}
-.positive{color:#10b981}
-.negative{color:#ef4444}
-.badge{display:inline-block;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600}
-.badge-open{background:rgba(245,158,11,.15);color:#f59e0b}
-.badge-closed{background:rgba(16,185,129,.15);color:#10b981}
-.empty{text-align:center;padding:60px 20px;color:#8b8b9e}
-#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 24px;font-size:12px;display:flex;justify-content:space-between}
-.statusgood{color:#10b981}
+
+.container{padding:16px;padding-bottom:80px;max-width:100vw}
+
+/* Page Header */
+.page-header{margin-bottom:20px}
+.page-title{font-size:24px;font-weight:700;margin-bottom:4px}
+.page-subtitle{font-size:13px;color:#8b8b9e}
+
+/* Summary Cards */
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+.summary-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;text-align:center}
+.summary-value{font-size:28px;font-weight:800;font-family:monospace;margin-bottom:4px}
+.summary-value.green{color:#10b981}
+.summary-value.red{color:#ef4444}
+.summary-label{font-size:11px;color:#8b8b9e;text-transform:uppercase;letter-spacing:0.5px}
+
+/* Filter Tabs */
+.filter-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.filter-tabs::-webkit-scrollbar{display:none}
+.filter-tab{background:#12121a;border:1px solid #2a2a3a;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:500;color:#8b8b9e;cursor:pointer;white-space:nowrap}
+.filter-tab.active{background:rgba(99,102,241,.15);border-color:#6366f1;color:#6366f1}
+
+/* Trade Cards */
+.trade-list{display:flex;flex-direction:column;gap:12px}
+.trade-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px}
+.trade-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.trade-symbol{display:flex;align-items:center;gap:10px}
+.trade-badge{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px}
+.trade-status{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.trade-status.open{background:rgba(245,158,11,.15);color:#f59e0b}
+.trade-status.closed{background:rgba(16,185,129,.15);color:#10b981}
+
+.trade-details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;padding:12px 0;border-top:1px solid #2a2a3a;border-bottom:1px solid #2a2a3a}
+.trade-detail{display:flex;flex-direction:column;gap:2px}
+.trade-detail.full-width{grid-column:span 2}
+.trade-detail-label{font-size:10px;color:#64748b;text-transform:uppercase}
+.trade-detail-value{font-size:14px;font-weight:600;font-family:monospace}
+.trade-detail-value.strike{color:#6366f1}
+.trade-detail-value.premium{color:#10b981}
+.trade-detail-value.committed{color:#f59e0b}
+
+.trade-pnl{display:flex;justify-content:space-between;align-items:center;background:#0a0a0f;border-radius:10px;padding:14px 16px}
+.trade-pnl-label{font-size:13px;font-weight:600}
+.trade-pnl-value{font-size:22px;font-weight:800;font-family:monospace}
+.trade-pnl-value.positive{color:#10b981}
+.trade-pnl-value.negative{color:#ef4444}
+
+/* Empty State */
+.empty{text-align:center;padding:60px 20px;color:#64748b;font-size:14px}
+.empty-icon{font-size:48px;margin-bottom:16px}
+
+/* Status Bar */
+#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
+.status-live{color:#10b981;display:flex;align-items:center;gap:6px}
+.status-live::before{content:'';width:6px;height:6px;background:#10b981;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
@@ -69,8 +89,8 @@ tr:hover{background:rgba(99,102,241,.05)}
 <div class="gatebox">
 <div class="gatelogo">WW</div>
 <h2>White Wolf Clan</h2>
-<p style="color:#8b8b9e;font-size:14px;margin:8px 0 24px">Trade History</p>
-<input type="password" id="pwd" placeholder="Enter password">
+<p style="color:#8b8b9e;font-size:13px;margin:8px 0 20px">Trade History</p>
+<input type="password" id="pwd" placeholder="Enter password" autocomplete="off">
 <button onclick="auth()">Access</button>
 <p class="err" id="err">Invalid password</p>
 </div>
@@ -78,172 +98,161 @@ tr:hover{background:rgba(99,102,241,.05)}
 
 <div id="app">
 <nav><div class="navinner">
-<div class="brand"><div class="brandicon">WW</div>White Wolf Clan</div>
+<div class="brand"><div class="brandicon">WW</div>White Wolf</div>
 <div class="navlinks">
 <a href="index.html">Dashboard</a>
 <a href="positions.html">Positions</a>
 <a href="trades.html" class="active">Trades</a>
-<a href="news.html?v=2">News & Alerts</a>
+<a href="news.html">Intel</a>
 </div>
 </div></nav>
 
 <div class="container">
-<div class="header"><h1>Trade History</h1><p>All transactions • CST timezone</p></div>
-
-<div class="stats">
-<div class="stat"><div class="statvalue" id="total-trades">0</div><div class="statlabel">Total Trades</div></div>
-<div class="stat"><div class="statvalue" id="win-rate">0%</div><div class="statlabel">Win Rate</div></div>
-<div class="stat"><div class="statvalue green" id="total-pnl">$0</div><div class="statlabel">Total P&L</div></div>
-<div class="stat"><div class="statvalue" id="avg-trade">$0</div><div class="statlabel">Avg Trade</div></div>
+<div class="page-header">
+<div class="page-title">Trade History</div>
+<div class="page-subtitle">All transactions • CST timezone</div>
 </div>
 
-<div class="filters">
-<button class="filterbtn active" onclick="filter('all')">All Trades</button>
-<button class="filterbtn" onclick="filter('today')">Today</button>
-<button class="filterbtn" onclick="filter('win')">Winners</button>
-<button class="filterbtn" onclick="filter('loss')">Losers</button>
+<!-- Summary -->
+<div class="summary-grid">
+<div class="summary-card">
+<div class="summary-value green" id="total-pnl">--</div>
+<div class="summary-label">Total P&L</div>
+</div>
+<div class="summary-card">
+<div class="summary-value" id="total-trades">--</div>
+<div class="summary-label">Total Trades</div>
+</div>
 </div>
 
-<div class="section">
-<div id="trades-content"><div class="empty">Loading trades...</div></div>
+<!-- Filters -->
+<div class="filter-tabs">
+<div class="filter-tab active" onclick="filter('all')">All Trades</div>
+<div class="filter-tab" onclick="filter('open')">Open</div>
+<div class="filter-tab" onclick="filter('closed')">Closed</div>
+</div>
+
+<!-- Trade List -->
+<div class="trade-list" id="trade-list">
+<div class="empty">
+<div class="empty-icon">📋</div>
+Loading trades...
+</div>
 </div>
 </div>
 
 <div id="statusbar">
 <span id="last-update">--</span>
-<span id="conn-status" class="statusgood">● Live</span>
+<span class="status-live">Live</span>
 </div>
 </div>
 
 <script>
 const PWD='jarvisb';
-function auth(){
-const input=document.getElementById('pwd').value;
-if(input===PWD){
-localStorage.setItem('ww-auth-v2','1');
-document.getElementById('gate').style.display='none';
-document.getElementById('app').style.display='block';
-load();
-}else{document.getElementById('err').style.display='block';}
-}
-document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
-if(localStorage.getItem('ww-auth-v2')==='1'){
-document.getElementById('gate').style.display='none';
-document.getElementById('app').style.display='block';
-}
-
-function fmt(n){if(n==null||isNaN(n))return'$0';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
-
+const AUTH_KEY='ww-auth-v2';
 let allTrades=[];
 let currentFilter='all';
 
+function auth(){
+const input=document.getElementById('pwd').value;
+if(input===PWD){
+localStorage.setItem(AUTH_KEY,'1');
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+load();
+}else{
+document.getElementById('err').style.display='block';
+}
+}
+
+document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
+
+if(localStorage.getItem(AUTH_KEY)==='1'){
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='block';
+load();
+}
+
+function fmt(n){if(n==null||isNaN(n))return'$0';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function fmtDec(n){if(n==null||isNaN(n))return'$0.00';return '$'+n.toFixed(2);}
+
 async function load(){
 try{
-document.getElementById('conn-status').textContent='● Loading...';
 const r=await fetch('data/trade_chronicle.jsonl?_='+Date.now(),{cache:'no-store'});
-
-if(!r.ok){
-document.getElementById('trades-content').innerHTML='<div class="empty"><p>No trades recorded yet</p><p style="font-size:13px;margin-top:8px">Trading hours: 8:30 AM - 3:30 PM CST</p></div>';
-document.getElementById('conn-status').textContent='● No data';
-return;
-}
-
+if(!r.ok)throw new Error('HTTP '+r.status);
 const text=await r.text();
 const lines=text.trim().split('\n').filter(l=>l.trim());
-
-if(lines.length===0){
-document.getElementById('trades-content').innerHTML='<div class="empty"><p>No trades recorded yet</p></div>';
-return;
-}
-
 allTrades=lines.map(line=>{try{return JSON.parse(line);}catch(e){return null;}}).filter(t=>t!==null);
 renderTrades();
-document.getElementById('conn-status').textContent='● Live';
-document.getElementById('conn-status').className='statusgood';
-document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
-
+document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
 }catch(e){
-console.error(e);
-document.getElementById('trades-content').innerHTML='<div class="empty"><p>Error loading trades</p></div>';
+console.error('Load error:',e);
+document.getElementById('trade-list').innerHTML='<div class="empty">Error loading trades</div>';
 }
 }
 
 function renderTrades(){
 let filtered=[...allTrades];
+if(currentFilter==='open')filtered=allTrades.filter(t=>!t.exit_time);
+if(currentFilter==='closed')filtered=allTrades.filter(t=>t.exit_time);
 
-if(currentFilter==='today'){
-const today=new Date().toDateString();
-filtered=filtered.filter(t=>new Date(t.timestamp).toDateString()===today);
-}else if(currentFilter==='win'){
-filtered=filtered.filter(t=>(t.result?.pnl||0)>0);
-}else if(currentFilter==='loss'){
-filtered=filtered.filter(t=>(t.result?.pnl||0)<=0);
-}
+// Update summary
+const totalTrades=allTrades.length;
+const totalPnl=allTrades.reduce((sum,t)=>sum+(t.result?.pnl||0),0);
+document.getElementById('total-trades').textContent=totalTrades;
+document.getElementById('total-pnl').textContent=(totalPnl>=0?'+':'')+fmtDec(totalPnl);
+document.getElementById('total-pnl').className='summary-value '+(totalPnl>=0?'green':'red');
 
-// Update stats - use premium for open positions, result.pnl for closed
-const total=allTrades.length;
-// Only count CLOSED trades for win rate
-const closedTrades=allTrades.filter(t=>t.exit_price);
-const wins=closedTrades.filter(t=>(t.result?.pnl||0)>0).length;
-const winRate=closedTrades.length>0?((wins/closedTrades.length)*100).toFixed(0)+'%':'N/A';
-const totalPnl=allTrades.reduce((sum,t)=>{
-  if (t.exit_price) {
-    return sum+(t.result?.pnl||0);  // Closed trade: use realized P&L
-  } else {
-    // Open trade: calculate unrealized P&L
-    const premium = t.premium || 0;
-    const buyback = t.buyback_cost || premium;
-    return sum+(premium-buyback);
-  }
-},0);
-const avg=total>0?totalPnl/total:0;
-
-document.getElementById('total-trades').textContent=total;
-document.getElementById('win-rate').textContent=winRate;
-document.getElementById('total-pnl').textContent=(totalPnl>=0?'+':'')+fmt(totalPnl);
-document.getElementById('total-pnl').className='statvalue '+(totalPnl>=0?'green':'');
-document.getElementById('avg-trade').textContent=(avg>=0?'+':'')+fmt(avg);
-
-// Render table
-const container=document.getElementById('trades-content');
+// Render trades
+const container=document.getElementById('trade-list');
 if(filtered.length===0){
-container.innerHTML='<div class="empty"><p>No trades match filter</p></div>';
+container.innerHTML='<div class="empty"><div class="empty-icon">📭</div>No trades found</div>';
 return;
 }
 
-let html='<table><thead><tr><th>Time (CST)</th><th>Symbol</th><th>Type</th><th>Contracts</th><th>Strike</th><th>Entry</th><th>Premium</th><th>Cash Committed</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
-
+let html='';
 filtered.slice().reverse().forEach(t=>{
-const isOpen=!t.exit_time && !t.exit_price;
-const pnl = t.result?.pnl || 0;
+const isOpen=!t.exit_time;
+const pnl=t.result?.pnl||0;
+const pnlClass=pnl>=0?'positive':'negative';
 const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
-const cashCommitted=(t.strike||0)*(t.contracts||0)*100;
-html+='<tr>';
-html+='<td>'+time+'</td>';
-html+='<td><span class="symbol">'+(t.symbol||'--')+'</span></td>';
-html+='<td>'+(t.type||'--')+'</td>';
-html+='<td>'+(t.contracts||'--')+'</td>';
-html+='<td>$'+(t.strike||'--')+'</td>';
-html+='<td>$'+(t.entry_price||'--')+'</td>';
-html+='<td>+'+fmt(t.premium||0)+'</td>';
-html+='<td style="color:#f59e0b;">'+fmt(cashCommitted)+'</td>';
-html+='<td class="'+(pnl>=0?'positive':'negative')+'">'+(pnl>=0?'+':'')+fmt(pnl)+'</td>';
-html+='<td><span class="badge '+(isOpen?'badge-open':'badge-closed')+'">'+(isOpen?'OPEN':'CLOSED')+'</span></td>';
-html+='</tr>';
+const date=new Date(t.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+
+html+='<div class="trade-card">';
+
+// Header
+html+='<div class="trade-header">';
+html+='<div class="trade-symbol"><span class="trade-badge">'+t.symbol+'</span></div>';
+html+='<span class="trade-status '+(isOpen?'open':'closed')+'">'+(isOpen?'OPEN':'CLOSED')+'</span>';
+html+='</div>';
+
+// Details
+html+='<div class="trade-details">';
+html+='<div class="trade-detail"><span class="trade-detail-label">Strike</span><span class="trade-detail-value strike">$'+t.strike+'</span></div>';
+html+='<div class="trade-detail"><span class="trade-detail-label">Contracts</span><span class="trade-detail-value">'+t.contracts+'</span></div>';
+html+='<div class="trade-detail"><span class="trade-detail-label">Entry Price</span><span class="trade-detail-value">$'+t.entry_price+'</span></div>';
+html+='<div class="trade-detail"><span class="trade-detail-label">Date</span><span class="trade-detail-value">'+date+' '+time+'</span></div>';
+html+='<div class="trade-detail full-width"><span class="trade-detail-label">Premium Collected</span><span class="trade-detail-value premium">'+fmt(t.premium)+'</span></div>';
+html+='</div>';
+
+// P&L
+html+='<div class="trade-pnl">';
+html+='<span class="trade-pnl-label">Realized P&L</span>';
+html+='<span class="trade-pnl-value '+pnlClass+'">'+(pnl>=0?'+':'')+fmtDec(pnl)+'</span>';
+html+='</div>';
+
+html+='</div>';
 });
 
-html+='</tbody></table>';
 container.innerHTML=html;
 }
 
 function filter(type){
 currentFilter=type;
-document.querySelectorAll('.filterbtn').forEach(btn=>btn.classList.remove('active'));
+document.querySelectorAll('.filter-tab').forEach(tab=>tab.classList.remove('active'));
 event.target.classList.add('active');
 renderTrades();
 }
-
-if(localStorage.getItem('ww-auth-v2')==='1'){load();setInterval(load,10000);}
 </script>
 </body>
 </html>
