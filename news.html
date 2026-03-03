@@ -223,7 +223,7 @@ document.getElementById('watch-grid').innerHTML=watchHtml||'<div style="color:#6
 await loadNews(positions.map(p=>p.symbol));
 
 // Update timestamp
-document.getElementById('last-update').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
+document.getElementById('last-update').textContent=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
 }catch(e){
 console.error('Load error:',e);
 }
@@ -241,10 +241,15 @@ const data=await response.json();
 const articles=data?.articles||[];
 
 // Filter to position-relevant news + general market
-const relevantArticles=articles.filter(a=>{
-if(!positionSymbols)return true;
+let relevantArticles=articles.filter(a=>{
+if(!positionSymbols||positionSymbols.length===0)return true;
 return positionSymbols.includes(a.symbol)||a.symbol==='MARKET';
 });
+
+// If no relevant articles found, show all news instead of empty
+if(relevantArticles.length===0){
+relevantArticles=articles;
+}
 
 document.getElementById('news-count').textContent=relevantArticles.length+' articles';
 
