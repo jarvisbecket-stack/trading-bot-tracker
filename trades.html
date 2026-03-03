@@ -188,7 +188,10 @@ const totalPnl=allTrades.reduce((sum,t)=>{
   if (t.exit_price) {
     return sum+(t.result?.pnl||0);  // Closed trade: use realized P&L
   } else {
-    return sum+(t.premium||0);  // Open trade: show premium collected
+    // Open trade: calculate unrealized P&L
+    const premium = t.premium || 0;
+    const buyback = t.buyback_cost || premium;
+    return sum+(premium-buyback);
   }
 },0);
 const avg=total>0?totalPnl/total:0;
@@ -209,9 +212,17 @@ return;
 let html='<table><thead><tr><th>Time (CST)</th><th>Symbol</th><th>Type</th><th>Contracts</th><th>Strike</th><th>Entry</th><th>Premium</th><th>Cash Committed</th><th>P&L</th><th>Status</th></tr></thead><tbody>';
 
 filtered.slice().reverse().forEach(t=>{
-// For open positions, show premium collected; for closed, show realized P&L
+// For open positions, calculate unrealized P&L from position data
 const isOpen=!t.exit_price;
-const pnl=isOpen?(t.premium||0):(t.result?.pnl||0);
+let pnl;
+if (isOpen) {
+  // Calculate from premium and current buyback cost if available
+  const premium = t.premium || 0;
+  const buyback = t.buyback_cost || premium;
+  pnl = premium - buyback;
+} else {
+  pnl = t.result?.pnl || 0;
+}
 const time=new Date(t.timestamp).toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit',hour12:false});
 const cashCommitted=(t.strike||0)*(t.contracts||0)*100;
 html+='<tr>';
