@@ -82,7 +82,7 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 </style>
 </head>
 <body>
-<div id="gate" style="display:block">
+<div id="gate" style="display:none">
 <div class="gatebox">
 <div class="gatelogo">WW</div>
 <h2>White Wolf Clan</h2>
@@ -93,7 +93,7 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:16px 24px}
 </div>
 </div>
 
-<div id="app" style="display:none">
+<div id="app" style="display:block">
 <nav><div class="navinner">
 <div class="brand"><div class="brandicon">WW</div>White Wolf Clan</div>
 <div class="navlinks">
@@ -186,17 +186,10 @@ document.getElementById('err').style.display='block';
 
 document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
 
-// Wait for DOM to be ready before checking auth
+// Auto-load on DOM ready (no auth required)
 document.addEventListener('DOMContentLoaded',()=>{
-// Focus password field
-document.getElementById('pwd').focus();
-// Check auth
-if(localStorage.getItem(AUTH_KEY)==='1'){
-document.getElementById('gate').style.display='none';
-document.getElementById('app').style.display='block';
 loadData();
 setInterval(loadData,60000);
-}
 });
 
 async function loadData(){

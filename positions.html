@@ -94,7 +94,7 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 </style>
 </head>
 <body>
-<div id="gate" style="display:block">
+<div id="gate" style="display:none">
 <div class="gatebox">
 <div class="gatelogo">WW</div>
 <h2>White Wolf Clan</h2>
@@ -105,7 +105,7 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 </div>
 </div>
 
-<div id="app" style="display:none">
+<div id="app" style="display:block">
 <nav><div class="navinner">
 <div class="brand"><div class="brandicon">WW</div>White Wolf</div>
 <div class="navlinks">
@@ -142,38 +142,23 @@ const AUTH_KEY='ww-auth-v2';
 
 function auth(){
 const input=document.getElementById('pwd').value;
-console.log('Auth attempt, input:', input, 'expected:', PWD);
 if(input===PWD){
-console.log('Password correct, unlocking...');
 localStorage.setItem(AUTH_KEY,'1');
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 load();
 setInterval(load,10000);
 }else{
-console.log('Password incorrect');
 document.getElementById('err').style.display='block';
 }
 }
 
 document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
 
-// Wait for DOM to be ready before checking auth
+// Auto-load on DOM ready (no auth required)
 document.addEventListener('DOMContentLoaded',()=>{
-console.log('DOM ready, checking auth...');
-console.log('Auth key value:', localStorage.getItem(AUTH_KEY));
-// Focus password field
-document.getElementById('pwd').focus();
-// Check auth
-if(localStorage.getItem(AUTH_KEY)==='1'){
-console.log('Already authenticated, showing app...');
-document.getElementById('gate').style.display='none';
-document.getElementById('app').style.display='block';
 load();
 setInterval(load,10000);
-}else{
-console.log('Not authenticated, showing gate...');
-}
 });
 
 function fmt(n){if(n==null||isNaN(n))return'$0';return'$'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
