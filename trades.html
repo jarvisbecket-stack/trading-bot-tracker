@@ -238,9 +238,10 @@ html+='<div class="trade-detail"><span class="trade-detail-label">Date</span><sp
 html+='<div class="trade-detail full-width"><span class="trade-detail-label">Premium Collected</span><span class="trade-detail-value premium">'+fmt(t.premium)+'</span></div>';
 html+='</div>';
 
-// P&L
+// P&L - show 'Unrealized' for open trades, 'Realized' for closed
+const pnlLabel = isOpen ? 'Unrealized P&L' : 'Realized P&L';
 html+='<div class="trade-pnl">';
-html+='<span class="trade-pnl-label">Realized P&L</span>';
+html+='<span class="trade-pnl-label">'+pnlLabel+'</span>';
 html+='<span class="trade-pnl-value '+pnlClass+'">'+(pnl>=0?'+':'')+fmtDec(pnl)+'</span>';
 html+='</div>';
 
