@@ -206,7 +206,7 @@ const PWD='jarvisb';
 function auth(){
 const input=document.getElementById('pwd').value;
 if(input===PWD){
-sessionStorage.setItem('ww-auth','1');
+localStorage.setItem('ww-auth-v2','1');
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 loadData();
@@ -216,7 +216,7 @@ document.getElementById('err').style.display='block';
 }
 }
 document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
-if(sessionStorage.getItem('ww-auth')==='1'){
+if(localStorage.getItem('ww-auth-v2')==='1'){
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 }
@@ -224,7 +224,7 @@ document.getElementById('app').style.display='block';
 async function loadData(){
 try{
 // Load market data
-const response=await fetch('data/scoreboard.json?_='+Date.now(),{cache:'no-store'});
+const response=await fetch('data/scoreboard.json?v=3?_='+Date.now(),{cache:'no-store'});
 if(!response.ok)throw new Error('HTTP '+response.status);
 const data=await response.json();
 
@@ -293,7 +293,7 @@ document.getElementById('news-feed').innerHTML='<div style="text-align:center;pa
 }
 }
 
-if(sessionStorage.getItem('ww-auth')==='1'){loadData();}
+if(localStorage.getItem('ww-auth-v2')==='1'){loadData();}
 </script>
 </body>
 </html>

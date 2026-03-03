@@ -117,14 +117,14 @@ const PWD='jarvisb';
 function auth(){
 const input=document.getElementById('pwd').value;
 if(input===PWD){
-sessionStorage.setItem('ww-auth','1');
+localStorage.setItem('ww-auth-v2','1');
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 load();
 }else{document.getElementById('err').style.display='block';}
 }
 document.getElementById('pwd').addEventListener('keypress',e=>{if(e.key==='Enter')auth()});
-if(sessionStorage.getItem('ww-auth')==='1'){
+if(localStorage.getItem('ww-auth-v2')==='1'){
 document.getElementById('gate').style.display='none';
 document.getElementById('app').style.display='block';
 }
@@ -249,7 +249,7 @@ event.target.classList.add('active');
 renderTrades();
 }
 
-if(sessionStorage.getItem('ww-auth')==='1'){load();setInterval(load,10000);}
+if(localStorage.getItem('ww-auth-v2')==='1'){load();setInterval(load,10000);}
 </script>
 </body>
 </html>
