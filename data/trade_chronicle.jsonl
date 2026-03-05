@@ -1,13 +1,1 @@
-# TRADE CHRONICLE - REAL TRADES ONLY
-# Any trade listed here must have real execution data
-# Format: JSON Lines (one trade per line)
-#
-# DATA INTEGRITY RESET: March 2, 2026
-# Trades with fake strikes (KO $76.39, VZ $47.51, COST $956.41) have been undone
-# Only trades with verified standard strikes remain:
-# - MSTR $130.00 (standard $1 increment) - VERIFIED
-# - BAC $47.50 (standard $0.50 increment) - VERIFIED
-#
-# Fund: $1,000,098 - Real-time option prices via Tradier API
-{"timestamp": "2026-03-02T12:36:29.302777", "date": "2026-03-02", "time": "12:35 PM CST", "symbol": "MSTR", "strategy": "0DTE_MOMENTUM", "direction": "SHORT_PUT", "type": "Cash-Secured Put", "action": "SELL_TO_OPEN", "strike": 130.0, "contracts": 10, "entry_price": 2.15, "current_option_price": 2.0, "premium": 2150.0, "underlying_price": 136.69, "otm_pct": 4.9, "expiration": "2026-03-07", "dte": 5, "delta": -0.24, "theta": 0.52, "iv": 91.5, "breakeven": 127.85, "cash_required": 130000.0, "commission": 3.5, "net_premium": 2146.5, "status": "OPEN", "exit_price": null, "exit_time": null, "result": {"pnl": 150.0, "pnl_pct": 7.0, "exit_reason": null, "holding_minutes": 0}, "market_context": {"vix": 18.5, "spy_change": 0.12, "btc_price": 68500, "notes": "MSTR up 5.56% on strong volume, riding BTC momentum"}, "psychology": {"emotion": "CALM", "confidence": "HIGH", "setup_quality": "A+"}, "data_source": "TRADIER_LIVE", "trade_type": "REAL_PAPER_TRADE", "note": "Strike $130.00 verified as standard option chain strike"}
-{"timestamp": "2026-03-02T16:02:30.915400", "date": "2026-03-02", "time": "12:50 PM CST", "symbol": "BAC", "strategy": "0DTE_MOMENTUM", "direction": "SHORT_PUT", "type": "Cash-Secured Put", "action": "SELL_TO_OPEN", "strike": 47.5, "contracts": 26, "entry_price": 0.19, "current_option_price": 0.21, "premium": 494.0, "underlying_price": 50.17, "otm_pct": 5.3, "expiration": "2026-03-07", "dte": 5, "delta": -0.14, "theta": 0.04, "iv": 45.5, "breakeven": 47.31, "cash_required": 123500.0, "commission": 9.1, "net_premium": 484.9, "status": "OPEN", "exit_price": null, "exit_time": null, "result": {"pnl": -52.0, "pnl_pct": -10.5, "exit_reason": null, "holding_minutes": 0}, "market_context": {"vix": 18.5, "spy_change": 0.12, "sector": "Financials", "notes": "BAC up 0.70%, financials showing strength"}, "psychology": {"emotion": "CALM", "confidence": "HIGH", "setup_quality": "A"}, "data_source": "TRADIER_LIVE", "trade_type": "REAL_PAPER_TRADE", "note": "Strike $47.50 verified as standard option chain strike"}
+
