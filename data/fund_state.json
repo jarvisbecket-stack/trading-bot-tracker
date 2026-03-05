@@ -2,15 +2,15 @@
   "fund_name": "White Wolf Clan Fund",
   "reset_date": "2026-03-05",
   "starting_capital": 1000000.0,
-  "current_value": 1000000.0,
+  "current_value": 1005254.0,
   "cash_available": 564304.0,
   "cash_committed": 440950.0,
   "buying_power": 564304.0,
   "margin_used": 440950.0,
   "total_premium_collected": 5268.0,
   "total_premium_paid": 0.0,
-  "total_commissions": 13.999999999999998,
-  "unrealized_pnl": 2792.166666666666,
+  "total_commissions": 14.0,
+  "unrealized_pnl": 0.0,
   "realized_pnl": 0.0,
   "active_positions": [
     {
