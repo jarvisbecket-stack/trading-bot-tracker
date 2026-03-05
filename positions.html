@@ -125,10 +125,10 @@ function fmtDec(n){if(n==null||isNaN(n))return'$0.00';return '$'+n.toFixed(2);}
 async function load(){
 try{
 const ts=Date.now();
-const r=await fetch('data/scoreboard.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+const r=await fetch('data/fund_state.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
 if(!r.ok)throw new Error('HTTP '+r.status);
 const d=await r.json();
-const positions=d?.positions||[];
+const positions=d?.active_positions||[];
 const container=document.getElementById('positions-list');
 
 if(positions.length===0){
@@ -136,23 +136,23 @@ container.innerHTML='<div class="empty"><div class="empty-icon">📭</div>No ope
 }else{
 let html='';
 positions.forEach(p=>{
-const pnl=p.pnl||0;
+const pnl=p.realized_pnl||0;
 const pnlClass=pnl>=0?'positive':'negative';
-const buybackCost=p.buyback_cost||0;
-const profit50=(p.premium||0)*0.5;
+const buybackCost=p.exit_premium_total||0;
+const profit50=(p.entry_premium_total||0)*0.5;
 
 html+='<div class="position-card">';
 
 // Header
 html+='<div class="card-header">';
 html+='<div class="card-symbol"><span class="card-badge">'+p.symbol+'</span></div>';
-html+='<div class="card-meta"><div class="card-meta-label">Expires</div><div class="card-meta-value">'+p.expiry+'</div></div>';
+html+='<div class="card-meta"><div class="card-meta-label">Expires</div><div class="card-meta-value">'+p.expiration+'</div></div>';
 html+='</div>';
 
 // BIG Premium
 html+='<div class="premium-big">';
 html+='<div class="premium-big-label">Premium Collected</div>';
-html+='<div class="premium-big-value">'+fmt(p.premium||0)+'</div>';
+html+='<div class="premium-big-value">'+fmt(p.entry_premium_total||0)+'</div>';
 html+='<div class="premium-big-sub">'+p.contracts+' contracts @ $'+p.strike+' strike</div>';
 html+='</div>';
 
@@ -170,7 +170,7 @@ html+='</div>';
 html+='</div>';
 
 // Progress to 50%
-const profitPct=Math.min(100,Math.max(0,((p.premium-buybackCost)/profit50)*100));
+const profitPct=Math.min(100,Math.max(0,((p.entry_premium_total-buybackCost)/profit50)*100));
 html+='<div class="profit-tracker">';
 html+='<div class="profit-tracker-header">';
 html+='<span class="profit-tracker-label">Progress to 50% Profit Target</span>';
@@ -182,15 +182,16 @@ html+='</div>';
 html+='<div class="profit-target">Target: $'+fmt(profit50)+' (50% of premium)</div>';
 html+='</div>';
 
-// Compact Greeks - FLIP signs for short puts (we're short, so opposite of option greeks)
-const displayDelta = -(p.delta||0);  // Flip: short put has positive delta
-const displayTheta = -(p.theta||0);  // Flip: short put has positive theta
+// Compact Greeks - NOTE: Unified bot doesn't track greeks currently
+const displayDelta = 0;
+const displayTheta = 0;
+const otmPct = p.notes?.includes('OTM:') ? parseInt(p.notes.match(/OTM:\s*(\d+)%/)?.[1] || '0') : 0;
 
 html+='<div class="greeks-compact">';
-html+='<div class="greek-chip"><span class="greek-chip-label">Delta</span><span class="greek-chip-value '+(displayDelta>=0?'positive':'negative')+'">'+(displayDelta>=0?'+':'')+displayDelta.toFixed(2)+'</span></div>';
-html+='<div class="greek-chip"><span class="greek-chip-label">Theta</span><span class="greek-chip-value '+(displayTheta>=0?'positive':'negative')+'">'+(displayTheta>=0?'+':'')+displayTheta.toFixed(2)+'</span></div>';
-html+='<div class="greek-chip"><span class="greek-chip-label">OTM</span><span class="greek-chip-value">'+(p.otm||0)+'%</span></div>';
-html+='<div class="greek-chip"><span class="greek-chip-label">IV</span><span class="greek-chip-value">'+((p.iv||0)*100).toFixed(0)+'%</span></div>';
+html+='<div class="greek-chip"><span class="greek-chip-label">Contracts</span><span class="greek-chip-value">'+p.contracts+'</span></div>';
+html+='<div class="greek-chip"><span class="greek-chip-label">Margin</span><span class="greek-chip-value">'+fmt(p.entry_margin_required||0)+'</span></div>';
+html+='<div class="greek-chip"><span class="greek-chip-label">DTE</span><span class="greek-chip-value">'+Math.ceil((new Date(p.expiration)-new Date())/(1000*60*60*24))+'</span></div>';
+html+='<div class="greek-chip"><span class="greek-chip-label">Status</span><span class="greek-chip-value">'+p.status+'</span></div>';
 html+='</div>';
 
 html+='</div>';
