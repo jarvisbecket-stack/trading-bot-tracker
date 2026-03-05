@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-03T15:59:08.494938",
+  "timestamp": "2026-03-05T15:59:08.546366",
   "data_source": "tradier",
   "disclaimer": "LIVE DATA - NO MOCK DATA",
   "account": {
@@ -7,62 +7,6 @@
     "cash_available": "REQUIRES_TRADIER_ACCOUNT",
     "buying_power": "REQUIRES_TRADIER_ACCOUNT"
   },
-  "market_data": {
-    "MSTR": {
-      "symbol": "MSTR",
-      "last": 137.65,
-      "bid": 136.99,
-      "ask": 137.49,
-      "change": 8.15,
-      "change_percent": 6.3,
-      "volume": 25456105,
-      "timestamp": "2026-03-03T15:59:04.415021",
-      "source": "tradier"
-    },
-    "COST": {
-      "symbol": "COST",
-      "last": 1002.77,
-      "bid": 1002.0,
-      "ask": 1002.99,
-      "change": -8.02,
-      "change_percent": -0.8,
-      "volume": 1986902,
-      "timestamp": "2026-03-03T15:59:05.445574",
-      "source": "tradier"
-    },
-    "KO": {
-      "symbol": "KO",
-      "last": 80.22,
-      "bid": 80.15,
-      "ask": 80.2,
-      "change": -1.34,
-      "change_percent": -1.65,
-      "volume": 18137229,
-      "timestamp": "2026-03-03T15:59:06.484897",
-      "source": "tradier"
-    },
-    "VZ": {
-      "symbol": "VZ",
-      "last": 49.98,
-      "bid": 49.9,
-      "ask": 50.21,
-      "change": -0.16,
-      "change_percent": -0.32,
-      "volume": 23725652,
-      "timestamp": "2026-03-03T15:59:07.483409",
-      "source": "tradier"
-    },
-    "BAC": {
-      "symbol": "BAC",
-      "last": 49.81,
-      "bid": 49.71,
-      "ask": 49.91,
-      "change": -0.02,
-      "change_percent": -0.04,
-      "volume": 40595188,
-      "timestamp": "2026-03-03T15:59:08.493286",
-      "source": "tradier"
-    }
-  },
+  "market_data": {},
   "positions": []
 }

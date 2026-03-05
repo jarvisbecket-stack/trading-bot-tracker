@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-03T12:50:00Z",
+  "timestamp": "2026-03-05T15:58:04.644985",
   "data_source": "TRADIER_LIVE",
   "data_status": "LIVE",
   "disclaimer": "REAL MARKET DATA ONLY",
@@ -10,7 +10,7 @@
     "starting_capital": 1000000.0
   },
   "pnl": {
-    "total_pnl": 2644.0,
+    "total_pnl": 2742.0,
     "total_pnl_pct": 0.26,
     "ytd_pnl": 2644.0,
     "ytd_pnl_pct": 0.26,
@@ -45,11 +45,26 @@
     }
   },
   "history": [
-    {"date": "2026-01-02", "value": 1000000.0},
-    {"date": "2026-01-15", "value": 1000000.0},
-    {"date": "2026-02-01", "value": 1000000.0},
-    {"date": "2026-02-15", "value": 1000000.0},
-    {"date": "2026-03-02", "value": 1002644.0}
+    {
+      "date": "2026-01-02",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-01-15",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-02-01",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-02-15",
+      "value": 1000000.0
+    },
+    {
+      "date": "2026-03-02",
+      "value": 1002644.0
+    }
   ],
   "committed_capital": 253500.0,
   "positions": [
