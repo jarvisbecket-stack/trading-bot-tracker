@@ -194,9 +194,9 @@ const data=await response.json();
 
 const fund=data?.current_value;
 const pnl=data?.realized_pnl||0;
-const pnlPct=data?.pnl?.total_pnl_pct||0;
-const ytd=data?.pnl?.ytd_pnl||0;
-const ytdPct=data?.pnl?.ytd_pnl_pct||0;
+const pnlPct=data?.roi_pct||0;
+const ytd=data?.realized_pnl||0;
+const ytdPct=data?.roi_pct||0;
 const committed=data?.cash_committed||0;
 const cash=data?.cash_available||0;
 const positions=data?.active_positions||[];
@@ -255,8 +255,8 @@ html+='<span class="position-preview-btc-value">'+fmt(buybackCost)+'</span>';
 html+='</div>';
 // Net Profit
 html+='<div class="position-preview-net">';
-html+='<span class="position-preview-net-label">Net Profit (if closed now)</span>';
-html+='<span class="position-preview-net-value '+pnlClass+'">'+(pnl>=0?'+':'')+fmtDec(pnl)+'</span>';
+html+='<span class="position-preview-net-label">Margin Required</span>';
+html+='<span class="position-preview-net-value">'+fmt(p.entry_margin_required||0)+'</span>';
 html+='</div>';
 html+='</div>';
 });
