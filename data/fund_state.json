@@ -93,7 +93,7 @@
   "win_rate": 0.0,
   "roi_pct": 0.0,
   "target_roi_pct": 100.0,
-  "note": "FRESH START - Markets closed. Next open: 2026-03-05 08:30 CST",
-  "last_updated": "2026-03-05T09:11:55",
+  "note": "Markets open - 3 positions active, monitoring for 50% profit exits",
+  "last_updated": "2026-03-06T09:24:52",
   "data_source": "Alpaca API"
 }
