@@ -99,18 +99,7 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 <div class="watch-section">
 <div class="watch-header">Position Watch <span style="font-size:11px;color:#64748b">Live prices</span></div>
 <div class="watch-grid" id="watch-grid">
-<div class="watch-item">
-<div class="watch-symbol">MSTR</div>
-<div class="watch-price" id="mstr-price">--</div>
-<div class="watch-change" id="mstr-change">--</div>
-<div class="watch-strike">Put @ $130</div>
-</div>
-<div class="watch-item">
-<div class="watch-symbol">BAC</div>
-<div class="watch-price" id="bac-price">--</div>
-<div class="watch-change" id="bac-change">--</div>
-<div class="watch-strike">Put @ $47.5</div>
-</div>
+<div style="color:#64748b;font-size:13px;padding:20px">Loading positions...</div>
 </div>
 </div>
 
@@ -118,14 +107,7 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 <div class="alerts-section">
 <div class="alerts-header">Active Alerts</div>
 <div id="alerts-list">
-<div class="alert-item">
-<div class="alert-icon">⚠️</div>
-<div class="alert-content">
-<div class="alert-title">Expiration Warning</div>
-<div class="alert-text">Both positions expire in 4 days (Mar 7). Consider buy-to-close targets.</div>
-<div class="alert-meta">5 DTE</div>
-</div>
-</div>
+<!-- Alerts populated dynamically -->
 </div>
 </div>
 
@@ -148,27 +130,46 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 async function loadData(){
 try{
 const ts=Date.now();
-const response=await fetch('data/scoreboard.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+const response=await fetch('data/fund_state.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
 if(!response.ok)throw new Error('HTTP '+response.status);
 const data=await response.json();
 
-const marketData=data?.market_data||{};
-const positions=data?.positions||[];
+const positions=data?.active_positions||[];
 
 let watchHtml='';
+if(positions.length===0){
+watchHtml='<div style="color:#64748b;font-size:13px;padding:20px">No active positions</div>';
+document.getElementById('alerts-list').innerHTML='';
+}else{
 positions.forEach(p=>{
-const quote=marketData[p.symbol];
-if(quote){
-const changeClass=quote.change_percent>=0?'up':'down';
 watchHtml+='<div class="watch-item">';
 watchHtml+='<div class="watch-symbol">'+p.symbol+'</div>';
-watchHtml+='<div class="watch-price">$'+quote.last.toFixed(2)+'</div>';
-watchHtml+='<div class="watch-change '+changeClass+'">'+(quote.change_percent>=0?'+':'')+quote.change_percent.toFixed(2)+'%'+(quote.change_percent>=0?' 🟢':' 🔴')+'</div>';
+watchHtml+='<div class="watch-price">$'+p.entry_stock_price.toFixed(2)+'</div>';
 watchHtml+='<div class="watch-strike">Put @ $'+p.strike+'</div>';
 watchHtml+='</div>';
+});
+
+// Generate alerts based on positions
+let alertsHtml='';
+positions.forEach(p=>{
+const dte=Math.ceil((new Date(p.expiration)-new Date())/(1000*60*60*24));
+if(dte<=7){
+alertsHtml+='<div class="alert-item">';
+alertsHtml+='<div class="alert-icon">⚠️</div>';
+alertsHtml+='<div class="alert-content">';
+alertsHtml+='<div class="alert-title">'+p.symbol+' Expiration Warning</div>';
+alertsHtml+='<div class="alert-text">Position expires in '+dte+' days ('+p.expiration+'). Consider buy-to-close targets.</div>';
+alertsHtml+='<div class="alert-meta">'+dte+' DTE</div>';
+alertsHtml+='</div>';
+alertsHtml+='</div>';
 }
 });
-document.getElementById('watch-grid').innerHTML=watchHtml||'<div style="color:#64748b;font-size:13px;padding:20px">No active positions</div>';
+if(alertsHtml===''){
+alertsHtml='<div class="alert-item"><div class="alert-icon">✅</div><div class="alert-content"><div class="alert-title">All Clear</div><div class="alert-text">No active alerts. Positions healthy.</div></div></div>';
+}
+document.getElementById('alerts-list').innerHTML=alertsHtml;
+}
+document.getElementById('watch-grid').innerHTML=watchHtml;
 
 await loadNews(positions.map(p=>p.symbol));
 
