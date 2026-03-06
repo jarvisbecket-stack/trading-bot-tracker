@@ -1,0 +1,246 @@
+{
+  "generated_at": "2026-03-06T15:07:43",
+  "type": "Elliott Wave Technical Analysis",
+  "analyses": {
+    "SPY": {
+      "name": "S&P 500 ETF",
+      "trend": "NEUTRAL",
+      "wave": "WAVE_4",
+      "wave_description": "Impulse Wave 4 - corrective pullback before Wave 5",
+      "rsi": 42.2,
+      "current_price": 672.3,
+      "ema_20": 684.89,
+      "ema_50": 672.3,
+      "scenarios": [
+        {
+          "name": "BASE",
+          "probability": 50,
+          "target": 672.2999877929688,
+          "description": "Consolidation before next move"
+        },
+        {
+          "name": "BULLISH",
+          "probability": 25,
+          "target": 699.1919873046875,
+          "description": "Breakout to upside"
+        },
+        {
+          "name": "BEARISH",
+          "probability": 25,
+          "target": 645.40798828125,
+          "description": "Breakdown to support"
+        }
+      ],
+      "fibonacci": {
+        "0%": 693.95,
+        "23.6%": 688.84,
+        "38.2%": 685.68,
+        "50%": 683.12,
+        "61.8%": 680.57,
+        "100%": 672.3
+      },
+      "swing_count": 14,
+      "timestamp": "2026-03-06 15:07 CST"
+    },
+    "QQQ": {
+      "name": "Nasdaq 100 ETF",
+      "trend": "NEUTRAL",
+      "wave": "WAVE_C",
+      "wave_description": "Corrective Wave C - final leg of correction",
+      "rsi": 48.5,
+      "current_price": 599.75,
+      "ema_20": 608.24,
+      "ema_50": 599.75,
+      "scenarios": [
+        {
+          "name": "BASE",
+          "probability": 50,
+          "target": 599.75,
+          "description": "Consolidation before next move"
+        },
+        {
+          "name": "BULLISH",
+          "probability": 25,
+          "target": 623.74,
+          "description": "Breakout to upside"
+        },
+        {
+          "name": "BEARISH",
+          "probability": 25,
+          "target": 575.76,
+          "description": "Breakdown to support"
+        }
+      ],
+      "fibonacci": {
+        "0%": 616.68,
+        "23.6%": 612.68,
+        "38.2%": 610.21,
+        "50%": 608.21,
+        "61.8%": 606.22,
+        "100%": 599.75
+      },
+      "swing_count": 13,
+      "timestamp": "2026-03-06 15:07 CST"
+    },
+    "IWM": {
+      "name": "Russell 2000 ETF",
+      "trend": "NEUTRAL",
+      "wave": "WAVE_C",
+      "wave_description": "Corrective Wave C - final leg of correction",
+      "rsi": 33.3,
+      "current_price": 250.89,
+      "ema_20": 260.96,
+      "ema_50": 250.89,
+      "scenarios": [
+        {
+          "name": "BASE",
+          "probability": 50,
+          "target": 250.88999938964844,
+          "description": "Consolidation before next move"
+        },
+        {
+          "name": "BULLISH",
+          "probability": 25,
+          "target": 260.9255993652344,
+          "description": "Breakout to upside"
+        },
+        {
+          "name": "BEARISH",
+          "probability": 25,
+          "target": 240.8543994140625,
+          "description": "Breakdown to support"
+        }
+      ],
+      "fibonacci": {
+        "0%": 266.88,
+        "23.6%": 263.11,
+        "38.2%": 260.77,
+        "50%": 258.89,
+        "61.8%": 257.0,
+        "100%": 250.89
+      },
+      "swing_count": 10,
+      "timestamp": "2026-03-06 15:07 CST"
+    },
+    "COST": {
+      "name": "Costco (Position)",
+      "trend": "NEUTRAL",
+      "wave": "WAVE_C",
+      "wave_description": "Corrective Wave C - final leg of correction",
+      "rsi": 42.5,
+      "current_price": 998.1,
+      "ema_20": 990.76,
+      "ema_50": 998.1,
+      "scenarios": [
+        {
+          "name": "BASE",
+          "probability": 50,
+          "target": 998.0999755859375,
+          "description": "Consolidation before next move"
+        },
+        {
+          "name": "BULLISH",
+          "probability": 25,
+          "target": 1038.023974609375,
+          "description": "Breakout to upside"
+        },
+        {
+          "name": "BEARISH",
+          "probability": 25,
+          "target": 958.1759765625,
+          "description": "Breakdown to support"
+        }
+      ],
+      "fibonacci": {
+        "0%": 1018.48,
+        "23.6%": 1007.33,
+        "38.2%": 1000.43,
+        "50%": 994.85,
+        "61.8%": 989.28,
+        "100%": 971.23
+      },
+      "swing_count": 9,
+      "timestamp": "2026-03-06 15:07 CST"
+    },
+    "MSTR": {
+      "name": "MicroStrategy (Position)",
+      "trend": "NEUTRAL",
+      "wave": "WAVE_C",
+      "wave_description": "Corrective Wave C - final leg of correction",
+      "rsi": 49.8,
+      "current_price": 133.53,
+      "ema_20": 135.7,
+      "ema_50": 133.53,
+      "scenarios": [
+        {
+          "name": "BASE",
+          "probability": 50,
+          "target": 133.52999877929688,
+          "description": "Consolidation before next move"
+        },
+        {
+          "name": "BULLISH",
+          "probability": 25,
+          "target": 138.87119873046876,
+          "description": "Breakout to upside"
+        },
+        {
+          "name": "BEARISH",
+          "probability": 25,
+          "target": 128.188798828125,
+          "description": "Breakdown to support"
+        }
+      ],
+      "fibonacci": {
+        "0%": 146.44,
+        "23.6%": 140.91,
+        "38.2%": 137.49,
+        "50%": 134.72,
+        "61.8%": 131.95,
+        "100%": 123.0
+      },
+      "swing_count": 15,
+      "timestamp": "2026-03-06 15:07 CST"
+    },
+    "BAC": {
+      "name": "Bank of America (Position)",
+      "trend": "NEUTRAL",
+      "wave": "WAVE_C",
+      "wave_description": "Corrective Wave C - final leg of correction",
+      "rsi": 31.9,
+      "current_price": 48.61,
+      "ema_20": 51.51,
+      "ema_50": 48.61,
+      "scenarios": [
+        {
+          "name": "BASE",
+          "probability": 50,
+          "target": 48.614898681640625,
+          "description": "Consolidation before next move"
+        },
+        {
+          "name": "BULLISH",
+          "probability": 25,
+          "target": 50.55949462890625,
+          "description": "Breakout to upside"
+        },
+        {
+          "name": "BEARISH",
+          "probability": 25,
+          "target": 46.670302734375,
+          "description": "Breakdown to support"
+        }
+      ],
+      "fibonacci": {
+        "0%": 56.53,
+        "23.6%": 54.66,
+        "38.2%": 53.51,
+        "50%": 52.57,
+        "61.8%": 51.64,
+        "100%": 48.61
+      },
+      "swing_count": 14,
+      "timestamp": "2026-03-06 15:07 CST"
+    }
+  }
+}

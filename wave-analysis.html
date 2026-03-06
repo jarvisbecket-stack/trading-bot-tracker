@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>White Wolf Clan | Wave Analysis</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden}
+
+#app{max-width:100vw;overflow-x:hidden}
+
+nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;position:sticky;top:0;z-index:100}
+.navinner{max-width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+.brandicon{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
+.navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
+
+.container{padding:16px;padding-bottom:80px;max-width:100vw}
+
+.page-header{margin-bottom:20px}
+.page-title{font-size:24px;font-weight:700;margin-bottom:4px}
+.page-subtitle{font-size:13px;color:#8b8b9e}
+
+/* Analysis Card */
+.analysis-card{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;margin-bottom:16px}
+.analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.analysis-symbol{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px}
+.analysis-trend{font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.trend-bullish{background:rgba(16,185,129,.15);color:#10b981}
+.trend-bearish{background:rgba(239,68,68,.15);color:#ef4444}
+.trend-neutral{background:rgba(100,116,139,.15);color:#64748b}
+
+/* Wave Info */
+.wave-info{background:#0a0a0f;border-radius:12px;padding:14px;margin-bottom:16px}
+.wave-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.wave-desc{font-size:12px;color:#8b8b9e}
+
+/* Metrics Grid */
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.metric{background:#0a0a0f;border-radius:12px;padding:12px;text-align:center}
+.metric-label{font-size:10px;color:#64748b;text-transform:uppercase;margin-bottom:4px}
+.metric-value{font-size:18px;font-weight:700;font-family:monospace}
+.metric-value.green{color:#10b981}
+.metric-value.red{color:#ef4444}
+.metric-value.yellow{color:#f59e0b}
+
+/* Scenarios */
+.scenarios-title{font-size:12px;font-weight:600;color:#8b8b9e;margin-bottom:12px;text-transform:uppercase}
+.scenario{display:flex;align-items:center;gap:12px;padding:12px;background:#0a0a0f;border-radius:12px;margin-bottom:8px}
+.scenario-prob{width:60px;text-align:center}
+.scenario-prob-bar{height:6px;background:#2a2a3a;border-radius:3px;margin-bottom:4px}
+.scenario-prob-fill{height:100%;border-radius:3px}
+.scenario-prob-text{font-size:11px;color:#8b8b9e}
+.scenario-content{flex:1}
+.scenario-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.scenario-desc{font-size:11px;color:#64748b}
+.scenario-target{font-size:14px;font-weight:700;font-family:monospace}
+
+/* Fibonacci */
+.fib-title{font-size:12px;font-weight:600;color:#8b8b9e;margin:16px 0 12px;text-transform:uppercase}
+.fib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fib-level{background:#0a0a0f;border-radius:8px;padding:10px;text-align:center}
+.fib-percent{font-size:10px;color:#64748b;margin-bottom:2px}
+.fib-price{font-size:14px;font-weight:600;font-family:monospace}
+
+/* Timestamp */
+.timestamp{text-align:center;padding:12px;color:#64748b;font-size:11px;margin-top:20px}
+
+/* Status Bar */
+#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
+.status-live{color:#10b981;display:flex;align-items:center;gap:6px}
+.status-live::before{content:'';width:6px;height:6px;background:#10b981;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+.empty{text-align:center;padding:40px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="app">
+<nav><div class="navinner">
+<div class="brand"><div class="brandicon">WW</div>White Wolf</div>
+<div class="navlinks">
+<a href="index.html">Dashboard</a>
+<a href="positions.html">Positions</a>
+<a href="wave-analysis.html" class="active">Waves</a>
+<a href="news.html">Intel</a>
+</div>
+</div></nav>
+
+<div class="container">
+<div class="page-header">
+<div class="page-title">📊 Wave Analysis</div>
+<div class="page-subtitle">Elliott Wave + Technical Analysis</div>
+</div>
+
+<div id="analyses-container"><div class="empty">Loading analysis...</div></div>
+
+<div class="timestamp" id="last-update">--</div>
+</div>
+
+<div id="statusbar">
+<span>Elliott Wave Scanner</span>
+<span class="status-live">Live</span>
+</div>
+</div>
+
+<script>
+function fmt(n){if(n==null||isNaN(n))return'-';return'\$'+n.toFixed(2)}
+
+async function load(){
+try{
+const ts=Date.now();
+const response=await fetch('data/elliott_wave_analysis.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+if(!response.ok)throw new Error('HTTP '+response.status);
+const data=await response.json();
+
+const container=document.getElementById('analyses-container');
+const analyses=data.analyses||{};
+
+if(Object.keys(analyses).length===0){
+container.innerHTML='<div class="empty">No analysis available</div>';
+return;
+}
+
+let html='';
+for(const[symbol,analysis]of Object.entries(analyses)){
+if(analysis.error)continue;
+
+const trendClass=analysis.trend==='BULLISH'?'trend-bullish':(analysis.trend==='BEARISH'?'trend-bearish':'trend-neutral');
+
+html+='<div class="analysis-card">';
+
+// Header
+html+='<div class="analysis-header">';
+html+='<span class="analysis-symbol">'+symbol+'</span>';
+html+='<span class="analysis-trend '+trendClass+'">'+analysis.trend+'</span>';
+html+='</div>';
+
+// Wave Info
+html+='<div class="wave-info">';
+html+='<div class="wave-title">'+analysis.wave_description+'</div>';
+html+='</div>';
+
+// Metrics
+html+='<div class="metrics-grid">';
+html+='<div class="metric"><div class="metric-label">Price</div><div class="metric-value">'+fmt(analysis.current_price)+'</div></div>';
+
+const rsiClass=analysis.rsi>70?'red':(analysis.rsi<30?'green':'yellow');
+html+='<div class="metric"><div class="metric-label">RSI</div><div class="metric-value '+rsiClass+'">'+analysis.rsi.toFixed(1)+'</div></div>';
+
+html+='<div class="metric"><div class="metric-label">EMA 20</div><div class="metric-value">'+fmt(analysis.ema_20)+'</div></div>';
+html+='</div>';
+
+// Scenarios
+html+='<div class="scenarios-title">Scenarios</div>';
+analysis.scenarios.forEach(scenario=>{
+const probColor=scenario.name==='BULLISH'?'#10b981':(scenario.name==='BEARISH'?'#ef4444':'#f59e0b');
+html+='<div class="scenario">';
+html+='<div class="scenario-prob">';
+html+='<div class="scenario-prob-bar"><div class="scenario-prob-fill" style="width:'+scenario.probability+'%;background:'+probColor+'"></div></div>';
+html+='<div class="scenario-prob-text">'+scenario.probability+'%</div>';
+html+='</div>';
+html+='<div class="scenario-content">';
+html+='<div class="scenario-name">'+scenario.name+'</div>';
+html+='<div class="scenario-desc">'+scenario.description+'</div>';
+html+='</div>';
+html+='<div class="scenario-target">'+fmt(scenario.target)+'</div>';
+html+='</div>';
+});
+
+// Fibonacci
+if(analysis.fibonacci){
+html+='<div class="fib-title">Fibonacci Levels</div>';
+html+='<div class="fib-grid">';
+['38.2%','50%','61.8%'].forEach(level=>{
+if(analysis.fibonacci[level]){
+html+='<div class="fib-level"><div class="fib-percent">'+level+'</div><div class="fib-price">'+fmt(analysis.fibonacci[level])+'</div></div>';
+}
+});
+html+='</div>';
+}
+
+html+='</div>';
+}
+
+container.innerHTML=html;
+document.getElementById('last-update').textContent='Generated: '+new Date(data.generated_at).toLocaleString('en-US',{timeZone:'America/Chicago',hour12:false})+' CST';
+
+}catch(e){
+console.error('Load error:',e);
+document.getElementById('analyses-container').innerHTML='<div class="empty">Error loading analysis</div>';
+}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+load();
+setInterval(load,300000); // Refresh every 5 minutes
+});
+</script>
+</body>
+</html>
