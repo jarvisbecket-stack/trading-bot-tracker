@@ -165,6 +165,15 @@ nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;positio
 <div id="positions-preview">
 <div class="empty">Loading positions...</div>
 </div>
+
+<!-- Wave Analysis Preview -->
+<div class="section-header">
+<span class="section-title">📊 Wave Analysis</span>
+<a href="wave-analysis.html" class="section-link">Full Analysis →</a>
+</div>
+<div id="wave-preview">
+<div class="empty">Loading wave analysis...</div>
+</div>
 </div>
 
 <div id="statusbar">
@@ -272,6 +281,9 @@ if(positions.length > 3){
 container.innerHTML=html;
 }
 
+// Load wave analysis
+await loadWaveAnalysis();
+
 document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
 
 const history=data?.history||[];
@@ -281,6 +293,68 @@ renderLineChart(history);
 
 }catch(e){
 console.error('Load error:',e);
+}
+}
+
+async function loadWaveAnalysis(){
+try{
+const ts=Date.now();
+const response=await fetch('data/elliott_wave_analysis.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+if(!response.ok)throw new Error('HTTP '+response.status);
+const data=await response.json();
+
+const analyses=data.analyses||{};
+const container=document.getElementById('wave-preview');
+
+// Get position symbols
+const posResponse=await fetch('data/fund_state.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+const posData=await posResponse.json();
+const positionSymbols=posData.active_positions?.map(p=>p.symbol)||[];
+
+// Filter for positions + SPY/QQQ
+const relevantSymbols=['SPY','QQQ',...positionSymbols].filter((v,i,a)=>a.indexOf(v)===i);
+
+let html='';
+relevantSymbols.forEach(symbol=>{
+const analysis=analyses[symbol];
+if(!analysis||analysis.error)return;
+
+const trendClass=analysis.trend==='BULLISH'?'positive':(analysis.trend==='BEARISH'?'negative':'neutral');
+const trendColor=analysis.trend==='BULLISH'?'#10b981':(analysis.trend==='BEARISH'?'#ef4444':'#64748b');
+
+html+='<div style="background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:16px;margin-bottom:12px;">';
+html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
+html+='<span style="font-weight:700;font-size:16px;">'+symbol+'</span>';
+html+='<span style="font-size:12px;padding:4px 10px;border-radius:20px;background:rgba(99,102,241,.15);color:'+trendColor+';">'+analysis.trend+'</span>';
+html+='</div>';
+html+='<div style="font-size:12px;color:#8b8b9e;margin-bottom:8px;">'+analysis.wave_description+'</div>';
+html+='<div style="display:flex;gap:16px;font-size:13px;">';
+html+='<span>RSI: <b>'+analysis.rsi.toFixed(1)+'</b></span>';
+html+='<span>Price: <b>$'+analysis.current_price.toFixed(2)+'</b></span>';
+html+='</div>';
+
+// Top scenario
+if(analysis.scenarios&&analysis.scenarios.length>0){
+const topScenario=analysis.scenarios.reduce((a,b)=>a.probability>b.probability?a:b);
+html+='<div style="margin-top:12px;padding:12px;background:#0a0a0f;border-radius:8px;">';
+html+='<div style="font-size:11px;color:#64748b;margin-bottom:4px;">Most Likely Scenario ('+topScenario.probability+'%)</div>';
+html+='<div style="font-size:13px;font-weight:600;">'+topScenario.name+': $'+topScenario.target.toFixed(2)+'</div>';
+html+='<div style="font-size:11px;color:#8b8b9e;">'+topScenario.description+'</div>';
+html+='</div>';
+}
+
+html+='</div>';
+});
+
+if(html===''){
+html='<div style="text-align:center;padding:20px;color:#64748b;">No analysis available</div>';
+}
+
+container.innerHTML=html;
+
+}catch(e){
+console.error('Wave analysis error:',e);
+document.getElementById('wave-preview').innerHTML='<div style="text-align:center;padding:20px;color:#64748b;">Unable to load analysis</div>';
 }
 }
 
