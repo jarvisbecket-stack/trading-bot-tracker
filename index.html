@@ -311,8 +311,8 @@ const posResponse=await fetch('data/fund_state.json?cb='+ts,{cache:'no-store',he
 const posData=await posResponse.json();
 const positionSymbols=posData.active_positions?.map(p=>p.symbol)||[];
 
-// Filter for positions + SPY/QQQ
-const relevantSymbols=['SPY','QQQ',...positionSymbols].filter((v,i,a)=>a.indexOf(v)===i);
+// Filter for positions + SPY/QQQ/BTC
+const relevantSymbols=['SPY','QQQ','BTC',...positionSymbols].filter((v,i,a)=>a.indexOf(v)===i);
 
 let html='';
 relevantSymbols.forEach(symbol=>{
