@@ -6,232 +6,166 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>White Wolf Clan | Intelligence</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden;box-sizing:border-box}
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #1a1a25;
+  --border: #2a2a3a;
+  --text-primary: #f0f0f5;
+  --text-secondary: #8b8b9e;
+  --text-muted: #64748b;
+  --accent: #6366f1;
+  --accent-secondary: #8b5cf6;
+}
 
-#app{max-width:100vw;overflow-x:hidden;box-sizing:border-box}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
 
-nav{background:#12121a;border-bottom:1px solid #2a2a3a;padding:12px 16px;position:sticky;top:0;z-index:100}
-.navinner{max-width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
-.brandicon{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
-.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.navlinks::-webkit-scrollbar{display:none}
-.navlinks a{color:#8b8b9e;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
-.navlinks a:hover,.navlinks a.active{background:rgba(99,102,241,.15);color:#6366f1}
+body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
 
-.container{padding:16px;padding-bottom:80px;max-width:100vw}
+nav { background: rgba(18,18,26,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 16px; position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+.brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.nav-links { display: flex; gap: 8px; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.nav-links a:hover, .nav-links a.active { background: rgba(99,102,241,0.15); color: var(--accent); }
 
-/* Header */
-.header{margin-bottom:20px}
-.header h1{font-size:24px;font-weight:700;margin-bottom:4px}
-.header p{font-size:13px;color:#8b8b9e}
+.container { max-width: 600px; margin: 0 auto; padding: 20px 16px 100px; }
 
-/* Watch Section */
-.watch-section{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px;margin-bottom:20px}
-.watch-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px;font-weight:600}
-.watch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.watch-item{background:#0a0a0f;border-radius:12px;padding:14px;text-align:center}
-.watch-symbol{font-size:14px;font-weight:700;color:#6366f1;margin-bottom:4px}
-.watch-price{font-size:20px;font-weight:800;font-family:monospace;margin-bottom:4px}
-.watch-change{font-size:12px;font-weight:600}
-.watch-change.up{color:#10b981}
-.watch-change.down{color:#ef4444}
-.watch-strike{font-size:11px;color:#64748b;margin-top:4px}
+.page-header { margin-bottom: 24px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+.page-subtitle { font-size: 14px; color: var(--text-secondary); }
 
-/* Alerts */
-.alerts-section{margin-bottom:20px}
-.alerts-header{font-size:14px;font-weight:600;color:#8b8b9e;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
-.alert-item{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
-.alert-icon{font-size:20px}
-.alert-content{flex:1}
-.alert-title{font-size:14px;font-weight:600;margin-bottom:2px}
-.alert-text{font-size:12px;color:#8b8b9e}
-.alert-meta{font-size:11px;color:#64748b;margin-top:4px}
+/* Position Watch */
+.watch-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 24px; }
+.watch-header { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; }
+.watch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.watch-item { background: var(--bg-secondary); border-radius: 12px; padding: 14px; text-align: center; }
+.watch-symbol { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.watch-price { font-size: 20px; font-weight: 800; font-family: monospace; }
+.watch-strike { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
-/* News */
-.news-section{background:#12121a;border:1px solid #2a2a3a;border-radius:16px;padding:16px}
-.news-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:14px;font-weight:600}
-.news-count{font-size:12px;color:#64748b;font-weight:400}
-.news-item{padding:14px 0;border-bottom:1px solid #2a2a3a}
-.news-item:last-child{border-bottom:none;padding-bottom:0}
-.news-item:first-child{padding-top:0}
-.news-source{display:flex;gap:8px;align-items:center;margin-bottom:6px;font-size:11px}
-.news-badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase}
-.news-badge.mstr{background:rgba(99,102,241,.15);color:#6366f1}
-.news-badge.bac{background:rgba(16,185,129,.15);color:#10b981}
-.news-badge.market{background:rgba(100,116,139,.15);color:#64748b}
-.news-source-name{color:#64748b}
-.news-time{color:#64748b}
-.news-headline{display:block;color:#e8e8f0;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:6px;line-height:1.4}
-.news-headline:hover{color:#6366f1}
-.news-summary{font-size:12px;color:#8b8b9e;line-height:1.5}
-
-/* Empty */
-.empty{text-align:center;padding:40px 20px;color:#64748b;font-size:13px}
+/* News List */
+.news-list { display: flex; flex-direction: column; gap: 12px; }
+.news-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-decoration: none; color: inherit; transition: all 0.2s; }
+.news-item:hover { border-color: var(--accent); }
+.news-header { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.news-symbol { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: rgba(99,102,241,0.15); color: var(--accent); }
+.news-source { font-size: 11px; color: var(--text-muted); }
+.news-headline { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+.news-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
 
 /* Status Bar */
-#statusbar{position:fixed;bottom:0;left:0;right:0;background:#12121a;border-top:1px solid #2a2a3a;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;z-index:100}
-.status-live{color:#10b981;display:flex;align-items:center;gap:6px}
-.status-live::before{content:'';width:6px;height:6px;background:#10b981;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(18,18,26,0.98); backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); z-index: 100; }
+.status-live { color: #10b981; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.status-live::before { content: ''; width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.empty { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
 </style>
 </head>
 <body>
-<div id="app">
-<nav><div class="navinner">
-<div class="brand"><div class="brandicon">WW</div>White Wolf</div>
-<div class="navlinks">
-<a href="index.html">Dashboard</a>
-<a href="positions.html">Positions</a>
-<a href="wave-analysis.html">Waves</a>
-<a href="news.html" class="active">Intel</a>
-</div>
-</div></nav>
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><div class="brand-icon">WW</div><span>White Wolf</span></div>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="wave-analysis.html">Waves</a>
+      <a href="news.html" class="active">Intel</a>
+    </div>
+  </div>
+</nav>
 
 <div class="container">
-<div class="header">
-<h1>Market Intelligence</h1>
-<p>Position-relevant news & alerts only</p>
+  <div class="page-header">
+    <div class="page-title">Market Intelligence</div>
+    <div class="page-subtitle">Position-relevant news only</div>
+  </div>
+
+  <!-- Position Watch -->
+  <div class="watch-section">
+    <div class="watch-header">Position Watch</div>
+    <div class="watch-grid" id="watch-grid">
+      <div class="empty" style="padding:20px;"><div class="empty-icon">📊</div>Loading...</div>
+    </div>
+  </div>
+
+  <!-- News Feed -->
+  <div class="news-list" id="news-list">
+    <div class="empty"><div class="empty-icon">📰</div>Loading intelligence...</div>
+  </div>
 </div>
 
-<!-- Live Position Watch -->
-<div class="watch-section">
-<div class="watch-header">Position Watch <span style="font-size:11px;color:#64748b">Live prices</span></div>
-<div class="watch-grid" id="watch-grid">
-<div style="color:#64748b;font-size:13px;padding:20px">Loading positions...</div>
-</div>
-</div>
-
-<!-- Active Alerts -->
-<div class="alerts-section">
-<div class="alerts-header">Active Alerts</div>
-<div id="alerts-list">
-<!-- Alerts populated dynamically -->
-</div>
-</div>
-
-<!-- Filtered News -->
-<div class="news-section">
-<div class="news-header">Position-Relevant News <span class="news-count" id="news-count">Loading...</span></div>
-<div id="news-feed">
-<div style="text-align:center;padding:40px;color:#8b8b9e;font-size:13px">Loading intelligence...</div>
-</div>
-</div>
-</div>
-
-<div id="statusbar">
-<span id="last-update">--</span>
-<span>Tradier Live • Finnhub</span>
-</div>
+<div class="status-bar">
+  <span id="last-update">--</span>
+  <span class="status-live">● Live</span>
 </div>
 
 <script>
-async function loadData(){
-try{
-const ts=Date.now();
-const response=await fetch('data/fund_state.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
-if(!response.ok)throw new Error('HTTP '+response.status);
-const data=await response.json();
+function fmt(n) { return '$' + (n || 0).toLocaleString(); }
 
-const positions=data?.active_positions||[];
-
-let watchHtml='';
-if(positions.length===0){
-watchHtml='<div style="color:#64748b;font-size:13px;padding:20px">No active positions</div>';
-document.getElementById('alerts-list').innerHTML='';
-}else{
-positions.forEach(p=>{
-watchHtml+='<div class="watch-item">';
-watchHtml+='<div class="watch-symbol">'+p.symbol+'</div>';
-watchHtml+='<div class="watch-price">$'+p.entry_stock_price.toFixed(2)+'</div>';
-watchHtml+='<div class="watch-strike">Put @ $'+p.strike+'</div>';
-watchHtml+='</div>';
-});
-
-// Generate alerts based on positions
-let alertsHtml='';
-positions.forEach(p=>{
-const dte=Math.ceil((new Date(p.expiration)-new Date())/(1000*60*60*24));
-if(dte<=7){
-alertsHtml+='<div class="alert-item">';
-alertsHtml+='<div class="alert-icon">⚠️</div>';
-alertsHtml+='<div class="alert-content">';
-alertsHtml+='<div class="alert-title">'+p.symbol+' Expiration Warning</div>';
-alertsHtml+='<div class="alert-text">Position expires in '+dte+' days ('+p.expiration+'). Consider buy-to-close targets.</div>';
-alertsHtml+='<div class="alert-meta">'+dte+' DTE</div>';
-alertsHtml+='</div>';
-alertsHtml+='</div>';
-}
-});
-if(alertsHtml===''){
-alertsHtml='<div class="alert-item"><div class="alert-icon">✅</div><div class="alert-content"><div class="alert-title">All Clear</div><div class="alert-text">No active alerts. Positions healthy.</div></div></div>';
-}
-document.getElementById('alerts-list').innerHTML=alertsHtml;
-}
-document.getElementById('watch-grid').innerHTML=watchHtml;
-
-await loadNews(positions.map(p=>p.symbol));
-
-document.getElementById('last-update').textContent=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false,hour:'2-digit',minute:'2-digit'})+' CST';
-}catch(e){
-console.error('Load error:',e);
-}
+async function loadData() {
+  try {
+    const ts = Date.now();
+    const [fundRes, newsRes] = await Promise.all([
+      fetch('data/fund_state.json?cb=' + ts, { cache: 'no-store' }),
+      fetch('data/news.json?cb=' + ts, { cache: 'no-store' })
+    ]);
+    
+    const fundData = fundRes.ok ? await fundRes.json() : null;
+    const newsData = newsRes.ok ? await newsRes.json() : null;
+    
+    updateWatch(fundData);
+    updateNews(newsData, fundData);
+    
+    document.getElementById('last-update').textContent = new Date().toLocaleTimeString('en-US', {
+      timeZone: 'America/Chicago', hour12: false, hour: '2-digit', minute: '2-digit'
+    }) + ' CST';
+  } catch (e) { console.error(e); }
 }
 
-async function loadNews(positionSymbols){
-try{
-const ts=Date.now();
-const response=await fetch('data/news.json?cb='+ts,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
-if(!response.ok){
-document.getElementById('news-count').textContent='0 articles';
-document.getElementById('news-feed').innerHTML='<div style="text-align:center;padding:40px;color:#64748b;font-size:13px">No news available</div>';
-return;
-}
-const data=await response.json();
-const articles=data?.articles||[];
-
-let relevantArticles=articles.filter(a=>{
-if(!positionSymbols||positionSymbols.length===0)return true;
-return positionSymbols.includes(a.symbol)||a.symbol==='MARKET';
-});
-
-if(relevantArticles.length===0){
-relevantArticles=articles;
+function updateWatch(data) {
+  if (!data || !data.active_positions) return;
+  
+  let html = '';
+  data.active_positions.forEach(p => {
+    html += '<div class="watch-item">';
+    html += '<div class="watch-symbol">' + p.symbol + '</div>';
+    html += '<div class="watch-price">$' + p.strike + '</div>';
+    html += '<div class="watch-strike">' + p.contracts + ' contracts</div>';
+    html += '</div>';
+  });
+  document.getElementById('watch-grid').innerHTML = html;
 }
 
-document.getElementById('news-count').textContent=relevantArticles.length+' articles';
-
-if(relevantArticles.length===0){
-document.getElementById('news-feed').innerHTML='<div style="text-align:center;padding:40px;color:#64748b;font-size:13px">No position-relevant news</div>';
-return;
+function updateNews(newsData, fundData) {
+  const container = document.getElementById('news-list');
+  if (!newsData || !newsData.articles || newsData.articles.length === 0) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">📰</div>No news available</div>';
+    return;
+  }
+  
+  const symbols = fundData?.active_positions?.map(p => p.symbol) || [];
+  let articles = newsData.articles.filter(a => symbols.includes(a.symbol) || a.symbol === 'MARKET').slice(0, 6);
+  
+  let html = '';
+  articles.forEach(a => {
+    html += '<a href="' + (a.url || '#') + '" class="news-item" target="_blank">';
+    html += '<div class="news-header">';
+    html += '<span class="news-symbol">' + a.symbol + '</span>';
+    html += '<span class="news-source">' + (a.source || 'News') + '</span>';
+    html += '</div>';
+    html += '<div class="news-headline">' + a.headline + '</div>';
+    if (a.summary) html += '<div class="news-summary">' + a.summary + '</div>';
+    html += '</a>';
+  });
+  container.innerHTML = html;
 }
 
-let html='';
-relevantArticles.forEach(article=>{
-const time=new Date(article.datetime*1000).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
-const badgeClass=article.symbol==='MSTR'?'mstr':(article.symbol==='BAC'?'bac':'market');
-html+='<div class="news-item">';
-html+='<div class="news-source">';
-html+='<span class="news-badge '+badgeClass+'">'+article.symbol+'</span>';
-html+='<span class="news-source-name">'+article.source+'</span>';
-html+='<span class="news-time">'+time+'</span>';
-html+='</div>';
-html+='<a href="'+article.url+'" target="_blank" class="news-headline">'+article.headline+'</a>';
-html+='<div class="news-summary">'+article.summary+'</div>';
-html+='</div>';
-});
-document.getElementById('news-feed').innerHTML=html;
-}catch(e){
-console.error('News load error:',e);
-document.getElementById('news-count').textContent='Error';
-}
-}
-
-// Auto-load on DOM ready
-document.addEventListener('DOMContentLoaded',()=>{
-loadData();
-setInterval(loadData,60000);
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  setInterval(loadData, 30000);
 });
 </script>
 </body>
