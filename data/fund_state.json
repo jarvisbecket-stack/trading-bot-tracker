@@ -10,7 +10,7 @@
   "total_premium_collected": 5268.0,
   "total_premium_paid": 0.0,
   "total_commissions": 14.0,
-  "unrealized_pnl": 0.0,
+  "unrealized_pnl": 757.0,
   "realized_pnl": 0.0,
   "active_positions": [
     {
@@ -35,7 +35,16 @@
       "exit_reason": null,
       "realized_pnl": 0.0,
       "status": "OPEN",
-      "notes": "Opened via unified bot | Target OTM: 5%"
+      "notes": "Opened via unified bot | Target OTM: 5%",
+      "current_option_price": 1.58,
+      "current_buyback_cost": 316.0,
+      "unrealized_pnl": 746.6,
+      "profit_pct": 70.16917293233082,
+      "bid": 1.35,
+      "ask": 1.81,
+      "volume": 153,
+      "open_interest": 807,
+      "last_updated": "2026-03-10 13:09:37"
     },
     {
       "position_id": "MSTR_20260305_091151",
@@ -59,7 +68,16 @@
       "exit_reason": null,
       "realized_pnl": 0.0,
       "status": "OPEN",
-      "notes": "Opened via unified bot | Target OTM: 10%"
+      "notes": "Opened via unified bot | Target OTM: 10%",
+      "current_option_price": 2.89,
+      "current_buyback_cost": 2601.0,
+      "unrealized_pnl": 146.7,
+      "profit_pct": 5.326797385620915,
+      "bid": 2.79,
+      "ask": 2.99,
+      "volume": 185,
+      "open_interest": 474,
+      "last_updated": "2026-03-10 13:09:38"
     },
     {
       "position_id": "BAC_20260305_091155",
@@ -83,7 +101,16 @@
       "exit_reason": null,
       "realized_pnl": 0.0,
       "status": "OPEN",
-      "notes": "Opened via unified bot | Target OTM: 5%"
+      "notes": "Opened via unified bot | Target OTM: 5%",
+      "current_option_price": 0.54,
+      "current_buyback_cost": 1566.0,
+      "unrealized_pnl": -136.3,
+      "profit_pct": -9.400000000000002,
+      "bid": 0.53,
+      "ask": 0.55,
+      "volume": 141,
+      "open_interest": 6694,
+      "last_updated": "2026-03-10 13:09:39"
     }
   ],
   "closed_positions": [],
@@ -94,6 +121,6 @@
   "roi_pct": 0.0,
   "target_roi_pct": 100.0,
   "note": "Markets open - 3 positions active, monitoring for 50% profit exits",
-  "last_updated": "2026-03-06T09:24:52",
+  "last_updated": "2026-03-10T13:09:42",
   "data_source": "Tradier API"
 }
