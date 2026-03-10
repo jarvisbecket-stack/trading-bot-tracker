@@ -1,239 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="60">
-    <title>Paper Trading Bot - Trade Log</title>
-    <style>
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: #1a1a25;
-            --text-primary: #e8e8f0;
-            --text-secondary: #a0a0b0;
-            --accent-success: #10b981;
-            --accent-costco: #e31837;
-            --accent-bitcoin: #f7931a;
-            --accent-ko: #dc2626;
-            --border-color: #2a2a3a;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
-        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 1rem; text-align: center; }
-        h1 { font-size: 2rem; }
-        .subtitle { opacity: 0.9; margin-top: 0.5rem; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
-        .alert-box { background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.5); border-radius: 12px; padding: 1.5rem; margin: 2rem 0; text-align: center; }
-        .alert-title { color: var(--accent-success); font-size: 1.5rem; font-weight: 700; }
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .summary-card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid var(--border-color); }
-        .summary-value { font-size: 2.5rem; font-weight: 700; }
-        .summary-label { color: var(--text-secondary); margin-top: 0.5rem; }
-        .trades-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg-card); border-radius: 12px; overflow: hidden; }
-        .trades-table th, .trades-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
-        .trades-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.875rem; }
-        .status-open { background: rgba(16, 185, 129, 0.2); color: var(--accent-success); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600; }
-        .bot-section { margin: 2rem 0; }
-        .bot-header { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); }
-        .bot-header.cost { color: var(--accent-costco); border-color: var(--accent-costco); }
-        .bot-header.mstr { color: var(--accent-bitcoin); border-color: var(--accent-bitcoin); }
-        .bot-header.ko { color: var(--accent-ko); border-color: var(--accent-ko); }
-        .bot-header.vz { color: #2563eb; border-color: #2563eb; }
-        .bot-header.bac { color: #0891b2; border-color: #0891b2; }
-        .bot-header.wfc { color: #dc2626; border-color: #dc2626; }
-        .bot-header.nvda { color: #10b981; border-color: #10b981; }
-        .bot-header.amd { color: #f59e0b; border-color: #f59e0b; }
-        .bot-header.nflx { color: #ef4444; border-color: #ef4444; }
-        .bot-header.xom { color: #8b5cf6; border-color: #8b5cf6; }
-        .bot-header.crm { color: #06b6d4; border-color: #06b6d4; }
-        .bot-header.wmt { color: #3b82f6; border-color: #3b82f6; }
-        .bot-header.pg { color: #14b8a6; border-color: #14b8a6; }
-        .bot-header.cvx { color: #f97316; border-color: #f97316; }
-        .bot-header.sbux { color: #22c55e; border-color: #22c55e; }
-        .bot-header.aapl { color: #64748b; border-color: #64748b; }
-        .bot-header.msft { color: #0ea5e9; border-color: #0ea5e9; }
-        .bot-header.googl { color: #eab308; border-color: #eab308; }
-        .bot-header.amzn { color: #ec4899; border-color: #ec4899; }
-        .bot-header.t { color: #6366f1; border-color: #6366f1; }
-        .update-time { text-align: center; color: var(--text-secondary); margin: 1rem 0; font-size: 0.875rem; }
-        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>White Wolf Clan | Trade History</title>
+<style>
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #1a1a25;
+  --border: #2a2a3a;
+  --text-primary: #f0f0f5;
+  --text-secondary: #8b8b9e;
+  --text-muted: #64748b;
+  --accent: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --profit: #10b981;
+  --loss: #ef4444;
+  --warning: #f59e0b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+
+nav { background: rgba(18,18,26,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 16px; position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+.brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.nav-links { display: flex; gap: 8px; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.nav-links a:hover, .nav-links a.active { background: rgba(99,102,241,0.15); color: var(--accent); }
+
+.container { max-width: 600px; margin: 0 auto; padding: 20px 16px 100px; }
+
+.page-header { margin-bottom: 24px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+.page-subtitle { font-size: 14px; color: var(--text-secondary); }
+
+/* Filters */
+.filters { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+.filter-btn { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: rgba(99,102,241,0.15); border-color: var(--accent); color: var(--accent); }
+
+/* Stats Summary */
+.stats-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 8px; text-align: center; }
+.stat-box-value { font-size: 20px; font-weight: 800; font-family: monospace; }
+.stat-box-value.profit { color: var(--profit); }
+.stat-box-value.loss { color: var(--loss); }
+.stat-box-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; margin-top: 4px; }
+
+/* Trade Cards */
+.trade-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 12px; position: relative; overflow: hidden; }
+.trade-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.trade-card.open::before { background: linear-gradient(90deg, var(--accent), var(--accent-secondary)); }
+.trade-card.profit::before { background: linear-gradient(90deg, var(--profit), #059669); }
+.trade-card.loss::before { background: linear-gradient(90deg, var(--loss), #dc2626); }
+
+.trade-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.trade-symbol { display: flex; align-items: center; gap: 10px; }
+.trade-badge { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 14px; }
+.trade-type { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: var(--bg-secondary); color: var(--text-secondary); }
+.trade-type.csp { background: rgba(16,185,129,0.15); color: var(--profit); }
+.trade-type.cc { background: rgba(99,102,241,0.15); color: var(--accent); }
+
+.trade-status { text-align: right; }
+.trade-status-text { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+.trade-status-text.open { background: rgba(99,102,241,0.15); color: var(--accent); }
+.trade-status-text.profit { background: rgba(16,185,129,0.15); color: var(--profit); }
+.trade-status-text.loss { background: rgba(239,68,68,0.15); color: var(--loss); }
+.trade-date { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+/* Trade Details Grid */
+.trade-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.trade-detail { text-align: center; }
+.trade-detail-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+.trade-detail-value { font-size: 16px; font-weight: 700; font-family: monospace; }
+.trade-detail-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+/* Trade P&L Section */
+.trade-pnl { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; }
+.trade-pnl-label { font-size: 12px; color: var(--text-secondary); }
+.trade-pnl-value { font-size: 20px; font-weight: 800; font-family: monospace; }
+.trade-pnl-value.profit { color: var(--profit); }
+.trade-pnl-value.loss { color: var(--loss); }
+
+/* Exit Details */
+.exit-details { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+.exit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.exit-item { display: flex; justify-content: space-between; font-size: 12px; }
+.exit-label { color: var(--text-muted); }
+.exit-value { font-family: monospace; }
+
+/* Empty State */
+.empty { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+/* Status Bar */
+.status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(18,18,26,0.98); backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); z-index: 100; }
+.status-live { color: var(--profit); display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.status-live::before { content: ''; width: 8px; height: 8px; background: var(--profit); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* Month Separator */
+.month-separator { display: flex; align-items: center; margin: 24px 0 16px; }
+.month-separator::before, .month-separator::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.month-separator-text { padding: 0 12px; font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+</style>
 </head>
 <body>
-    <header>
-        <h1>📋 Paper Trading Bot - Trade Log</h1>
-        <div class="subtitle">20-Way Bot Race | Live Trade Updates | Timeout Enabled | Wash Sale Compliant</div>
-    </header>
-
-    <div class="container">
-        <div class="update-time">🔄 Last Updated: 2026-03-10 15:35:01 CST | Auto-refresh: 60s</div>
-
-        <div class="alert-box">
-            <div class="alert-title">🟢 RACE IS LIVE - 20 BOTS TRADING</div>
-            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Auto-timeout enabled | Wash sale compliant | Mid-price fills</div>
-        </div>
-
-        <div class="summary-grid">
-            <div class="summary-card">
-                <div class="summary-value">42</div>
-                <div class="summary-label">Total Trades Today</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-value" style="color: var(--accent-success);">$+3,921,428.549999999</div>
-                <div class="summary-label">Combined P&L</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-value">$5,921,429</div>
-                <div class="summary-label">Total Portfolio Value</div>
-            </div>
-        </div>
-
-        <div class="bot-section">
-            <div class="bot-header ko">COCA-COLA (KO) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 9 trades | 
-                <strong>Cash:</strong> $105,389.25 | 
-                <strong>Return:</strong> +5.39%
-            </div>
-
-            <table class="trades-table">
-                <thead>
-                    <tr>
-                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-03-03 15:30:14</td>
-                        <td>SELL_PUT</td>
-                        <td>KO260324P00076960</td>
-                        <td>$76.96</td>
-                        <td>2026-03-24</td>
-                        <td>5</td>
-                        <td style="color: var(--accent-success);">+$593.25</td>
-                        <td><span class="status-open">OPEN</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header vz">VERIZON (VZ) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 9 trades | 
-                <strong>Cash:</strong> $105,418.50 | 
-                <strong>Return:</strong> +5.42%
-            </div>
-
-            <table class="trades-table">
-                <thead>
-                    <tr>
-                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-03-03 15:30:17</td>
-                        <td>SELL_PUT</td>
-                        <td>VZ260324P00048840</td>
-                        <td>$48.84</td>
-                        <td>2026-03-24</td>
-                        <td>10</td>
-                        <td style="color: var(--accent-success);">+$606.50</td>
-                        <td><span class="status-open">OPEN</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header bac">BANK OF AMERICA (BAC) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 24 trades | 
-                <strong>Cash:</strong> $1,010,620.80 | 
-                <strong>Return:</strong> +910.62%
-            </div>
-
-            <table class="trades-table">
-                <thead>
-                    <tr>
-                        <th>Time</th><th>Action</th><th>Option</th><th>Strike</th><th>Exp</th><th>Contracts</th><th>Premium</th><th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-03-10 15:30:04</td>
-                        <td>SELL_PUT</td>
-                        <td>BAC260327P00043000</td>
-                        <td>$43.00</td>
-                        <td>2026-03-27</td>
-                        <td>8</td>
-                        <td style="color: var(--accent-success);">+$301.20</td>
-                        <td><span class="status-open">OPEN</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header wfc">WELLS FARGO (WFC) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header xom">EXXON MOBIL (XOM) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header wmt">WALMART (WMT) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header pg">PROCTER & GAMBLE (PG) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header cvx">CHEVRON (CVX) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header sbux">STARBUCKS (SBUX) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
-        <div class="bot-section">
-            <div class="bot-header t">AT&T (T) - Current Position</div>
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <strong>Trade Count:</strong> 0 trades | 
-                <strong>Cash:</strong> $100,000.00 | 
-                <strong>Return:</strong> +0.00%
-            </div>
-        </div>
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><div class="brand-icon">WW</div><span>White Wolf</span></div>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="wave-analysis.html">Waves</a>
+      <a href="news.html">Intel</a>
+      <a href="trades.html" class="active">Trades</a>
     </div>
+  </div>
+</nav>
 
-    <div class="footer">
-        <p>Paper Trading Trade Log | 3-Way Bot Race</p>
-        <p><a href="bot-race.html" style="color: var(--accent-info);">← Back to Race Dashboard</a></p>
+<div class="container">
+  <div class="page-header">
+    <div class="page-title">Trade History</div>
+    <div class="page-subtitle" id="trade-count">Complete transaction log</div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All Trades</button>
+    <button class="filter-btn" data-filter="open">Open</button>
+    <button class="filter-btn" data-filter="closed">Closed</button>
+    <button class="filter-btn" data-filter="profit">Profits</button>
+    <button class="filter-btn" data-filter="loss">Losses</button>
+  </div>
+
+  <!-- Stats Summary -->
+  <div class="stats-summary" id="stats-summary">
+    <div class="stat-box">
+      <div class="stat-box-value" id="stat-total">0</div>
+      <div class="stat-box-label">Total</div>
     </div>
+    <div class="stat-box">
+      <div class="stat-box-value profit" id="stat-wins">0</div>
+      <div class="stat-box-label">Wins</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-value loss" id="stat-losses">0</div>
+      <div class="stat-box-label">Losses</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-value" id="stat-winrate">0%</div>
+      <div class="stat-box-label">Win Rate</div>
+    </div>
+  </div>
+
+  <!-- Trade List -->
+  <div id="trade-list">
+    <div class="empty">
+      <div class="empty-icon">📊</div>
+      Loading trades...
+    </div>
+  </div>
+</div>
+
+<div class="status-bar">
+  <span id="last-update">--</span>
+  <span class="status-live">● Live</span>
+</div>
+
+<script>
+// Formatters
+function fmt(n) { return '$' + (n || 0).toLocaleString(); }
+function fmtDec(n) { return '$' + (n || 0).toFixed(2); }
+
+let allTrades = [];
+let currentFilter = 'all';
+
+async function loadData() {
+  try {
+    const ts = Date.now();
+    const res = await fetch('data/fund_state.json?cb=' + ts, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    
+    processTrades(data);
+    updateStats();
+    renderTrades();
+    
+    document.getElementById('last-update').textContent = new Date().toLocaleTimeString('en-US', {
+      timeZone: 'America/Chicago', hour12: false, hour: '2-digit', minute: '2-digit'
+    }) + ' CST';
+  } catch (e) {
+    console.error('Load error:', e);
+  }
+}
+
+function processTrades(data) {
+  allTrades = [];
+  
+  // Active (Open) Positions
+  if (data.active_positions) {
+    data.active_positions.forEach(p => {
+      allTrades.push({
+        ...p,
+        status: 'OPEN',
+        pnl: p.unrealized_pnl || 0,
+        pnlPct: p.profit_pct || 0,
+        entryDate: p.entry_date,
+        exitDate: null
+      });
+    });
+  }
+  
+  // Closed Positions
+  if (data.closed_positions) {
+    data.closed_positions.forEach(p => {
+      allTrades.push({
+        ...p,
+        status: 'CLOSED',
+        pnl: p.realized_pnl || 0,
+        pnlPct: ((p.realized_pnl || 0) / (p.entry_premium_total || 1)) * 100,
+        entryDate: p.entry_date,
+        exitDate: p.exit_date
+      });
+    });
+  }
+  
+  // Sort by entry date (newest first)
+  allTrades.sort((a, b) => new Date(b.entryDate) - new Date(a.entryDate));
+}
+
+function updateStats() {
+  const total = allTrades.length;
+  const wins = allTrades.filter(t => t.status === 'CLOSED' && t.pnl > 0).length;
+  const losses = allTrades.filter(t => t.status === 'CLOSED' && t.pnl <= 0).length;
+  const closed = wins + losses;
+  const winRate = closed > 0 ? ((wins / closed) * 100).toFixed(0) + '%' : '0%';
+  
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-wins').textContent = wins;
+  document.getElementById('stat-losses').textContent = losses;
+  document.getElementById('stat-winrate').textContent = winRate;
+  document.getElementById('trade-count').textContent = total + ' total trades';
+}
+
+function getStrategyType(position) {
+  const notes = position.notes || '';
+  if (notes.includes('SELL_PUT')) return { code: 'csp', label: 'Cash Secured Put' };
+  if (notes.includes('COVERED_CALL')) return { code: 'cc', label: 'Covered Call' };
+  return { code: 'csp', label: 'Cash Secured Put' };
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '--';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatTime(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+}
+
+function renderTrades() {
+  const container = document.getElementById('trade-list');
+  
+  // Filter trades
+  let filtered = allTrades;
+  if (currentFilter === 'open') filtered = allTrades.filter(t => t.status === 'OPEN');
+  else if (currentFilter === 'closed') filtered = allTrades.filter(t => t.status === 'CLOSED');
+  else if (currentFilter === 'profit') filtered = allTrades.filter(t => t.pnl > 0);
+  else if (currentFilter === 'loss') filtered = allTrades.filter(t => t.pnl <= 0);
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>No trades found</div>';
+    return;
+  }
+  
+  let html = '';
+  let lastMonth = '';
+  
+  filtered.forEach(trade => {
+    // Month separator
+    const tradeMonth = new Date(trade.entryDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    if (tradeMonth !== lastMonth) {
+      html += '<div class="month-separator"><span class="month-separator-text">' + tradeMonth + '</span></div>';
+      lastMonth = tradeMonth;
+    }
+    
+    const pnlClass = trade.pnl >= 0 ? 'profit' : 'loss';
+    const strategy = getStrategyType(trade);
+    const isOpen = trade.status === 'OPEN';
+    
+    html += '<div class="trade-card ' + (isOpen ? 'open' : pnlClass) + '">';
+    
+    // Header
+    html += '<div class="trade-header">';
+    html += '<div class="trade-symbol">';
+    html += '<span class="trade-badge">' + trade.symbol + '</span>';
+    html += '<span class="trade-type ' + strategy.code + '">' + strategy.label + '</span>';
+    html += '</div>';
+    html += '<div class="trade-status">';
+    html += '<span class="trade-status-text ' + (isOpen ? 'open' : pnlClass) + '">' + (isOpen ? 'OPEN' : 'CLOSED') + '</span>';
+    html += '<div class="trade-date">' + formatDate(trade.entryDate) + '</div>';
+    html += '</div>';
+    html += '</div>';
+    
+    // Details Grid
+    html += '<div class="trade-details">';
+    html += '<div class="trade-detail">';
+    html += '<div class="trade-detail-label">Strike</div>';
+    html += '<div class="trade-detail-value">$' + trade.strike + '</div>';
+    html += '</div>';
+    html += '<div class="trade-detail">';
+    html += '<div class="trade-detail-label">Contracts</div>';
+    html += '<div class="trade-detail-value">' + trade.contracts + '</div>';
+    html += '<div class="trade-detail-sub">x100 shares</div>';
+    html += '</div>';
+    html += '<div class="trade-detail">';
+    html += '<div class="trade-detail-label">Premium</div>';
+    html += '<div class="trade-detail-value">' + fmt(trade.entry_premium_total) + '</div>';
+    html += '<div class="trade-detail-sub">$' + trade.entry_premium_per_share + '/share</div>';
+    html += '</div>';
+    html += '</div>';
+    
+    // P&L Section
+    html += '<div class="trade-pnl">';
+    html += '<span class="trade-pnl-label">' + (isOpen ? 'Unrealized P&L' : 'Realized P&L') + '</span>';
+    html += '<span class="trade-pnl-value ' + pnlClass + '">' + (trade.pnl >= 0 ? '+' : '') + fmtDec(trade.pnl) + '</span>';
+    html += '</div>';
+    
+    // Exit details for closed trades
+    if (!isOpen && trade.exitDate) {
+      html += '<div class="exit-details">';
+      html += '<div class="exit-grid">';
+      html += '<div class="exit-item"><span class="exit-label">Exit Date:</span><span class="exit-value">' + formatDate(trade.exitDate) + '</span></div>';
+      html += '<div class="exit-item"><span class="exit-label">Buyback Cost:</span><span class="exit-value">' + fmt(trade.exit_premium_total) + '</span></div>';
+      html += '<div class="exit-item"><span class="exit-label">Exit Price:</span><span class="exit-value">$' + trade.exit_premium_per_share + '</span></div>';
+      html += '<div class="exit-item"><span class="exit-label">Reason:</span><span class="exit-value">' + (trade.exit_reason || 'Manual') + '</span></div>';
+      html += '</div>';
+      html += '</div>';
+    }
+    
+    // Expiration for open trades
+    if (isOpen) {
+      const expDate = new Date(trade.expiration);
+      const today = new Date();
+      const dte = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+      html += '<div class="exit-details">';
+      html += '<div class="exit-grid">';
+      html += '<div class="exit-item"><span class="exit-label">Expiration:</span><span class="exit-value">' + formatDate(trade.expiration) + '</span></div>';
+      html += '<div class="exit-item"><span class="exit-label">Days to Exp:</span><span class="exit-value">' + dte + ' DTE</span></div>';
+      html += '</div>';
+      html += '</div>';
+    }
+    
+    html += '</div>';
+  });
+  
+  container.innerHTML = html;
+}
+
+// Filter buttons
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('filter-btn')) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFilter = e.target.dataset.filter;
+    renderTrades();
+  }
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  setInterval(loadData, 30000);
+});
+</script>
 </body>
 </html>
