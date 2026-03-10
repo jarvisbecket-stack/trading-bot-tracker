@@ -95,5 +95,5 @@
   "target_roi_pct": 100.0,
   "note": "Markets open - 3 positions active, monitoring for 50% profit exits",
   "last_updated": "2026-03-06T09:24:52",
-  "data_source": "Alpaca API"
+  "data_source": "Tradier API"
 }
