@@ -288,11 +288,6 @@ nav {
   margin-bottom: 16px;
 }
 
-.premium-display.loss-bg {
-  background: rgba(239, 68, 68, 0.08);
-  border-color: rgba(239, 68, 68, 0.2);
-}
-
 .premium-label {
   font-size: 13px;
   color: var(--text-secondary);
@@ -303,10 +298,6 @@ nav {
   font-weight: 800;
   color: var(--profit);
   font-family: 'SF Mono', Monaco, monospace;
-}
-
-.premium-value.loss {
-  color: var(--loss);
 }
 
 /* METRICS GRID */
@@ -751,10 +742,10 @@ function updatePositions(data) {
     html += '</div>';
     html += '</div>';
     
-    // Premium Display
-    html += '<div class="premium-display ' + (pnl < 0 ? 'loss-bg' : '') + '">';
+    // Premium Display - ALWAYS GREEN (it's money received)
+    html += '<div class="premium-display">';
     html += '<div class="premium-label">Premium Collected</div>';
-    html += '<div class="premium-value ' + (pnl < 0 ? 'loss' : '') + '">' + fmt(p.entry_premium_total || 0) + '</div>';
+    html += '<div class="premium-value">' + fmt(p.entry_premium_total || 0) + '</div>';
     html += '</div>';
     
     // Metrics
