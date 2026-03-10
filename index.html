@@ -241,9 +241,9 @@ container.innerHTML='<div class="empty">No open positions</div>';
 let html='';
 const displayPositions = positions.length > 3 ? positions.slice(0,3) : positions;
 displayPositions.forEach(p=>{
-const pnl=p.realized_pnl||0;
+const pnl=p.unrealized_pnl||0;
 const pnlClass=pnl>=0?'positive':'negative';
-const buybackCost=p.exit_premium_total||0;
+const buybackCost=p.current_buyback_cost||0;
 
 html+='<div class="position-preview-card">';
 // Header: Symbol + Expiry
