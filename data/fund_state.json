@@ -10,7 +10,7 @@
   "total_premium_collected": 5268.0,
   "total_premium_paid": 0.0,
   "total_commissions": 14.0,
-  "unrealized_pnl": 757.0,
+  "unrealized_pnl": 698.9999999999998,
   "realized_pnl": 0.0,
   "active_positions": [
     {
@@ -44,7 +44,7 @@
       "ask": 1.81,
       "volume": 153,
       "open_interest": 807,
-      "last_updated": "2026-03-10 13:09:37"
+      "last_updated": "2026-03-10 13:13:55"
     },
     {
       "position_id": "MSTR_20260305_091151",
@@ -77,7 +77,7 @@
       "ask": 2.99,
       "volume": 185,
       "open_interest": 474,
-      "last_updated": "2026-03-10 13:09:38"
+      "last_updated": "2026-03-10 13:13:56"
     },
     {
       "position_id": "BAC_20260305_091155",
@@ -102,15 +102,15 @@
       "realized_pnl": 0.0,
       "status": "OPEN",
       "notes": "Opened via unified bot | Target OTM: 5%",
-      "current_option_price": 0.54,
-      "current_buyback_cost": 1566.0,
-      "unrealized_pnl": -136.3,
-      "profit_pct": -9.400000000000002,
-      "bid": 0.53,
-      "ask": 0.55,
+      "current_option_price": 0.5549999999999999,
+      "current_buyback_cost": 1609.5,
+      "unrealized_pnl": -179.8,
+      "profit_pct": -12.400000000000002,
+      "bid": 0.54,
+      "ask": 0.57,
       "volume": 141,
       "open_interest": 6694,
-      "last_updated": "2026-03-10 13:09:39"
+      "last_updated": "2026-03-10 13:13:57"
     }
   ],
   "closed_positions": [],
@@ -121,6 +121,6 @@
   "roi_pct": 0.0,
   "target_roi_pct": 100.0,
   "note": "Markets open - 3 positions active, monitoring for 50% profit exits",
-  "last_updated": "2026-03-10T13:09:42",
+  "last_updated": "2026-03-10T13:14:00",
   "data_source": "Tradier API"
 }
