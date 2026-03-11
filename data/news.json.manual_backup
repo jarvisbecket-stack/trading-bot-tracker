@@ -1,0 +1,78 @@
+{
+  "timestamp": "2026-03-10T11:45:00",
+  "data_source": "LIVE_RESEARCH",
+  "data_status": "LIVE",
+  "article_count": 9,
+  "articles": [
+    {
+      "symbol": "COST",
+      "headline": "Costco Reports Q2 2026 Earnings Beat - Net Income $2.03B",
+      "summary": "Costco Wholesale reported strong Q2 2026 results with net sales up 9.1% to $68.24B. Net income reached $2.03B ($4.58/share) vs $1.79B prior year. Comparable sales grew 7.4% company-wide. Stock showing bullish golden cross pattern.",
+      "url": "https://investor.costco.com/news",
+      "source": "Costco IR",
+      "datetime": 1773139200
+    },
+    {
+      "symbol": "COST",
+      "headline": "Costco Stock Forecast: Trading at $1,004, Golden Cross Signal",
+      "summary": "COST stock forecast shows neutral sentiment with RSI at 58.88. Stock trading 0.5% above 5-day forecast. Price prediction for 2026 ranges $786-$1,139. 50-day SMA at $951, 200-day SMA at $951.",
+      "url": "https://coincodex.com/stock/COST",
+      "source": "CoinCodex",
+      "datetime": 1773052800
+    },
+    {
+      "symbol": "MSTR",
+      "headline": "Strategy Buys $1.3B Bitcoin - Now Holds 738,731 BTC",
+      "summary": "MicroStrategy (now Strategy Inc) purchased 17,994 BTC between March 2-8 for $1.3B. Total holdings now 738,731 BTC at average cost ~$76,056. Saylor claims 'We can buy more Bitcoin than they can sell.'",
+      "url": "https://finance.yahoo.com/news/strategy-buys-1-3-billion",
+      "source": "Yahoo Finance",
+      "datetime": 1773142800
+    },
+    {
+      "symbol": "MSTR",
+      "headline": "MicroStrategy STRC Dividend Boosted to 11.50% - 7th Consecutive Hike",
+      "summary": "Strategy lifts STRC preferred dividend to 11.50% for March 2026. MSTR stock down 14.77% YTD due to Bitcoin drawdown. Company raised $84B target through 42/42 Plan.",
+      "source": "TradingKey",
+      "datetime": 1772883600
+    },
+    {
+      "symbol": "MSTR",
+      "headline": "Is MSTR Still the Ultimate Bitcoin Proxy in 2026?",
+      "summary": "MSTR trading at $133.88, down 60% from 2024 peak. Bitcoin holdings underwater at avg cost $76,056 vs current ~$67,312. Q4 2025 unrealized losses $17.44B. Stock acts as leveraged BTC proxy.",
+      "url": "https://www.kavout.com/market-lens",
+      "source": "Kavout",
+      "datetime": 1772966400
+    },
+    {
+      "symbol": "BAC",
+      "headline": "Bank of America Falls 3.62% on Ex-Dividend Date",
+      "summary": "BAC declined on March 6 ex-dividend date. Bank rejected US Crypto Bill compromise over stablecoin concerns. Analysts maintain Buy rating with $60.96 avg price target. MACD shows sell signal at -0.78.",
+      "url": "https://www.tradingkey.com/news",
+      "source": "TradingKey",
+      "datetime": 1773096000
+    },
+    {
+      "symbol": "BAC",
+      "headline": "BAC Redeems $2.8B Senior Notes Due 2027",
+      "summary": "Bank of America announced redemption of $2.8B in 1.658% Fixed/Floating Rate Senior Notes. Co-President Dean Athanasia presenting at RBC conference March 10. Q1 2026 earnings expected April 15.",
+      "url": "https://investor.bankofamerica.com",
+      "source": "BofA IR",
+      "datetime": 1773013200
+    },
+    {
+      "symbol": "BAC",
+      "headline": "Bank of America Dividend: $0.28/share, Yield 2.17%",
+      "summary": "BAC pays quarterly dividend of $0.28/share. Ex-date was March 6, payment date March 27, 2026. Annual dividend $1.12 with 2.17% yield. Bank has paid dividend 19 consecutive years.",
+      "url": "https://stockevents.app",
+      "source": "Stock Events",
+      "datetime": 1772966400
+    },
+    {
+      "symbol": "MARKET",
+      "headline": "SPY Trading at $677 - Market Shows Fear at 39 Index",
+      "summary": "Broader market showing fear sentiment with Fear & Greed Index at 39. SPY facing volatility. Fed policy and tariff uncertainty creating headwinds for financial sector.",
+      "source": "Market Watch",
+      "datetime": 1773142800
+    }
+  ]
+}
