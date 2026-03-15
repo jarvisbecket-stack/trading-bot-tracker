@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPX Trading Bot — Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:        #0A0D12;
+  --surface:   #0F1319;
+  --card:      #141920;
+  --card2:     #191f29;
+  --border:    #1E2A3A;
+  --border2:   #253346;
+  --text:      #E2E8F0;
+  --muted:     #7A8FA6;
+  --faint:     #3A4D63;
+  --teal:      #00D4C8;
+  --teal-dim:  #0A4A47;
+  --green:     #22C55E;
+  --red:       #EF4444;
+  --gold:      #F59E0B;
+  --orange:    #F97316;
+  --blue:      #3B82F6;
+  --purple:    #8B5CF6;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+  --radius:    8px;
+}
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 14px; }
+
+/* ── Layout ──────────────────────────────────────────────── */
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── Header ──────────────────────────────────────────────── */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+.logo-text { font-family: var(--font-mono); font-weight: 700; font-size: 14px; letter-spacing: 0.08em; color: var(--text); }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.status-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 20px;
+  background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+  font-size: 11px; font-family: var(--font-mono); color: var(--green);
+}
+.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(34,197,94,0.4); } 50% { opacity:0.8; box-shadow:0 0 0 5px transparent; } }
+.last-update { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.btn {
+  padding: 6px 14px; border-radius: var(--radius);
+  background: rgba(0,212,200,0.1); border: 1px solid rgba(0,212,200,0.3);
+  color: var(--teal); font-size: 12px; font-family: var(--font-mono);
+  cursor: pointer; transition: all 0.2s;
+}
+.btn:hover { background: rgba(0,212,200,0.2); }
+.btn-gold { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--gold); }
+.btn-gold:hover { background: rgba(245,158,11,0.2); }
+.btn-red { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--red); }
+.btn-red:hover { background: rgba(239,68,68,0.2); }
+.btn-green { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.3); color: var(--green); }
+.btn-green:hover { background: rgba(34,197,94,0.2); }
+.btn-purple { background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.3); color: var(--purple); }
+.btn-purple:hover { background: rgba(139,92,246,0.2); }
+
+/* ── Main ────────────────────────────────────────────────── */
+.main-grid { display: grid; grid-template-columns: 1fr 280px; gap: 0; flex: 1; }
+.main-content { padding: 20px 24px; max-width: 1400px; overflow-y: auto; }
+.sidebar { background: var(--surface); border-left: 1px solid var(--border); padding: 20px; overflow-y: auto; }
+@media (max-width: 1200px) { .main-grid { grid-template-columns: 1fr; } .sidebar { border-left: none; border-top: 1px solid var(--border); } }
+
+/* ── Section Labels ──────────────────────────────────────── */
+.section-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 10px;
+}
+
+/* ── Market Strip ────────────────────────────────────────── */
+.market-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 20px;
+}
+.market-item { background: var(--card); padding: 12px 16px; }
+.mi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.mi-value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; margin-top: 2px; }
+.mi-change { font-family: var(--font-mono); font-size: 12px; margin-top: 2px; }
+
+/* ── KPI Row ─────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 12px; margin-bottom: 20px;
+}
+.kpi-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  position: relative; overflow: hidden;
+}
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.kpi-card.teal::before { background: var(--teal); }
+.kpi-card.green::before { background: var(--green); }
+.kpi-card.red::before { background: var(--red); }
+.kpi-card.gold::before { background: var(--gold); }
+.kpi-card.blue::before { background: var(--blue); }
+.kpi-card.purple::before { background: var(--purple); }
+.kpi-label { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.kpi-value { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--text); }
+.kpi-value.pos { color: var(--green); }
+.kpi-value.neg { color: var(--red); }
+.kpi-value.teal { color: var(--teal); }
+.kpi-value.gold { color: var(--gold); }
+.kpi-sub { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: var(--font-mono); }
+
+/* ── Grid layouts ───────────────────────────────────────── */
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 900px) { .row-2 { grid-template-columns: 1fr; } .row-3 { grid-template-columns: 1fr; } }
+
+/* ── Card ────────────────────────────────────────────────── */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-title { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.06em; text-transform: uppercase; }
+.card-badge {
+  padding: 2px 8px; border-radius: 10px; font-family: var(--font-mono);
+  font-size: 10px; font-weight: 600;
+}
+.badge-teal { background: rgba(0,212,200,0.1); color: var(--teal); border: 1px solid rgba(0,212,200,0.3); }
+.badge-green { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+.badge-red { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.badge-gold { background: rgba(245,158,11,0.1); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+.badge-blue { background: rgba(59,130,246,0.1); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+.badge-purple { background: rgba(139,92,246,0.1); color: var(--purple); border: 1px solid rgba(139,92,246,0.3); }
+.badge-muted { background: rgba(122,143,166,0.1); color: var(--muted); border: 1px solid rgba(122,143,166,0.2); }
+
+/* ── VIX Gauge ───────────────────────────────────────────── */
+.vix-gauge { text-align: center; padding: 10px 0; }
+.vix-big { font-family: var(--font-mono); font-size: 42px; font-weight: 700; }
+.vix-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+.vix-bar { height: 8px; border-radius: 4px; margin: 12px 0 6px; position: relative;
+  background: linear-gradient(to right, var(--green) 0%, var(--gold) 40%, var(--orange) 65%, var(--red) 100%); }
+.vix-pointer { width: 12px; height: 12px; border-radius: 50%; background: white; border: 2px solid var(--bg);
+  position: absolute; top: 50%; transform: translate(-50%, -50%); transition: left 0.5s; }
+
+/* ── Condition box ────────────────────────────────────────── */
+.condition-box {
+  border-radius: var(--radius); padding: 12px 14px;
+  font-family: var(--font-mono); font-size: 12px; line-height: 1.5;
+}
+.cond-good { background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); color: var(--green); }
+.cond-warn { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); color: var(--gold); }
+.cond-bad  { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); color: var(--red); }
+.cond-blue { background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.2); color: var(--blue); }
+
+/* ── Trade Card ──────────────────────────────────────────── */
+.trade-card {
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
+  position: relative; overflow: hidden;
+}
+.trade-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--teal); }
+.trade-card.winning::before { background: var(--green); }
+.trade-card.losing::before { background: var(--red); }
+.trade-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.trade-id { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--teal); }
+.trade-date { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+
+.legs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.leg-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 10px;
+}
+.leg-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.leg-strikes { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--text); margin-top: 2px; }
+.leg-detail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+.trade-metrics { display: flex; gap: 16px; flex-wrap: wrap; }
+.tm-item { display: flex; flex-direction: column; }
+.tm-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.tm-value { font-family: var(--font-mono); font-size: 14px; font-weight: 600; margin-top: 1px; }
+
+/* ── P&L bar ────────────────────────────────────────────── */
+.pnl-bar-wrap { margin-top: 10px; }
+.pnl-bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-bottom: 3px; font-family: var(--font-mono); }
+.pnl-track { height: 8px; background: var(--border2); border-radius: 4px; position: relative; overflow: hidden; }
+.pnl-fill { position: absolute; top: 0; bottom: 0; border-radius: 4px; transition: width 0.5s; }
+
+/* ── Progress bar ────────────────────────────────────────── */
+.progress-bar { height: 6px; background: var(--border2); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+/* ── Table ───────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  text-align: left; padding: 8px 10px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 9px 10px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+.td-pos { color: var(--green); font-weight: 600; }
+.td-neg { color: var(--red); font-weight: 600; }
+.td-teal { color: var(--teal); }
+.td-gold { color: var(--gold); }
+.td-muted { color: var(--muted); }
+
+/* ── Recommendation card ─────────────────────────────────── */
+.rec-card {
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 12px; margin-bottom: 8px;
+}
+.rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.rec-symbol { font-family: var(--font-mono); font-weight: 700; font-size: 14px; color: var(--teal); }
+.rec-detail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+/* ── Sidebar rules ───────────────────────────────────────── */
+.rule-item { font-size: 12px; line-height: 1.8; color: var(--muted); font-family: var(--font-mono); }
+.rule-item .label { color: var(--text); }
+.sidebar-section { margin-bottom: 20px; }
+
+/* ── Empty state ─────────────────────────────────────────── */
+.empty { text-align: center; padding: 30px; color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 14px;
+  font-size: 11px; color: var(--faint); font-family: var(--font-mono);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ── Header ────────────────────────────────────────────────────────────── -->
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <div>
+      <div class="logo-text">SPX TRADING BOT</div>
+      <div class="logo-sub">Multi-Strategy Command Center</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill">
+      <div class="pulse"></div>
+      <span id="bot-status">LIVE</span>
+    </div>
+    <div class="last-update">Updated: <span id="last-update-time">--</span></div>
+    <button class="btn" onclick="refresh()">Refresh</button>
+  </div>
+</header>
+
+<!-- ── Main Grid ─────────────────────────────────────────────────────────── -->
+<div class="main-grid">
+<div class="main-content">
+
+  <!-- Market Strip -->
+  <div class="market-strip" id="market-strip">
+    <div class="market-item"><div class="mi-label">SPX</div><div class="mi-value" style="color:var(--teal)" id="spx-price">--</div><div class="mi-change" id="spx-change">--</div></div>
+    <div class="market-item"><div class="mi-label">SPY</div><div class="mi-value" id="spy-price">--</div><div class="mi-change" id="spy-change">--</div></div>
+    <div class="market-item"><div class="mi-label">VIX</div><div class="mi-value" id="vix-strip">--</div><div class="mi-change" id="vix-change-strip">--</div></div>
+    <div class="market-item"><div class="mi-label">Regime</div><div class="mi-value" id="regime-strip">--</div><div class="mi-change" id="regime-conf-strip">--</div></div>
+    <div class="market-item"><div class="mi-label">Total Equity</div><div class="mi-value" style="color:var(--teal)" id="equity-strip">--</div><div class="mi-change" id="return-strip">--</div></div>
+    <div class="market-item"><div class="mi-label">Today P&L</div><div class="mi-value" id="today-pnl-strip">--</div><div class="mi-change" id="trade-count-strip">--</div></div>
+    <div class="market-item"><div class="mi-label">Win Rate</div><div class="mi-value" id="win-rate-strip">--</div><div class="mi-change" id="wl-strip">--</div></div>
+    <div class="market-item"><div class="mi-label">Positions</div><div class="mi-value" id="positions-strip">--</div><div class="mi-change" id="margin-strip">--</div></div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="section-label">Portfolio Overview</div>
+  <div class="kpi-grid">
+    <div class="kpi-card teal">
+      <div class="kpi-label">Total Equity</div>
+      <div class="kpi-value teal" id="kpi-equity">--</div>
+      <div class="kpi-sub" id="kpi-equity-sub">--</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Realized P&L</div>
+      <div class="kpi-value" id="kpi-realized">--</div>
+      <div class="kpi-sub">All closed trades</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Unrealized P&L</div>
+      <div class="kpi-value" id="kpi-unrealized">--</div>
+      <div class="kpi-sub" id="kpi-unreal-sub">Open positions</div>
+    </div>
+    <div class="kpi-card gold">
+      <div class="kpi-label">Today's P&L</div>
+      <div class="kpi-value" id="kpi-today">--</div>
+      <div class="kpi-sub">Current session</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Win Rate</div>
+      <div class="kpi-value" id="kpi-winrate">--</div>
+      <div class="kpi-sub" id="kpi-winrate-sub">--</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Capital Deployed</div>
+      <div class="kpi-value" id="kpi-deployed">--</div>
+      <div class="kpi-sub" id="kpi-deployed-sub">Max 20%</div>
+      <div class="progress-bar"><div class="progress-fill" id="kpi-deployed-bar" style="width:0%;background:var(--teal)"></div></div>
+    </div>
+  </div>
+
+  <!-- Market Conditions + Regime -->
+  <div class="row-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Market Conditions</span>
+        <span class="card-badge badge-teal" id="mkt-badge">LOADING</span>
+      </div>
+      <div class="vix-gauge">
+        <div class="vix-big" id="vix-big">--</div>
+        <div class="vix-label">CBOE VIX</div>
+        <div class="vix-bar"><div class="vix-pointer" id="vix-pointer" style="left:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-family:var(--font-mono)">
+          <span>10</span><span>20</span><span>30</span><span>40</span><span>50+</span>
+        </div>
+      </div>
+      <div style="margin-top:12px" id="condition-box">
+        <div class="condition-box cond-warn">Loading market conditions...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Market Regime</span>
+        <span class="card-badge" id="regime-badge">--</span>
+      </div>
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-family:var(--font-mono);font-size:36px;font-weight:700" id="regime-big">--</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--font-mono)" id="regime-confidence">--</div>
+      </div>
+      <div id="regime-reasons" style="margin-top:10px"></div>
+      <div id="regime-recommendation" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <!-- Active Positions -->
+  <div class="section-label">Active Positions</div>
+  <div id="open-trades-container">
+    <div class="card"><div class="empty">No open positions</div></div>
+  </div>
+
+  <!-- Trade Recommendations -->
+  <div class="section-label">Trade Recommendations</div>
+  <div id="recommendations-container">
+    <div class="card"><div class="empty">Loading recommendations...</div></div>
+  </div>
+
+  <!-- Trade History -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Trade History</span>
+      <span class="card-badge badge-muted" id="history-count">0 trades</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Strategy</th>
+            <th>Type</th>
+            <th>Symbol</th>
+            <th>Date</th>
+            <th>Strikes</th>
+            <th>Credit</th>
+            <th>Qty</th>
+            <th>P&L</th>
+            <th>Reason</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody">
+          <tr><td colspan="11" class="empty">No trades yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bot Controls -->
+  <div class="card">
+    <div class="card-header"><span class="card-title">Bot Controls</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" style="padding:10px 18px;font-size:13px" onclick="triggerScan()">Scan & Enter</button>
+      <button class="btn btn-gold" style="padding:10px 18px;font-size:13px" onclick="triggerManage()">Manage Trades</button>
+      <button class="btn btn-purple" style="padding:10px 18px;font-size:13px" onclick="triggerTask('pre_market_scan')">Pre-Market Scan</button>
+      <button class="btn btn-green" style="padding:10px 18px;font-size:13px" onclick="triggerTask('wheel_scan')">Wheel Scan</button>
+      <button class="btn btn-red" style="padding:10px 18px;font-size:13px" onclick="triggerTask('end_of_day')">EOD Close</button>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--muted);font-family:var(--font-mono);line-height:1.6;max-height:120px;overflow-y:auto;white-space:pre-wrap" id="bot-log">
+Awaiting action...</div>
+  </div>
+
+</div>
+
+<!-- ── Sidebar: Strategy Rules ───────────────────────────────────────────── -->
+<div class="sidebar">
+  <div class="sidebar-section">
+    <div class="section-label">0DTE Iron Condor</div>
+    <div class="rule-item"><span class="label">Delta:</span> 0.10-0.15</div>
+    <div class="rule-item"><span class="label">Width:</span> 10pt spreads</div>
+    <div class="rule-item"><span class="label">Min credit:</span> $1.00</div>
+    <div class="rule-item"><span class="label">Stop loss:</span> 2x credit</div>
+    <div class="rule-item"><span class="label">Profit:</span> 50% collected</div>
+    <div class="rule-item"><span class="label">Entry:</span> 9:45-10:30 CT</div>
+    <div class="rule-item"><span class="label">Force close:</span> 2:30 PM CT</div>
+    <div class="rule-item"><span class="label">Max size:</span> 5% capital</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-label">Wheel Strategy</div>
+    <div class="rule-item"><span class="label">CSP Delta:</span> 0.30-0.40</div>
+    <div class="rule-item"><span class="label">CSP DTE:</span> 30-45 days</div>
+    <div class="rule-item"><span class="label">CC Delta:</span> 0.30-0.40</div>
+    <div class="rule-item"><span class="label">CC DTE:</span> 7-21 days</div>
+    <div class="rule-item"><span class="label">Tickers:</span> AAPL TSLA NVDA MSFT SPY QQQ</div>
+    <div class="rule-item"><span class="label">Profit:</span> 50% of premium</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-label">Risk Management</div>
+    <div class="rule-item"><span class="label">Max deployed:</span> 20%</div>
+    <div class="rule-item"><span class="label">Max per trade:</span> 5%</div>
+    <div class="rule-item"><span class="label">Daily loss limit:</span> 2%</div>
+    <div class="rule-item"><span class="label">Max positions:</span> 10</div>
+    <div class="rule-item"><span class="label">VIX skip IC:</span> >40</div>
+    <div class="rule-item"><span class="label">VIX reduce:</span> >25</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-label">Schedule (CT)</div>
+    <div class="rule-item" id="sched-premarket"><span class="label">Pre-market:</span> 9:00 AM</div>
+    <div class="rule-item" id="sched-entry"><span class="label">Entry:</span> 9:45-10:30 AM</div>
+    <div class="rule-item" id="sched-wheel"><span class="label">Wheel scan:</span> 10:00 AM</div>
+    <div class="rule-item" id="sched-midday"><span class="label">Mid-day:</span> 12:00 PM</div>
+    <div class="rule-item" id="sched-eod"><span class="label">EOD:</span> 2:30 PM</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-label">Account</div>
+    <div class="rule-item"><span class="label">Capital:</span> $1,000,000</div>
+    <div class="rule-item"><span class="label">Mode:</span> Paper Trading</div>
+    <div class="rule-item"><span class="label">Fill:</span> Mid-price</div>
+    <div class="rule-item"><span class="label">Data:</span> Tradier</div>
+  </div>
+</div>
+</div>
+
+<footer>
+  SPX Multi-Strategy Trading Bot -- $1,000,000 Paper Account -- 0DTE IC + Wheel -- Data: Tradier Market Feed
+</footer>
+</div>
+
+<script>
+// ── Password Gate ────────────────────────────────────────────────────────────
+(function() {
+  const PASS_KEY = 'spxbot_auth';
+  const CORRECT  = 'jarvis';
+  if (window.__spxAuthed) return; // already authed this session
+
+  // Build lock screen
+  const lock = document.createElement('div');
+  lock.id = 'lock-screen';
+  lock.innerHTML = `
+    <div style="
+      position:fixed;inset:0;background:#0A0D12;display:flex;align-items:center;
+      justify-content:center;z-index:9999;font-family:'JetBrains Mono',monospace;
+    ">
+      <div style="
+        background:#0F1319;border:1px solid #1E2A3A;border-top:3px solid #00D4C8;
+        border-radius:12px;padding:40px 48px;min-width:340px;text-align:center;
+      ">
+        <div style="color:#00D4C8;font-size:13px;font-weight:700;letter-spacing:.12em;margin-bottom:8px">⬡ SPX OPTIONS BOT</div>
+        <div style="color:#E2E8F0;font-size:20px;font-weight:700;margin-bottom:4px">Command Center</div>
+        <div style="color:#7A8FA6;font-size:11px;margin-bottom:28px">Paper Trading · $1,000,000 Account</div>
+        <input id="lock-input" type="password" placeholder="Enter password"
+          style="
+            width:100%;padding:12px 16px;background:#141920;border:1px solid #1E2A3A;
+            border-radius:8px;color:#E2E8F0;font-family:'JetBrains Mono',monospace;
+            font-size:14px;outline:none;margin-bottom:12px;letter-spacing:.1em;
+          "
+          autofocus
+        />
+        <div id="lock-err" style="color:#EF4444;font-size:11px;min-height:16px;margin-bottom:10px"></div>
+        <button id="lock-btn" style="
+          width:100%;padding:12px;background:#00D4C8;color:#0A0D12;border:none;
+          border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:13px;
+          font-weight:700;cursor:pointer;letter-spacing:.08em;
+        ">ENTER</button>
+      </div>
+    </div>
+  `;
+  document.body.insertBefore(lock, document.body.firstChild);
+
+  function tryAuth() {
+    const val = document.getElementById('lock-input').value;
+    if (val === CORRECT) {
+      window.__spxAuthed = true;
+      document.getElementById('lock-screen').remove();
+    } else {
+      const err = document.getElementById('lock-err');
+      err.textContent = 'Incorrect password. Try again.';
+      document.getElementById('lock-input').value = '';
+      document.getElementById('lock-input').focus();
+      setTimeout(() => { err.textContent = ''; }, 2500);
+    }
+  }
+
+  document.getElementById('lock-btn').addEventListener('click', tryAuth);
+  document.getElementById('lock-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryAuth();
+  });
+})();
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Live Data Snapshot (injected at deploy time) ─────────────────────────────
+const SNAPSHOT = {
+  "timestamp": "2026-03-15T23:03:49.685955Z",
+  "market": {
+    "spx_price": 6622.9,
+    "spy_price": 662.29,
+    "spy_change": -3.77,
+    "spy_change_pct": -0.57,
+    "spy_high": 672.335,
+    "spy_low": 661.36,
+    "vix": 27.19,
+    "vix_change": 0.0
+  },
+  "regime": {
+    "regime": "SIDEWAYS",
+    "confidence": 60,
+    "spy_price": 662.29,
+    "spy_change_pct": -0.57,
+    "vix": 27.19,
+    "vix_change": 0.0,
+    "range_position": 0.84,
+    "reasons": [
+      "VIX 27.2 elevated",
+      "SPY at 84% of 52wk range (mid)"
+    ],
+    "recommendation": {
+      "regime": "SIDEWAYS",
+      "primary": "FULL_PREMIUM",
+      "detail": "Ideal for premium selling. Both IC and wheel active.",
+      "wheel": "Full wheel cycle. Target highest IV names.",
+      "ic": "Standard IC setup. Best regime for iron condors.",
+      "size_modifier": 1.0
+    }
+  },
+  "portfolio": {
+    "starting_capital": 1000000.0,
+    "cash": 1000000.0,
+    "total_equity": 1000000.0,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": 0,
+    "total_return_pct": 0.0,
+    "today_pnl": 0,
+    "total_trades": 0,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "win_rate": 0.0,
+    "margin_used": 0,
+    "available_capital": 1000000.0,
+    "capital_deployed_pct": 0.0,
+    "stock_positions": {}
+  },
+  "risk": {
+    "total_equity": 1000000.0,
+    "cash": 1000000.0,
+    "margin_used": 0,
+    "available_capital": 1000000.0,
+    "capital_deployed_pct": 0.0,
+    "max_deployed_pct": 20.0,
+    "open_positions": 0,
+    "max_positions": 10,
+    "today_pnl": 0,
+    "daily_loss_limit": -20000.0,
+    "daily_loss_remaining": 20000.0,
+    "drawdown_pct": 0.0,
+    "realized_pnl": 0.0,
+    "unrealized_pnl": 0,
+    "win_rate": 0.0,
+    "stock_positions": {}
+  },
+  "open_trades": [],
+  "closed_trades": [],
+  "scheduler": {
+    "running": false,
+    "last_run": {
+      "pre_market_scan": null,
+      "entry_window": null,
+      "mid_day_check": null,
+      "end_of_day": null,
+      "wheel_scan": null
+    },
+    "schedule": {
+      "pre_market_scan": "09:00 CT",
+      "entry_window": "09:45-10:30 CT",
+      "wheel_scan": "10:00 CT",
+      "mid_day_check": "12:00 CT",
+      "end_of_day": "14:30 CT"
+    }
+  }
+};
+const SNAPSHOT_TRADES = [];
+const SNAPSHOT_TIME = "2026-03-15T23:03Z";
+
+// Override fetch for API calls — use snapshot when backend unreachable
+const _origFetch = window.fetch;
+window.fetch = function(url, opts) {
+  if (typeof url === 'string' && url.includes('/api/')) {
+    return _origFetch(url, opts).catch(function(err) {
+      console.warn('API unreachable, using snapshot:', url);
+      if (url.includes('/api/status')) {
+        return new Response(JSON.stringify(SNAPSHOT), {status:200, headers:{'Content-Type':'application/json'}});
+      }
+      if (url.includes('/api/trades')) {
+        return new Response(JSON.stringify(SNAPSHOT_TRADES), {status:200, headers:{'Content-Type':'application/json'}});
+      }
+      return new Response(JSON.stringify({status:'offline'}), {status:200, headers:{'Content-Type':'application/json'}});
+    });
+  }
+  return _origFetch(url, opts);
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+const API = window.location.origin;
+const REFRESH_MS = 30000;
+
+const fmt = {
+  money: v => v == null ? '--' : '$' + Number(v).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}),
+  moneyK: v => v == null ? '--' : (Math.abs(v)>=1e6 ? '$'+(v/1e6).toFixed(2)+'M' : Math.abs(v)>=1000 ? '$'+(v/1000).toFixed(1)+'K' : '$'+v.toFixed(2)),
+  pct: v => v == null ? '--' : (v >= 0 ? '+' : '') + Number(v).toFixed(2) + '%',
+  num: v => v == null ? '--' : Number(v).toLocaleString('en-US', {minimumFractionDigits:1, maximumFractionDigits:1}),
+  ts: iso => {
+    if (!iso) return '--';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' + d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  },
+};
+
+function el(id) { return document.getElementById(id); }
+function setColor(id, val) { const e = el(id); if (e) e.style.color = val >= 0 ? 'var(--green)' : 'var(--red)'; }
+
+// ── Render Market Strip ──────────────────────────────────────────────────────
+function renderMarket(m) {
+  el('spx-price').textContent = fmt.num(m.spx_price);
+  el('spx-change').textContent = fmt.pct(m.spy_change_pct);
+  el('spx-change').style.color = m.spy_change_pct >= 0 ? 'var(--green)' : 'var(--red)';
+
+  el('spy-price').textContent = '$' + (m.spy_price||0).toFixed(2);
+  el('spy-change').textContent = (m.spy_change>=0?'+':'') + (m.spy_change||0).toFixed(2);
+  el('spy-change').style.color = m.spy_change >= 0 ? 'var(--green)' : 'var(--red)';
+
+  const v = m.vix;
+  el('vix-strip').textContent = v ? v.toFixed(2) : '--';
+  el('vix-strip').style.color = v > 30 ? 'var(--red)' : v > 20 ? 'var(--gold)' : 'var(--green)';
+  el('vix-change-strip').textContent = (m.vix_change>=0?'+':'') + (m.vix_change||0).toFixed(2);
+  el('vix-change-strip').style.color = m.vix_change >= 0 ? 'var(--red)' : 'var(--green)';
+}
+
+// ── Render VIX Gauge ─────────────────────────────────────────────────────────
+function renderVIX(vix) {
+  el('vix-big').textContent = vix ? vix.toFixed(2) : '--';
+  el('vix-big').style.color = vix > 30 ? 'var(--red)' : vix > 20 ? 'var(--gold)' : 'var(--green)';
+  const pct = Math.min(100, Math.max(0, ((vix - 10) / 40) * 100));
+  el('vix-pointer').style.left = pct + '%';
+
+  const box = el('condition-box');
+  let cls = 'cond-good', msg = '';
+  if (!vix) { msg = 'Loading...'; cls = 'cond-warn'; }
+  else if (vix > 40) { cls = 'cond-bad'; msg = 'VIX ' + vix.toFixed(1) + ' -- EXTREME. Skip all new entries.'; }
+  else if (vix > 30) { cls = 'cond-bad'; msg = 'VIX ' + vix.toFixed(1) + ' -- HIGH. Reduce all positions 50%. Skip 0DTE IC.'; }
+  else if (vix > 25) { cls = 'cond-warn'; msg = 'VIX ' + vix.toFixed(1) + ' -- Elevated. Reduce size, put side only for IC.'; }
+  else if (vix > 15) { cls = 'cond-good'; msg = 'VIX ' + vix.toFixed(1) + ' -- Normal. Ideal for premium selling.'; }
+  else { cls = 'cond-good'; msg = 'VIX ' + vix.toFixed(1) + ' -- Low. Premium may be cheap, check min credits.'; }
+  box.innerHTML = '<div class="condition-box ' + cls + '">' + msg + '</div>';
+
+  el('mkt-badge').textContent = vix > 30 ? 'DANGER' : vix > 25 ? 'ELEVATED' : vix > 15 ? 'NORMAL' : 'LOW';
+  el('mkt-badge').className = 'card-badge ' + (vix > 30 ? 'badge-red' : vix > 25 ? 'badge-gold' : 'badge-green');
+}
+
+// ── Render Regime ────────────────────────────────────────────────────────────
+function renderRegime(r) {
+  if (!r) return;
+  const colors = { BULL: 'var(--green)', BEAR: 'var(--red)', SIDEWAYS: 'var(--gold)', VOLATILE: 'var(--orange)' };
+  const badgeClasses = { BULL: 'badge-green', BEAR: 'badge-red', SIDEWAYS: 'badge-gold', VOLATILE: 'badge-red' };
+
+  el('regime-big').textContent = r.regime;
+  el('regime-big').style.color = colors[r.regime] || 'var(--muted)';
+  el('regime-confidence').textContent = 'Confidence: ' + r.confidence + '%';
+  el('regime-badge').textContent = r.regime;
+  el('regime-badge').className = 'card-badge ' + (badgeClasses[r.regime] || 'badge-muted');
+
+  el('regime-strip').textContent = r.regime;
+  el('regime-strip').style.color = colors[r.regime] || 'var(--muted)';
+  el('regime-conf-strip').textContent = r.confidence + '% conf';
+  el('regime-conf-strip').style.color = 'var(--muted)';
+
+  // Reasons
+  const reasons = r.reasons || [];
+  el('regime-reasons').innerHTML = reasons.map(function(reason) {
+    return '<div class="condition-box cond-blue" style="margin-bottom:4px;padding:8px 10px;font-size:11px">' + reason + '</div>';
+  }).join('');
+
+  // Recommendation
+  const rec = r.recommendation;
+  if (rec) {
+    el('regime-recommendation').innerHTML =
+      '<div class="condition-box ' + (rec.primary === 'REDUCE_ALL' ? 'cond-bad' : rec.primary === 'DEFENSIVE' ? 'cond-warn' : 'cond-good') + '" style="font-size:11px">' +
+      '<div style="font-weight:700;margin-bottom:4px">' + (rec.primary||'') + '</div>' +
+      '<div>' + (rec.detail||'') + '</div>' +
+      '<div style="margin-top:4px;opacity:0.8">IC: ' + (rec.ic||'--') + '</div>' +
+      '<div style="opacity:0.8">Wheel: ' + (rec.wheel||'--') + '</div>' +
+      '<div style="margin-top:4px;font-weight:600">Size modifier: ' + (rec.size_modifier||1) + 'x</div>' +
+      '</div>';
+  }
+}
+
+// ── Render Portfolio KPIs ────────────────────────────────────────────────────
+function renderPortfolio(p) {
+  el('kpi-equity').textContent = fmt.moneyK(p.total_equity);
+  el('kpi-equity-sub').textContent = fmt.pct(p.total_return_pct) + ' total return';
+
+  el('kpi-realized').textContent = fmt.money(p.realized_pnl);
+  el('kpi-realized').className = 'kpi-value ' + (p.realized_pnl >= 0 ? 'pos' : 'neg');
+
+  el('kpi-unrealized').textContent = fmt.money(p.unrealized_pnl);
+  el('kpi-unrealized').className = 'kpi-value ' + (p.unrealized_pnl >= 0 ? 'pos' : 'neg');
+  el('kpi-unreal-sub').textContent = (p.open_positions || 0) + ' open positions';
+
+  el('kpi-today').textContent = fmt.money(p.today_pnl);
+  el('kpi-today').className = 'kpi-value ' + (p.today_pnl >= 0 ? 'pos' : 'neg');
+
+  el('kpi-winrate').textContent = p.win_rate + '%';
+  el('kpi-winrate').className = 'kpi-value ' + (p.win_rate >= 50 ? 'pos' : 'neg');
+  el('kpi-winrate-sub').textContent = p.winning_trades + 'W / ' + p.losing_trades + 'L';
+
+  const deployed = p.capital_deployed_pct || 0;
+  el('kpi-deployed').textContent = deployed.toFixed(1) + '%';
+  el('kpi-deployed-sub').textContent = fmt.moneyK(p.margin_used) + ' / ' + fmt.moneyK(p.starting_capital * 0.2);
+  el('kpi-deployed-bar').style.width = Math.min(100, deployed / 20 * 100) + '%';
+  el('kpi-deployed-bar').style.background = deployed > 15 ? 'var(--red)' : deployed > 10 ? 'var(--gold)' : 'var(--teal)';
+
+  // Strip
+  el('equity-strip').textContent = fmt.moneyK(p.total_equity);
+  el('return-strip').textContent = fmt.pct(p.total_return_pct);
+  el('return-strip').style.color = p.total_return_pct >= 0 ? 'var(--green)' : 'var(--red)';
+
+  el('today-pnl-strip').textContent = fmt.money(p.today_pnl);
+  el('today-pnl-strip').style.color = p.today_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+  el('trade-count-strip').textContent = p.total_trades + ' trades';
+
+  el('win-rate-strip').textContent = p.win_rate + '%';
+  el('win-rate-strip').style.color = p.win_rate >= 50 ? 'var(--green)' : p.win_rate > 0 ? 'var(--red)' : 'var(--muted)';
+  el('wl-strip').textContent = p.winning_trades + 'W / ' + p.losing_trades + 'L';
+
+  el('positions-strip').textContent = (p.open_positions || 0) + ' / 10';
+  el('margin-strip').textContent = fmt.moneyK(p.margin_used) + ' margin';
+  el('margin-strip').style.color = 'var(--muted)';
+}
+
+// ── Render Open Trades ───────────────────────────────────────────────────────
+function renderOpenTrades(trades) {
+  const c = el('open-trades-container');
+  if (!trades || trades.length === 0) {
+    c.innerHTML = '<div class="card"><div class="empty">No open positions -- bot will scan during entry window</div></div>';
+    return;
+  }
+  c.innerHTML = trades.map(function(t) {
+    const unreal = t.unrealized_pnl || 0;
+    const winLose = unreal >= 0 ? 'winning' : 'losing';
+
+    if (t.type === 'IRON_CONDOR') {
+      var credit = t.total_credit || 0;
+      var current = t.current_debit || 0;
+      return '<div class="trade-card ' + winLose + '">' +
+        '<div class="trade-header"><div><span class="trade-id">#' + t.id + '</span>' +
+        '<span style="margin-left:8px;font-size:11px;color:var(--muted);font-family:var(--font-mono)">IRON CONDOR | ' + (t.strategy||'0DTE_IC') + ' | ' + t.expiration + '</span></div>' +
+        '<div style="display:flex;gap:8px;align-items:center"><span class="card-badge badge-teal">OPEN</span><span class="trade-date">' + fmt.ts(t.date_opened) + '</span></div></div>' +
+        '<div class="legs-grid">' +
+        '<div class="leg-box"><div class="leg-label">Put Credit Spread</div>' +
+        '<div class="leg-strikes">' + (t.long_put_strike||'') + ' / <span style="color:var(--red)">' + (t.short_put_strike||'') + '</span></div>' +
+        '<div class="leg-detail">Credit: $' + (t.put_credit||0).toFixed(2) + '</div></div>' +
+        '<div class="leg-box"><div class="leg-label">Call Credit Spread</div>' +
+        '<div class="leg-strikes"><span style="color:var(--green)">' + (t.short_call_strike||'') + '</span> / ' + (t.long_call_strike||'') + '</div>' +
+        '<div class="leg-detail">Credit: $' + (t.call_credit||0).toFixed(2) + '</div></div></div>' +
+        '<div class="trade-metrics">' +
+        '<div class="tm-item"><div class="tm-label">Credit</div><div class="tm-value" style="color:var(--green)">$' + credit.toFixed(2) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Current</div><div class="tm-value" style="color:var(--gold)">$' + current.toFixed(2) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Unrealized</div><div class="tm-value ' + (unreal>=0?'td-pos':'td-neg') + '">$' + unreal.toFixed(0) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Max Profit</div><div class="tm-value" style="color:var(--green)">$' + (t.max_profit||0).toFixed(0) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Max Loss</div><div class="tm-value" style="color:var(--red)">$' + (t.max_loss||0).toFixed(0) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Qty</div><div class="tm-value">' + t.contracts + '</div></div></div></div>';
+    } else {
+      // CSP or CC
+      var prem = t.premium || 0;
+      var cur = t.current_value || 0;
+      return '<div class="trade-card ' + winLose + '">' +
+        '<div class="trade-header"><div><span class="trade-id">#' + t.id + '</span>' +
+        '<span style="margin-left:8px;font-size:11px;color:var(--muted);font-family:var(--font-mono)">' + t.type + ' | ' + (t.strategy||'WHEEL') + ' | ' + t.symbol + '</span></div>' +
+        '<div style="display:flex;gap:8px;align-items:center"><span class="card-badge badge-teal">OPEN</span><span class="trade-date">' + fmt.ts(t.date_opened) + '</span></div></div>' +
+        '<div class="trade-metrics">' +
+        '<div class="tm-item"><div class="tm-label">Strike</div><div class="tm-value">$' + (t.strike||0).toFixed(0) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Premium</div><div class="tm-value" style="color:var(--green)">$' + prem.toFixed(2) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Current</div><div class="tm-value" style="color:var(--gold)">$' + cur.toFixed(2) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Unrealized</div><div class="tm-value ' + (unreal>=0?'td-pos':'td-neg') + '">$' + unreal.toFixed(0) + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Expiry</div><div class="tm-value">' + (t.expiration||'--') + '</div></div>' +
+        '<div class="tm-item"><div class="tm-label">Qty</div><div class="tm-value">' + t.contracts + '</div></div></div></div>';
+    }
+  }).join('');
+}
+
+// ── Render Recommendations ───────────────────────────────────────────────────
+function renderRecommendations(data) {
+  const c = el('recommendations-container');
+  if (!data) { c.innerHTML = '<div class="card"><div class="empty">No recommendations available</div></div>'; return; }
+
+  var html = '';
+  var allRecs = [];
+  if (data.zero_dte_ic) allRecs = allRecs.concat(data.zero_dte_ic);
+  if (data.wheel) allRecs = allRecs.concat(data.wheel);
+
+  if (allRecs.length === 0) {
+    c.innerHTML = '<div class="card"><div class="empty">No trade recommendations at this time</div></div>';
+    return;
+  }
+
+  html = allRecs.map(function(r) {
+    var canTrade = r.can_trade !== false;
+    var badgeCls = r.strategy === '0DTE_IC' ? 'badge-teal' : 'badge-purple';
+    var statusBadge = canTrade ? '<span class="card-badge badge-green">READY</span>' : '<span class="card-badge badge-red">SKIP</span>';
+    if (r.status === 'skip') statusBadge = '<span class="card-badge badge-gold">SKIP</span>';
+
+    return '<div class="rec-card">' +
+      '<div class="rec-header">' +
+      '<div><span class="rec-symbol">' + (r.symbol||'SPX') + '</span> <span class="card-badge ' + badgeCls + '" style="margin-left:6px">' + (r.strategy||'') + '</span> <span class="card-badge badge-muted" style="margin-left:4px">' + (r.type||'') + '</span></div>' +
+      statusBadge + '</div>' +
+      '<div class="rec-detail">' +
+      (r.strike ? 'Strike: $' + r.strike + ' | ' : '') +
+      (r.short_put ? 'Put: ' + r.short_put + '/' + r.long_put + ' | Call: ' + r.short_call + '/' + r.long_call + ' | ' : '') +
+      (r.total_credit ? 'Credit: $' + r.total_credit.toFixed(2) + ' | ' : '') +
+      (r.premium ? 'Premium: $' + (typeof r.premium === 'number' ? r.premium.toFixed(2) : r.premium) + ' | ' : '') +
+      (r.expiration ? 'Exp: ' + r.expiration + ' | ' : '') +
+      (r.risk_reward ? 'R:R ' + r.risk_reward : '') +
+      '</div>' +
+      '<div class="rec-detail" style="margin-top:4px;color:var(--text)">' + (r.rationale || r.reason || '') + '</div>' +
+      (r.risk_note ? '<div class="rec-detail" style="margin-top:2px;color:var(--gold)">' + r.risk_note + '</div>' : '') +
+      '</div>';
+  }).join('');
+
+  c.innerHTML = html;
+}
+
+// ── Render Trade History ─────────────────────────────────────────────────────
+function renderHistory(trades) {
+  el('history-count').textContent = (trades||[]).length + ' trades';
+  var tbody = el('history-tbody');
+  if (!trades || !trades.length) {
+    tbody.innerHTML = '<tr><td colspan="11" class="empty">No closed trades yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = trades.slice().reverse().map(function(t) {
+    var pnl = t.realized_pnl;
+    var cls = pnl >= 0 ? 'td-pos' : 'td-neg';
+    var result = t.status === 'open' ? '<span class="card-badge badge-teal">OPEN</span>'
+      : t.status === 'assigned' ? '<span class="card-badge badge-blue">ASSIGNED</span>'
+      : pnl >= 0 ? '<span class="card-badge badge-green">WIN</span>'
+      : '<span class="card-badge badge-red">LOSS</span>';
+
+    var strikes = '';
+    if (t.type === 'IRON_CONDOR') {
+      strikes = (t.short_put_strike||'') + '/' + (t.short_call_strike||'');
+    } else {
+      strikes = '$' + (t.strike||0);
+    }
+
+    return '<tr>' +
+      '<td class="td-teal">' + t.id + '</td>' +
+      '<td><span class="card-badge ' + (t.strategy==='0DTE_IC'?'badge-teal':'badge-purple') + '">' + (t.strategy||'') + '</span></td>' +
+      '<td>' + (t.type||'') + '</td>' +
+      '<td>' + (t.symbol||'') + '</td>' +
+      '<td class="td-muted">' + fmt.ts(t.date_opened) + '</td>' +
+      '<td>' + strikes + '</td>' +
+      '<td style="color:var(--green)">$' + (t.total_credit||t.premium||0).toFixed(2) + '</td>' +
+      '<td>' + (t.contracts||0) + '</td>' +
+      '<td class="' + cls + '">' + (pnl != null ? (pnl>=0?'+$':'-$') + Math.abs(pnl).toFixed(2) : '--') + '</td>' +
+      '<td class="td-muted" style="font-size:10px">' + ((t.close_reason||'').replace(/_/g,' ')) + '</td>' +
+      '<td>' + result + '</td></tr>';
+  }).join('');
+}
+
+// ── Main Refresh ─────────────────────────────────────────────────────────────
+async function refresh() {
+  try {
+    el('bot-status').textContent = 'UPDATING';
+    var [status, recs] = await Promise.all([
+      fetch(API + '/api/status').then(function(r) { return r.json(); }),
+      fetch(API + '/api/recommendations').then(function(r) { return r.json(); }).catch(function() { return null; })
+    ]);
+
+    renderMarket(status.market);
+    renderVIX(status.market.vix);
+    renderRegime(status.regime);
+    renderPortfolio(status.portfolio);
+    renderOpenTrades(status.open_trades);
+    renderHistory(status.closed_trades);
+    if (recs) renderRecommendations(recs.recommendations);
+
+    el('last-update-time').textContent = new Date().toLocaleTimeString();
+    el('bot-status').textContent = 'LIVE';
+  } catch (e) {
+    console.error(e);
+    el('bot-status').textContent = 'ERROR';
+    el('last-update-time').textContent = 'Connection failed';
+  }
+}
+
+// ── Bot Controls ─────────────────────────────────────────────────────────────
+async function triggerScan() {
+  var log = el('bot-log');
+  log.textContent = 'Scanning for entries...';
+  try {
+    var r = await fetch(API + '/api/bot/scan', { method: 'POST' });
+    var data = await r.json();
+    log.textContent = JSON.stringify(data, null, 2);
+    setTimeout(refresh, 2000);
+  } catch (e) { log.textContent = 'Error: ' + e.message; }
+}
+
+async function triggerManage() {
+  var log = el('bot-log');
+  log.textContent = 'Managing open trades...';
+  try {
+    var r = await fetch(API + '/api/bot/manage', { method: 'POST' });
+    var data = await r.json();
+    log.textContent = JSON.stringify(data, null, 2);
+    setTimeout(refresh, 2000);
+  } catch (e) { log.textContent = 'Error: ' + e.message; }
+}
+
+async function triggerTask(task) {
+  var log = el('bot-log');
+  log.textContent = 'Running ' + task + '...';
+  try {
+    var r = await fetch(API + '/api/bot/schedule/' + task, { method: 'POST' });
+    var data = await r.json();
+    log.textContent = JSON.stringify(data, null, 2);
+    setTimeout(refresh, 2000);
+  } catch (e) { log.textContent = 'Error: ' + e.message; }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+refresh();
+setInterval(refresh, REFRESH_MS);
+</script>
+</body>
+</html>
